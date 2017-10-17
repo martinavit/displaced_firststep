@@ -1114,11 +1114,20 @@ Double_t        _metPhiUnclUp;
   }
     
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARAMETERS AND CUTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  const int number_veto_leptons=3;
-  const double b_jets_wp= 0.5426;
-  const double b_jets_pt= 25;
+  
   const double met_cuts =100;
   const double mlll_cuts = 90;
+    const int number_veto_leptons=3;
+    const double b_jets_wp= 0.5426;
+    const double b_jets_pt= 25;
+
+    const double MVA_cuts_pt15[3] = {0.77, 0.56, 0.48};
+    const double MVA_cuts_pt25[3] = {0.52, 0.11, -0.01};
+    const double newMVALooseFR[3]= {-0.02, -0.52, -0.52}; 
+
+    const double isolation_loose=0.6;
+    const double isolation_tight=0.1;
+
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     
   //Loop over all samples
@@ -1177,14 +1186,7 @@ Double_t        _metPhiUnclUp;
             
       double scal = 0;
       scal = scale[sam]*_weight;
-      /*if(effsam == 0) scal = 0;
-	else{
-	scal = scale[sam]*_weight;
-	}   */
-      //scal=1;
-      //if (effsam !=1) continue;
-      //number of leptons in tree
-      tot_1gev= tot_1gev + 1*scal;
+     
             
       if (effsam == 0) continue;
             
@@ -1199,16 +1201,13 @@ Double_t        _metPhiUnclUp;
       unsigned          promptC = 0;
       double            low_mass_pt_base[1];
       double*           conePt = new double[_nL];
-      double            faxtore_FR=0;
-            
-            
+      double            faxtore_FR=0;            
       double            prov_index[3]={-1,-1,-1};
       double            prov_number_tight[1]= {-1};
       double            prov_number_prompt[1]= {-1};
       double            prov_fattore[1]= {-1};
       int               skip_event[1]= {-1};
-      double            faxtore[1]= {-100};
-            
+      double            faxtore[1]= {-100};            
       TLorentzVector    lepton_reco[3];
       int               flavors_3l[3];
       int               charge_3l[3];
@@ -1225,8 +1224,7 @@ Double_t        _metPhiUnclUp;
       TLorentzVector    METvec;
       double            m_T=0;
       double            MET=0;
-      double            MET_PHI=0;
-            
+      double            MET_PHI=0;           
       int               nominal=-1;
       int               jec_check=-1;
       int               unclustered_met=-1;
@@ -1234,24 +1232,99 @@ Double_t        _metPhiUnclUp;
       int               down=-1;
       double            new_met[1]= {0};
       double            new_met_phi[1]= {0};
-      int               new_number_bjets[1]= {0};
-            
+      int               new_number_bjets[1]= {0};            
       int               new_pt_checks= -1;
       bool              trigger_fired = false;
       bool              low_pt_event=false;
-      bool              high_pt_event = false;
-            
+      bool              high_pt_event = false;            
       unsigned*         _SR_low= new unsigned[8];
       double             search_region_fill[1]={-1};
       bool              data_control_region=false;
+
+
+
+      unsigned          lCount = 0;	//Count number of FO leptons that are not taus
+      unsigned*         _isFO= new unsigned[_nL];
+      Bool_t            _passedMVA90[_nL];   
+      double*           conePt = new double[_nL];
+      unsigned*          ordind = new unsigned[lCount];	//Order FO leptons by Pt
+      std::set<unsigned> usedLep;
+      unsigned           tightC = 0;//Count number of T leptons
+      unsigned*          _isT= new unsigned[_nL];
+      unsigned           promptC = 0;
+      double             low_mass_pt_base[1];
+      
+      unsigned*          _isWithTrack= new unsigned[_nL];
+      unsigned           wTrack=0;
+
             
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            
+      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<            
       //------------------------------------------------------------ selection class
-      faxtore_FR=1;
-      TString prova = "/Users/Martina/Desktop/file/willem/"+fileList[sam];
-      Selection right_lepton(prova);
-      right_lepton.selezione(_gen_nL,_nL,  _lPt  , _lEta  , _lE  ,  _lPOGMedium  ,  _lPOGLoose ,_lFlavor  , _lCharge  , _relIso  , _dxy  , _dz  , _3dIP  , _3dIPSig  ,  _lHNLoose  ,  _lHNFO  ,  _lHNTight  , _lElectronMva     , _lIsPrompt,  prov_index,prov_number_tight,prov_number_prompt,skip_event, effsam, *&fakeRate_mu, *&fakeRate_e, faxtore, _gen_lPt  , _gen_lEta, _gen_lIsPrompt , _gen_lFlavor);
+      for(unsigned l = 0; l < _nL; ++l){
+	if (_lFlavor[l] == 0 && _lPt[l] < 5 ) counters_cut[0]++;
+	if (_lFlavor[l] == 1 && _lPt[l] < 3.5 ) counters_cut[0]++;
+      }
+      //FO
+      for(unsigned l = 0; l < _nL; ++l){
+	_isFO[l] = false;
+	if (_lFlavor[l] == 0 && _lPt[l] < 5 ) continue;
+	if (_lFlavor[l] == 1 && _lPt[l] < 3.5 ) continue;
+	_isFO[l] = true;
+	if(_isFO[l] && _lFlavor[l] != 2){
+	  ind[lCount] = l;
+	  ++lCount;
+	}
+      } 
+     if(lCount < number_veto_leptons) continue;
+
+      //Order FO leptons by Pt
+      for(unsigned k =0; k < lCount; ++k){
+	double maxConePt = 0;
+	for(unsigned l = 0; l < lCount; ++l){
+	  if(usedLep.find(ind[l]) == usedLep.end()){
+	    if(_lPt[ind[l]] > maxConePt){
+	      maxConePt = _lPt[ind[l]];
+	      ordind[k] = ind[l];
+	    }
+	  }
+	}
+	usedLep.insert(ordind[k]);
+      }
+      for(unsigned i = 0; i < lCount; ++i){
+	ind[i] = ordind[i];
+      }
+           
+      
+      //Check number of tight leptons
+      for(unsigned l = 0; l < lCount; ++l){
+	_isWithTrack[ind[l]] = false;
+	if (_lFlavor[ind[l]]== 1 && _lPOGLoose[ind[l]] )       _isWithTrack[ind[l]] = true; // tracker or global muon --> loose definition from POG
+	if (_lFlavor[ind[l]]== 0 && _lpassConversionVeto[ind[l]] && _eleNumberInnerHitsMissing[ind[l]]<=1)    _isWithTrack[ind[l]] = true; //no conversion and number missing hits
+
+	_isT[ind[l]] = false;
+	if (_lFlavor[ind[l]]== 1 && _lPOGMedium[ind[l]] )       _isT[ind[l]] = true; 
+	if (_lFlavor[ind[l]]== 0 && _lpassConversionVeto[ind[l]] && _eleNumberInnerHitsMissing[ind[l]]<=1 && _lPOGMedium[ind[l]])    _isT[ind[l]] = true; 
+      }    
+
+
+      for(unsigned l = 0; l < lCount; ++l){
+	if(_isT[ind[l]]) ++tightC;	
+	else break;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       tightC = 0;
       if (skip_event[0] == -1000) continue;
       // if (effsam== 1 ||effsam== 2 ||effsam== 3 ||effsam== 4 ||effsam== 5 ) cout<< "signal1"<<endl;
