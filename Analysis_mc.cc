@@ -144,17 +144,17 @@ void Analysis_mc::analisi(int num_histo_kin
   };
 
        
-  const TString names[nSamples]   =       {     "total",      
-						"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
-						"DY",    "DY",   
-						"ttbar","ttbar","ttbar"
-						"ZZ/H","ZZ/H",
-						"triboson", "triboson", "triboson","triboson", "triboson", "triboson", "triboson", 
-						"X+gamma","X+gamma",      
-						"TT/T + X","TT/T + X","TT/T + X", "TT/T + X","TT/T + X","TT/T + X",
-						"WJets",
-						"diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson",
-						"single Top", "single Top","single Top", "single Top","single Top"};
+  const TString names[nSamples]   =  {  "total",      
+					"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+					"DY",    "DY",   
+					"ttbar","ttbar","ttbar"
+					"ZZ/H","ZZ/H",
+					"triboson", "triboson", "triboson","triboson", "triboson", "triboson", "triboson", 
+					"X+gamma","X+gamma",      
+					"TT/T + X","TT/T + X","TT/T + X", "TT/T + X","TT/T + X","TT/T + X",
+					"WJets",
+					"diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson",
+					"single Top", "single Top","single Top", "single Top","single Top"};
   const TString eff_names[nSamples_eff +1 ] = { "total",      
 						"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
 						"DY",  
@@ -195,537 +195,537 @@ void Analysis_mc::analisi(int num_histo_kin
     
     
     
-   // Declaration of leaf types
-ULong64_t       _runNb;
-ULong64_t       _lumiBlock;
-ULong64_t       _eventNb;
-UChar_t         _nVertex;
-Double_t        _weight;
-Double_t        _lheHTIncoming;
-Double_t        _ctauHN;
-UChar_t         _nLheWeights;
-_nLheWeights = 110;
-Double_t        _lheWeight[110];   //[_nLheWeights]
-Float_t         _nTrueInt;
-UChar_t         _ttgEventType;
-UChar_t         _zgEventType;
-Double_t        _gen_met;
-Double_t        _gen_metPhi;
-UChar_t         _gen_nPh;
-_gen_nPh = 7;
-Double_t        _gen_phPt[7];   //[_gen_nPh]
-Double_t        _gen_phEta[7];   //[_gen_nPh]
-Double_t        _gen_phPhi[7];   //[_gen_nPh]
-Double_t        _gen_phE[7];   //[_gen_nPh]
-Int_t           _gen_phMomPdg[7];   //[_gen_nPh]
-Bool_t          _gen_phIsPrompt[7];   //[_gen_nPh]
-Double_t        _gen_phMinDeltaR[7];   //[_gen_nPh]
-Bool_t          _gen_phPassParentage[7];   //[_gen_nPh]
-UChar_t         _gen_nL;
-_gen_nL = 12;
-Double_t        _gen_lPt[12];   //[_gen_nL]
-Double_t        _gen_lEta[12];   //[_gen_nL]
-Double_t        _gen_lPhi[12];   //[_gen_nL]
-Double_t        _gen_lE[12];   //[_gen_nL]
-UChar_t         _gen_lFlavor[12];   //[_gen_nL]
-Int_t           _gen_lCharge[12];   //[_gen_nL]
-Int_t           _gen_lMomPdg[12];   //[_gen_nL]
-Bool_t          _gen_lIsPrompt[12];   //[_gen_nL]
-Bool_t          _passHN_1l;
-Bool_t          _HLT_Ele27_WPTight_Gsf;
-Int_t           _HLT_Ele27_WPTight_Gsf_prescale;
-Bool_t          _HLT_IsoMu24;
-Int_t           _HLT_IsoMu24_prescale;
-Bool_t          _HLT_IsoTkMu24;
-Int_t           _HLT_IsoTkMu24_prescale;
-Bool_t          _passHN_eee;
-Bool_t          _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;
-Int_t           _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;
-Bool_t          _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
-Int_t           _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
-Bool_t          _passHN_eem;
-Bool_t          _HLT_Mu8_DiEle12_CaloIdL_TrackIdL;
-Int_t           _HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale;
-Bool_t          _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;
-Int_t           _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
-Bool_t          _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;
-Int_t           _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_prescale;
-Bool_t          _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ;
-Int_t           _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
-Bool_t          _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL;
-Int_t           _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale;
-Bool_t          _passHN_emm;
-Bool_t          _HLT_DiMu9_Ele9_CaloIdL_TrackIdL;
-Int_t           _HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale;
-Bool_t          _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;
-Int_t           _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale;
-Bool_t          _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;
-Int_t           _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;
-Bool_t          _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;
-Int_t           _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;
-Bool_t          _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;
-Int_t           _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale;
-Bool_t          _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL;
-Int_t           _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;
-Bool_t          _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL;
-Int_t           _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;
-Bool_t          _passHN_mmm;
-Bool_t          _HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx;
-Int_t           _HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale;
-Bool_t          _HLT_TripleMu_12_10_5;
-Int_t           _HLT_TripleMu_12_10_5_prescale;
-Bool_t          _passMET;
-Bool_t          _HLT_MET300;
-Int_t           _HLT_MET300_prescale;
-Bool_t          _HLT_HT350_MET100;
-Int_t           _HLT_HT350_MET100_prescale;
-Bool_t          _HLT_AllMET300;
-Int_t           _HLT_AllMET300_prescale;
-Bool_t          _HLT_AllMET170;
-Int_t           _HLT_AllMET170_prescale;
-Bool_t          _HLT_jet;
-Int_t           _HLT_jet_prescale;
-Bool_t          _HLT_dijet;
-Int_t           _HLT_dijet_prescale;
-Bool_t          _HLT_MET170_BeamHaloCleaned;
-Int_t           _HLT_MET170_BeamHaloCleaned_prescale;
-Bool_t          _HLT_MET170_NotCleaned;
-Int_t           _HLT_MET170_NotCleaned_prescale;
-Bool_t          _HLT_HT800;
-Int_t           _HLT_HT800_prescale;
-Bool_t          _HLT_HT900;
-Int_t           _HLT_HT900_prescale;
-Bool_t          _HLT_dijet55met110;
-Int_t           _HLT_dijet55met110_prescale;
-Bool_t          _HLT_dijet70met120;
-Int_t           _HLT_dijet70met120_prescale;
-Bool_t          _HLT_HT600;
-Int_t           _HLT_HT600_prescale;
-Bool_t          _HLT_HT475;
-Int_t           _HLT_HT475_prescale;
-Bool_t          _HLT_HT350;
-Int_t           _HLT_HT350_prescale;
-Bool_t          _passMETFilters;
-Bool_t          _Flag_HBHENoiseFilter;
-Bool_t          _Flag_HBHENoiseIsoFilter;
-Bool_t          _Flag_EcalDeadCellTriggerPrimitiveFilter;
-Bool_t          _Flag_goodVertices;
-Bool_t          _Flag_eeBadScFilter;
-Bool_t          _Flag_globalTightHalo2016Filter;
-Bool_t          _flag_badPFMuonFilter;
-Bool_t          _flag_badChCandFilter;
-Bool_t          _passTTG_e;
-Bool_t          _HLT_Ele105_CaloIdVT_GsfTrkIdT;
-Int_t           _HLT_Ele105_CaloIdVT_GsfTrkIdT_prescale;
-Bool_t          _HLT_Ele115_CaloIdVT_GsfTrkIdT;
-Int_t           _HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale;
-Bool_t          _passTTG_ee;
-Bool_t          _HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
-Int_t           _HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
-Bool_t          _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL;
-Int_t           _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_prescale;
-Bool_t          _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW;
-Int_t           _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_prescale;
-Bool_t          _passTTG_em;
-Bool_t          _HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;
-Int_t           _HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;
-Bool_t          _HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;
-Int_t           _HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;
-Bool_t          _HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL;
-Int_t           _HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_prescale;
-Bool_t          _HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL;
-Int_t           _HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_prescale;
-Bool_t          _passTTG_m;
-Bool_t          _HLT_Mu50;
-Int_t           _HLT_Mu50_prescale;
-Bool_t          _HLT_TkMu50;
-Int_t           _HLT_TkMu50_prescale;
-Bool_t          _HLT_Mu45_eta2p1;
-Int_t           _HLT_Mu45_eta2p1_prescale;
-Bool_t          _passTTG_mm;
-Bool_t          _HLT_Mu30_TkMu11;
-Int_t           _HLT_Mu30_TkMu11_prescale;
-UChar_t         _nL;
-_nL = 20;
-UChar_t         _nMu;
-_nMu = 20;
-UChar_t         _nEle;
-_nEle = 20;
-UChar_t         _nLight;
-_nLight = 20;
-UChar_t         _nTau;
-UChar_t         _nVFit;
-_nVFit  = 6;
-UChar_t         _nGoodLeading;
-Double_t        _lIndex[20];   //[_nL]
-Double_t        _vertices[12][_nVFit];
-Double_t        _lPt[20];   //[_nL]
-Double_t        _lEta[20];   //[_nL]
-Double_t        _lEtaSC[20];   //[_nLight]
-Double_t        _lPhi[20];   //[_nL]
-Double_t        _lE[20];   //[_nL]
-UChar_t         _lFlavor[20];   //[_nL]
-Int_t           _lCharge[20];   //[_nL]
-Double_t        _dxy[20];   //[_nL]
-Double_t        _dz[20];   //[_nL]
-Double_t        _3dIP[20];   //[_nL]
-Double_t        _3dIPSig[20];   //[_nL]
-Double_t        _2dIP[20];   //[_nL]
-Double_t        _2dIPSig[20];   //[_nL]
-Float_t         _lElectronMva[20];   //[_nLight]
-Bool_t          _lElectronPassEmu[20];   //[_nLight]
-Bool_t          _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[20];   //[_nL]
-Bool_t          _lPOGVeto[20];   //[_nL]
-Bool_t          _lPOGLoose[20];   //[_nL]
-Bool_t          _lPOGMedium[20];   //[_nL]
-Bool_t          _lPOGTight[20];   //[_nL]
-Bool_t          _lpassConversionVeto[20];   //[_nL]
-Double_t        _muNumberInnerHits[20];   //[_nL]
-Double_t        _eleNumberInnerHitsMissing[20];   //[_nL]
-Double_t        _relIso[20];   //[_nLight]
-Double_t        _puCorr[20];   //[_nL]
-Double_t        _absIso03[20];   //[_nL]
-Double_t        _absIso04[20];   //[_nL]
-Double_t        _sumNeutralHadronEt04[20];   //[_nL]
-Double_t        _sumChargedHadronPt04[20];   //[_nL]
-Double_t        _sumPhotonEt04[20];   //[_nL]
-Double_t        _sumNeutralHadronEt03[20];   //[_nL]
-Double_t        _sumChargedHadronPt03[20];   //[_nL]
-Double_t        _sumPhotonEt03[20];   //[_nL]
-Double_t        _trackIso[20];   //[_nL]
-Double_t        _ecalIso[20];   //[_nL]
-Double_t        _hcalIso[20];   //[_nL]
-Double_t        _deltaBIso[20];   //[_nL]
-Double_t        _ecalPFClusterIso[20];   //[_nL]
-Double_t        _hcalPFClusterIso[20];   //[_nL]
-Double_t        _ptRel[20];   //[_nLight]
-Double_t        _ptRatio[20];   //[_nLight]
-Double_t        _closestJetCsv[20];   //[_nLight]
-UInt_t          _selectedTrackMult[20];   //[_nLight]
-Double_t        _muonSegComp[10];   //[_nMu]
-Bool_t          _tauMuonVeto[20];   //[_nL]
-Bool_t          _tauEleVeto[20];   //[_nL]
-Bool_t          _decayModeFindingNew[20];   //[_nL]
-Bool_t          _tauVLooseMvaNew[20];   //[_nL]
-Bool_t          _tauLooseMvaNew[20];   //[_nL]
-Bool_t          _tauMediumMvaNew[20];   //[_nL]
-Bool_t          _tauTightMvaNew[20];   //[_nL]
-Bool_t          _tauVTightMvaNew[20];   //[_nL]
-Bool_t          _tauVTightMvaOld[20];   //[_nL]
-Bool_t          _lIsPrompt[20];   //[_nL]
-Int_t           _lMatchPdgId[20];   //[_nL]
-UChar_t         _nPh;
-_nPh = 20;
-Double_t        _phPt[10];   //[_nPh]
-Double_t        _phEta[10];   //[_nPh]
-Double_t        _phEtaSC[10];   //[_nPh]
-Double_t        _phPhi[10];   //[_nPh]
-Double_t        _phE[10];   //[_nPh]
-Bool_t          _phCutBasedLoose[10];   //[_nPh]
-Bool_t          _phCutBasedMedium[10];   //[_nPh]
-Bool_t          _phCutBasedTight[10];   //[_nPh]
-Double_t        _phMva[10];   //[_nPh]
-Double_t        _phRandomConeChargedIsolation[10];   //[_nPh]
-Double_t        _phChargedIsolation[10];   //[_nPh]
-Double_t        _phNeutralHadronIsolation[10];   //[_nPh]
-Double_t        _phPhotonIsolation[10];   //[_nPh]
-Double_t        _phSigmaIetaIeta[10];   //[_nPh]
-Double_t        _phSigmaIetaIphi[10];   //[_nPh]
-Double_t        _phHadronicOverEm[10];   //[_nPh]
-Bool_t          _phPassElectronVeto[10];   //[_nPh]
-Bool_t          _phHasPixelSeed[10];   //[_nPh]
-Bool_t          _phIsPrompt[10];   //[_nPh]
-Int_t           _phMatchMCPhotonAN15165[10];   //[_nPh]
-Int_t           _phMatchMCLeptonAN15165[10];   //[_nPh]
-Int_t           _phMatchPdgId[10];   //[_nPh]
-UChar_t         _nJets;
-_nJets = 20;
-Double_t        _jetPt[20];   //[_nJets]
-Double_t        _jetPt_JECUp[20];   //[_nJets]
-Double_t        _jetPt_JECDown[20];   //[_nJets]
-Double_t        _jetPt_JERUp[20];   //[_nJets]
-Double_t        _jetPt_JERDown[20];   //[_nJets]
-Double_t        _jetEta[20];   //[_nJets]
-Double_t        _jetPhi[20];   //[_nJets]
-Double_t        _jetE[20];   //[_nJets]
-Double_t        _jetCsvV2[20];   //[_nJets]
-Double_t        _jetDeepCsv_udsg[20];   //[_nJets]
-Double_t        _jetDeepCsv_b[20];   //[_nJets]
-Double_t        _jetDeepCsv_c[20];   //[_nJets]
-Double_t        _jetDeepCsv_bb[20];   //[_nJets]
-Double_t        _jetHadronFlavor[20];   //[_nJets]
-UInt_t          _jetId[20];   //[_nJets]
-Double_t        _met;
-Double_t        _metJECDown;
-Double_t        _metJECUp;
-Double_t        _metUnclDown;
-Double_t        _metUnclUp;
-Double_t        _metPhi;
-Double_t        _metPhiJECDown;
-Double_t        _metPhiJECUp;
-Double_t        _metPhiUnclDown;
-Double_t        _metPhiUnclUp;
+  // Declaration of leaf types
+  ULong64_t       _runNb;
+  ULong64_t       _lumiBlock;
+  ULong64_t       _eventNb;
+  UChar_t         _nVertex;
+  Double_t        _weight;
+  Double_t        _lheHTIncoming;
+  Double_t        _ctauHN;
+  UChar_t         _nLheWeights;
+  _nLheWeights = 110;
+  Double_t        _lheWeight[110];   //[_nLheWeights]
+  Float_t         _nTrueInt;
+  UChar_t         _ttgEventType;
+  UChar_t         _zgEventType;
+  Double_t        _gen_met;
+  Double_t        _gen_metPhi;
+  UChar_t         _gen_nPh;
+  _gen_nPh = 7;
+  Double_t        _gen_phPt[7];   //[_gen_nPh]
+  Double_t        _gen_phEta[7];   //[_gen_nPh]
+  Double_t        _gen_phPhi[7];   //[_gen_nPh]
+  Double_t        _gen_phE[7];   //[_gen_nPh]
+  Int_t           _gen_phMomPdg[7];   //[_gen_nPh]
+  Bool_t          _gen_phIsPrompt[7];   //[_gen_nPh]
+  Double_t        _gen_phMinDeltaR[7];   //[_gen_nPh]
+  Bool_t          _gen_phPassParentage[7];   //[_gen_nPh]
+  UChar_t         _gen_nL;
+  _gen_nL = 12;
+  Double_t        _gen_lPt[12];   //[_gen_nL]
+  Double_t        _gen_lEta[12];   //[_gen_nL]
+  Double_t        _gen_lPhi[12];   //[_gen_nL]
+  Double_t        _gen_lE[12];   //[_gen_nL]
+  UChar_t         _gen_lFlavor[12];   //[_gen_nL]
+  Int_t           _gen_lCharge[12];   //[_gen_nL]
+  Int_t           _gen_lMomPdg[12];   //[_gen_nL]
+  Bool_t          _gen_lIsPrompt[12];   //[_gen_nL]
+  Bool_t          _passHN_1l;
+  Bool_t          _HLT_Ele27_WPTight_Gsf;
+  Int_t           _HLT_Ele27_WPTight_Gsf_prescale;
+  Bool_t          _HLT_IsoMu24;
+  Int_t           _HLT_IsoMu24_prescale;
+  Bool_t          _HLT_IsoTkMu24;
+  Int_t           _HLT_IsoTkMu24_prescale;
+  Bool_t          _passHN_eee;
+  Bool_t          _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;
+  Int_t           _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;
+  Bool_t          _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
+  Int_t           _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
+  Bool_t          _passHN_eem;
+  Bool_t          _HLT_Mu8_DiEle12_CaloIdL_TrackIdL;
+  Int_t           _HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale;
+  Bool_t          _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;
+  Int_t           _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
+  Bool_t          _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;
+  Int_t           _HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_prescale;
+  Bool_t          _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ;
+  Int_t           _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
+  Bool_t          _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL;
+  Int_t           _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale;
+  Bool_t          _passHN_emm;
+  Bool_t          _HLT_DiMu9_Ele9_CaloIdL_TrackIdL;
+  Int_t           _HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale;
+  Bool_t          _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;
+  Int_t           _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale;
+  Bool_t          _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;
+  Int_t           _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;
+  Bool_t          _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;
+  Int_t           _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;
+  Bool_t          _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;
+  Int_t           _HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale;
+  Bool_t          _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL;
+  Int_t           _HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;
+  Bool_t          _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL;
+  Int_t           _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;
+  Bool_t          _passHN_mmm;
+  Bool_t          _HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx;
+  Int_t           _HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale;
+  Bool_t          _HLT_TripleMu_12_10_5;
+  Int_t           _HLT_TripleMu_12_10_5_prescale;
+  Bool_t          _passMET;
+  Bool_t          _HLT_MET300;
+  Int_t           _HLT_MET300_prescale;
+  Bool_t          _HLT_HT350_MET100;
+  Int_t           _HLT_HT350_MET100_prescale;
+  Bool_t          _HLT_AllMET300;
+  Int_t           _HLT_AllMET300_prescale;
+  Bool_t          _HLT_AllMET170;
+  Int_t           _HLT_AllMET170_prescale;
+  Bool_t          _HLT_jet;
+  Int_t           _HLT_jet_prescale;
+  Bool_t          _HLT_dijet;
+  Int_t           _HLT_dijet_prescale;
+  Bool_t          _HLT_MET170_BeamHaloCleaned;
+  Int_t           _HLT_MET170_BeamHaloCleaned_prescale;
+  Bool_t          _HLT_MET170_NotCleaned;
+  Int_t           _HLT_MET170_NotCleaned_prescale;
+  Bool_t          _HLT_HT800;
+  Int_t           _HLT_HT800_prescale;
+  Bool_t          _HLT_HT900;
+  Int_t           _HLT_HT900_prescale;
+  Bool_t          _HLT_dijet55met110;
+  Int_t           _HLT_dijet55met110_prescale;
+  Bool_t          _HLT_dijet70met120;
+  Int_t           _HLT_dijet70met120_prescale;
+  Bool_t          _HLT_HT600;
+  Int_t           _HLT_HT600_prescale;
+  Bool_t          _HLT_HT475;
+  Int_t           _HLT_HT475_prescale;
+  Bool_t          _HLT_HT350;
+  Int_t           _HLT_HT350_prescale;
+  Bool_t          _passMETFilters;
+  Bool_t          _Flag_HBHENoiseFilter;
+  Bool_t          _Flag_HBHENoiseIsoFilter;
+  Bool_t          _Flag_EcalDeadCellTriggerPrimitiveFilter;
+  Bool_t          _Flag_goodVertices;
+  Bool_t          _Flag_eeBadScFilter;
+  Bool_t          _Flag_globalTightHalo2016Filter;
+  Bool_t          _flag_badPFMuonFilter;
+  Bool_t          _flag_badChCandFilter;
+  Bool_t          _passTTG_e;
+  Bool_t          _HLT_Ele105_CaloIdVT_GsfTrkIdT;
+  Int_t           _HLT_Ele105_CaloIdVT_GsfTrkIdT_prescale;
+  Bool_t          _HLT_Ele115_CaloIdVT_GsfTrkIdT;
+  Int_t           _HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale;
+  Bool_t          _passTTG_ee;
+  Bool_t          _HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
+  Int_t           _HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
+  Bool_t          _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL;
+  Int_t           _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_prescale;
+  Bool_t          _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW;
+  Int_t           _HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_prescale;
+  Bool_t          _passTTG_em;
+  Bool_t          _HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;
+  Int_t           _HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;
+  Bool_t          _HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;
+  Int_t           _HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;
+  Bool_t          _HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL;
+  Int_t           _HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_prescale;
+  Bool_t          _HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL;
+  Int_t           _HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_prescale;
+  Bool_t          _passTTG_m;
+  Bool_t          _HLT_Mu50;
+  Int_t           _HLT_Mu50_prescale;
+  Bool_t          _HLT_TkMu50;
+  Int_t           _HLT_TkMu50_prescale;
+  Bool_t          _HLT_Mu45_eta2p1;
+  Int_t           _HLT_Mu45_eta2p1_prescale;
+  Bool_t          _passTTG_mm;
+  Bool_t          _HLT_Mu30_TkMu11;
+  Int_t           _HLT_Mu30_TkMu11_prescale;
+  UChar_t         _nL;
+  _nL = 20;
+  UChar_t         _nMu;
+  _nMu = 20;
+  UChar_t         _nEle;
+  _nEle = 20;
+  UChar_t         _nLight;
+  _nLight = 20;
+  UChar_t         _nTau;
+  UChar_t         _nVFit;
+  _nVFit  = 6;
+  UChar_t         _nGoodLeading;
+  Double_t        _lIndex[20];   //[_nL]
+  Double_t        _vertices[12][_nVFit];
+  Double_t        _lPt[20];   //[_nL]
+  Double_t        _lEta[20];   //[_nL]
+  Double_t        _lEtaSC[20];   //[_nLight]
+  Double_t        _lPhi[20];   //[_nL]
+  Double_t        _lE[20];   //[_nL]
+  UChar_t         _lFlavor[20];   //[_nL]
+  Int_t           _lCharge[20];   //[_nL]
+  Double_t        _dxy[20];   //[_nL]
+  Double_t        _dz[20];   //[_nL]
+  Double_t        _3dIP[20];   //[_nL]
+  Double_t        _3dIPSig[20];   //[_nL]
+  Double_t        _2dIP[20];   //[_nL]
+  Double_t        _2dIPSig[20];   //[_nL]
+  Float_t         _lElectronMva[20];   //[_nLight]
+  Bool_t          _lElectronPassEmu[20];   //[_nLight]
+  Bool_t          _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[20];   //[_nL]
+  Bool_t          _lPOGVeto[20];   //[_nL]
+  Bool_t          _lPOGLoose[20];   //[_nL]
+  Bool_t          _lPOGMedium[20];   //[_nL]
+  Bool_t          _lPOGTight[20];   //[_nL]
+  Bool_t          _lpassConversionVeto[20];   //[_nL]
+  Double_t        _muNumberInnerHits[20];   //[_nL]
+  Double_t        _eleNumberInnerHitsMissing[20];   //[_nL]
+  Double_t        _relIso[20];   //[_nLight]
+  Double_t        _puCorr[20];   //[_nL]
+  Double_t        _absIso03[20];   //[_nL]
+  Double_t        _absIso04[20];   //[_nL]
+  Double_t        _sumNeutralHadronEt04[20];   //[_nL]
+  Double_t        _sumChargedHadronPt04[20];   //[_nL]
+  Double_t        _sumPhotonEt04[20];   //[_nL]
+  Double_t        _sumNeutralHadronEt03[20];   //[_nL]
+  Double_t        _sumChargedHadronPt03[20];   //[_nL]
+  Double_t        _sumPhotonEt03[20];   //[_nL]
+  Double_t        _trackIso[20];   //[_nL]
+  Double_t        _ecalIso[20];   //[_nL]
+  Double_t        _hcalIso[20];   //[_nL]
+  Double_t        _deltaBIso[20];   //[_nL]
+  Double_t        _ecalPFClusterIso[20];   //[_nL]
+  Double_t        _hcalPFClusterIso[20];   //[_nL]
+  Double_t        _ptRel[20];   //[_nLight]
+  Double_t        _ptRatio[20];   //[_nLight]
+  Double_t        _closestJetCsv[20];   //[_nLight]
+  UInt_t          _selectedTrackMult[20];   //[_nLight]
+  Double_t        _muonSegComp[10];   //[_nMu]
+  Bool_t          _tauMuonVeto[20];   //[_nL]
+  Bool_t          _tauEleVeto[20];   //[_nL]
+  Bool_t          _decayModeFindingNew[20];   //[_nL]
+  Bool_t          _tauVLooseMvaNew[20];   //[_nL]
+  Bool_t          _tauLooseMvaNew[20];   //[_nL]
+  Bool_t          _tauMediumMvaNew[20];   //[_nL]
+  Bool_t          _tauTightMvaNew[20];   //[_nL]
+  Bool_t          _tauVTightMvaNew[20];   //[_nL]
+  Bool_t          _tauVTightMvaOld[20];   //[_nL]
+  Bool_t          _lIsPrompt[20];   //[_nL]
+  Int_t           _lMatchPdgId[20];   //[_nL]
+  UChar_t         _nPh;
+  _nPh = 20;
+  Double_t        _phPt[10];   //[_nPh]
+  Double_t        _phEta[10];   //[_nPh]
+  Double_t        _phEtaSC[10];   //[_nPh]
+  Double_t        _phPhi[10];   //[_nPh]
+  Double_t        _phE[10];   //[_nPh]
+  Bool_t          _phCutBasedLoose[10];   //[_nPh]
+  Bool_t          _phCutBasedMedium[10];   //[_nPh]
+  Bool_t          _phCutBasedTight[10];   //[_nPh]
+  Double_t        _phMva[10];   //[_nPh]
+  Double_t        _phRandomConeChargedIsolation[10];   //[_nPh]
+  Double_t        _phChargedIsolation[10];   //[_nPh]
+  Double_t        _phNeutralHadronIsolation[10];   //[_nPh]
+  Double_t        _phPhotonIsolation[10];   //[_nPh]
+  Double_t        _phSigmaIetaIeta[10];   //[_nPh]
+  Double_t        _phSigmaIetaIphi[10];   //[_nPh]
+  Double_t        _phHadronicOverEm[10];   //[_nPh]
+  Bool_t          _phPassElectronVeto[10];   //[_nPh]
+  Bool_t          _phHasPixelSeed[10];   //[_nPh]
+  Bool_t          _phIsPrompt[10];   //[_nPh]
+  Int_t           _phMatchMCPhotonAN15165[10];   //[_nPh]
+  Int_t           _phMatchMCLeptonAN15165[10];   //[_nPh]
+  Int_t           _phMatchPdgId[10];   //[_nPh]
+  UChar_t         _nJets;
+  _nJets = 20;
+  Double_t        _jetPt[20];   //[_nJets]
+  Double_t        _jetPt_JECUp[20];   //[_nJets]
+  Double_t        _jetPt_JECDown[20];   //[_nJets]
+  Double_t        _jetPt_JERUp[20];   //[_nJets]
+  Double_t        _jetPt_JERDown[20];   //[_nJets]
+  Double_t        _jetEta[20];   //[_nJets]
+  Double_t        _jetPhi[20];   //[_nJets]
+  Double_t        _jetE[20];   //[_nJets]
+  Double_t        _jetCsvV2[20];   //[_nJets]
+  Double_t        _jetDeepCsv_udsg[20];   //[_nJets]
+  Double_t        _jetDeepCsv_b[20];   //[_nJets]
+  Double_t        _jetDeepCsv_c[20];   //[_nJets]
+  Double_t        _jetDeepCsv_bb[20];   //[_nJets]
+  Double_t        _jetHadronFlavor[20];   //[_nJets]
+  UInt_t          _jetId[20];   //[_nJets]
+  Double_t        _met;
+  Double_t        _metJECDown;
+  Double_t        _metJECUp;
+  Double_t        _metUnclDown;
+  Double_t        _metUnclUp;
+  Double_t        _metPhi;
+  Double_t        _metPhiJECDown;
+  Double_t        _metPhiJECUp;
+  Double_t        _metPhiUnclDown;
+  Double_t        _metPhiUnclUp;
     
- // List of branches
-   TBranch        *b__runNb;   //!
-   TBranch        *b__lumiBlock;   //!
-   TBranch        *b__eventNb;   //!
-   TBranch        *b__nVertex;   //!
-   TBranch        *b__weight;   //!
-   TBranch        *b__lheHTIncoming;   //!
-   TBranch        *b__ctauHN;   //!
-   TBranch        *b__nLheWeights;   //!
-   TBranch        *b__lheWeight;   //!
-   TBranch        *b__nTrueInt;   //!
-   TBranch        *b__ttgEventType;   //!
-   TBranch        *b__zgEventType;   //!
-   TBranch        *b__gen_met;   //!
-   TBranch        *b__gen_metPhi;   //!
-   TBranch        *b__gen_nPh;   //!
-   TBranch        *b__gen_phPt;   //!
-   TBranch        *b__gen_phEta;   //!
-   TBranch        *b__gen_phPhi;   //!
-   TBranch        *b__gen_phE;   //!
-   TBranch        *b__gen_phMomPdg;   //!
-   TBranch        *b__gen_phIsPrompt;   //!
-   TBranch        *b__gen_phMinDeltaR;   //!
-   TBranch        *b__gen_phPassParentage;   //!
-   TBranch        *b__gen_nL;   //!
-   TBranch        *b__gen_lPt;   //!
-   TBranch        *b__gen_lEta;   //!
-   TBranch        *b__gen_lPhi;   //!
-   TBranch        *b__gen_lE;   //!
-   TBranch        *b__gen_lFlavor;   //!
-   TBranch        *b__gen_lCharge;   //!
-   TBranch        *b__gen_lMomPdg;   //!
-   TBranch        *b__gen_lIsPrompt;   //!
-   TBranch        *b__passHN_1l;   //!
-   TBranch        *b__HLT_Ele27_WPTight_Gsf;   //!
-   TBranch        *b__HLT_Ele27_WPTight_Gsf_prescale;   //!
-   TBranch        *b__HLT_IsoMu24;   //!
-   TBranch        *b__HLT_IsoMu24_prescale;   //!
-   TBranch        *b__HLT_IsoTkMu24;   //!
-   TBranch        *b__HLT_IsoTkMu24_prescale;   //!
-   TBranch        *b__passHN_eee;   //!
-   TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;   //!
-   TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;   //!
-   TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
-   TBranch        *b__passHN_eem;   //!
-   TBranch        *b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL;   //!
-   TBranch        *b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale;   //!
-   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
-   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_prescale;   //!
-   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
-   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale;   //!
-   TBranch        *b__passHN_emm;   //!
-   TBranch        *b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL;   //!
-   TBranch        *b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;   //!
-   TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;   //!
-   TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;   //!
-   TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL;   //!
-   TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;   //!
-   TBranch        *b__passHN_mmm;   //!
-   TBranch        *b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx;   //!
-   TBranch        *b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale;   //!
-   TBranch        *b__HLT_TripleMu_12_10_5;   //!
-   TBranch        *b__HLT_TripleMu_12_10_5_prescale;   //!
-   TBranch        *b__passMET;   //!
-   TBranch        *b__HLT_MET300;   //!
-   TBranch        *b__HLT_MET300_prescale;   //!
-   TBranch        *b__HLT_HT350_MET100;   //!
-   TBranch        *b__HLT_HT350_MET100_prescale;   //!
-   TBranch        *b__HLT_AllMET300;   //!
-   TBranch        *b__HLT_AllMET300_prescale;   //!
-   TBranch        *b__HLT_AllMET170;   //!
-   TBranch        *b__HLT_AllMET170_prescale;   //!
-   TBranch        *b__HLT_jet;   //!
-   TBranch        *b__HLT_jet_prescale;   //!
-   TBranch        *b__HLT_dijet;   //!
-   TBranch        *b__HLT_dijet_prescale;   //!
-   TBranch        *b__HLT_MET170_BeamHaloCleaned;   //!
-   TBranch        *b__HLT_MET170_BeamHaloCleaned_prescale;   //!
-   TBranch        *b__HLT_MET170_NotCleaned;   //!
-   TBranch        *b__HLT_MET170_NotCleaned_prescale;   //!
-   TBranch        *b__HLT_HT800;   //!
-   TBranch        *b__HLT_HT800_prescale;   //!
-   TBranch        *b__HLT_HT900;   //!
-   TBranch        *b__HLT_HT900_prescale;   //!
-   TBranch        *b__HLT_dijet55met110;   //!
-   TBranch        *b__HLT_dijet55met110_prescale;   //!
-   TBranch        *b__HLT_dijet70met120;   //!
-   TBranch        *b__HLT_dijet70met120_prescale;   //!
-   TBranch        *b__HLT_HT600;   //!
-   TBranch        *b__HLT_HT600_prescale;   //!
-   TBranch        *b__HLT_HT475;   //!
-   TBranch        *b__HLT_HT475_prescale;   //!
-   TBranch        *b__HLT_HT350;   //!
-   TBranch        *b__HLT_HT350_prescale;   //!
-   TBranch        *b__passMETFilters;   //!
-   TBranch        *b__Flag_HBHENoiseFilter;   //!
-   TBranch        *b__Flag_HBHENoiseIsoFilter;   //!
-   TBranch        *b__Flag_EcalDeadCellTriggerPrimitiveFilter;   //!
-   TBranch        *b__Flag_goodVertices;   //!
-   TBranch        *b__Flag_eeBadScFilter;   //!
-   TBranch        *b__Flag_globalTightHalo2016Filter;   //!
-   TBranch        *b__flag_badPFMuonFilter;   //!
-   TBranch        *b__flag_badChCandFilter;   //!
-   TBranch        *b__passTTG_e;   //!
-   TBranch        *b__HLT_Ele105_CaloIdVT_GsfTrkIdT;   //!
-   TBranch        *b__HLT_Ele105_CaloIdVT_GsfTrkIdT_prescale;   //!
-   TBranch        *b__HLT_Ele115_CaloIdVT_GsfTrkIdT;   //!
-   TBranch        *b__HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale;   //!
-   TBranch        *b__passTTG_ee;   //!
-   TBranch        *b__HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b__HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
-   TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL;   //!
-   TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_prescale;   //!
-   TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW;   //!
-   TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_prescale;   //!
-   TBranch        *b__passTTG_em;   //!
-   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b__HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;   //!
-   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_prescale;   //!
-   TBranch        *b__HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL;   //!
-   TBranch        *b__HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_prescale;   //!
-   TBranch        *b__passTTG_m;   //!
-   TBranch        *b__HLT_Mu50;   //!
-   TBranch        *b__HLT_Mu50_prescale;   //!
-   TBranch        *b__HLT_TkMu50;   //!
-   TBranch        *b__HLT_TkMu50_prescale;   //!
-   TBranch        *b__HLT_Mu45_eta2p1;   //!
-   TBranch        *b__HLT_Mu45_eta2p1_prescale;   //!
-   TBranch        *b__passTTG_mm;   //!
-   TBranch        *b__HLT_Mu30_TkMu11;   //!
-   TBranch        *b__HLT_Mu30_TkMu11_prescale;   //!
-   TBranch        *b__nL;   //!
-   TBranch        *b__nMu;   //!
-   TBranch        *b__nEle;   //!
-   TBranch        *b__nLight;   //!
-   TBranch        *b__nTau;   //!
-   TBranch        *b__nVFit;   //!
-   TBranch        *b__nGoodLeading;   //!
-   TBranch        *b__lIndex;   //!
-   TBranch        *b__vertices;   //!
-   TBranch        *b__lPt;   //!
-   TBranch        *b__lEta;   //!
-   TBranch        *b__lEtaSC;   //!
-   TBranch        *b__lPhi;   //!
-   TBranch        *b__lE;   //!
-   TBranch        *b__lFlavor;   //!
-   TBranch        *b__lCharge;   //!
-   TBranch        *b__dxy;   //!
-   TBranch        *b__dz;   //!
-   TBranch        *b__3dIP;   //!
-   TBranch        *b__3dIPSig;   //!
-   TBranch        *b__2dIP;   //!
-   TBranch        *b__2dIPSig;   //!
-   TBranch        *b__lElectronMva;   //!
-   TBranch        *b__lElectronPassEmu;   //!
-   TBranch        *b__lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto;   //!
-   TBranch        *b__lPOGVeto;   //!
-   TBranch        *b__lPOGLoose;   //!
-   TBranch        *b__lPOGMedium;   //!
-   TBranch        *b__lPOGTight;   //!
-   TBranch        *b__lpassConversionVeto;   //!
-   TBranch        *b__muNumberInnerHits;   //!
-   TBranch        *b__eleNumberInnerHitsMissing;   //!
-   TBranch        *b__relIso;   //!
-   TBranch        *b__puCorr;   //!
-   TBranch        *b__absIso03;   //!
-   TBranch        *b__absIso04;   //!
-   TBranch        *b__sumNeutralHadronEt04;   //!
-   TBranch        *b__sumChargedHadronPt04;   //!
-   TBranch        *b__sumPhotonEt04;   //!
-   TBranch        *b__sumNeutralHadronEt03;   //!
-   TBranch        *b__sumChargedHadronPt03;   //!
-   TBranch        *b__sumPhotonEt03;   //!
-   TBranch        *b__trackIso;   //!
-   TBranch        *b__ecalIso;   //!
-   TBranch        *b__hcalIso;   //!
-   TBranch        *b__deltaBIso;   //!
-   TBranch        *b__ecalPFClusterIso;   //!
-   TBranch        *b__hcalPFClusterIso;   //!
-   TBranch        *b__ptRel;   //!
-   TBranch        *b__ptRatio;   //!
-   TBranch        *b__closestJetCsv;   //!
-   TBranch        *b__selectedTrackMult;   //!
-   TBranch        *b__muonSegComp;   //!
-   TBranch        *b__tauMuonVeto;   //!
-   TBranch        *b__tauEleVeto;   //!
-   TBranch        *b__decayModeFindingNew;   //!
-   TBranch        *b__tauVLooseMvaNew;   //!
-   TBranch        *b__tauLooseMvaNew;   //!
-   TBranch        *b__tauMediumMvaNew;   //!
-   TBranch        *b__tauTightMvaNew;   //!
-   TBranch        *b__tauVTightMvaNew;   //!
-   TBranch        *b__tauVTightMvaOld;   //!
-   TBranch        *b__lIsPrompt;   //!
-   TBranch        *b__lMatchPdgId;   //!
-   TBranch        *b__nPh;   //!
-   TBranch        *b__phPt;   //!
-   TBranch        *b__phEta;   //!
-   TBranch        *b__phEtaSC;   //!
-   TBranch        *b__phPhi;   //!
-   TBranch        *b__phE;   //!
-   TBranch        *b__phCutBasedLoose;   //!
-   TBranch        *b__phCutBasedMedium;   //!
-   TBranch        *b__phCutBasedTight;   //!
-   TBranch        *b__phMva;   //!
-   TBranch        *b__phRandomConeChargedIsolation;   //!
-   TBranch        *b__phChargedIsolation;   //!
-   TBranch        *b__phNeutralHadronIsolation;   //!
-   TBranch        *b__phPhotonIsolation;   //!
-   TBranch        *b__phSigmaIetaIeta;   //!
-   TBranch        *b__phSigmaIetaIphi;   //!
-   TBranch        *b__phHadronicOverEm;   //!
-   TBranch        *b__phPassElectronVeto;   //!
-   TBranch        *b__phHasPixelSeed;   //!
-   TBranch        *b__phIsPrompt;   //!
-   TBranch        *b__phMatchMCPhotonAN15165;   //!
-   TBranch        *b__phMatchMCLeptonAN15165;   //!
-   TBranch        *b__phMatchPdgId;   //!
-   TBranch        *b__nJets;   //!
-   TBranch        *b__jetPt;   //!
-   TBranch        *b__jetPt_JECUp;   //!
-   TBranch        *b__jetPt_JECDown;   //!
-   TBranch        *b__jetPt_JERUp;   //!
-   TBranch        *b__jetPt_JERDown;   //!
-   TBranch        *b__jetEta;   //!
-   TBranch        *b__jetPhi;   //!
-   TBranch        *b__jetE;   //!
-   TBranch        *b__jetCsvV2;   //!
-   TBranch        *b__jetDeepCsv_udsg;   //!
-   TBranch        *b__jetDeepCsv_b;   //!
-   TBranch        *b__jetDeepCsv_c;   //!
-   TBranch        *b__jetDeepCsv_bb;   //!
-   TBranch        *b__jetHadronFlavor;   //!
-   TBranch        *b__jetId;   //!
-   TBranch        *b__met;   //!
-   TBranch        *b__metJECDown;   //!
-   TBranch        *b__metJECUp;   //!
-   TBranch        *b__metUnclDown;   //!
-   TBranch        *b__metUnclUp;   //!
-   TBranch        *b__metPhi;   //!
-   TBranch        *b__metPhiJECDown;   //!
-   TBranch        *b__metPhiJECUp;   //!
-   TBranch        *b__metPhiUnclDown;   //!
-   TBranch        *b__metPhiUnclUp;   //!
+  // List of branches
+  TBranch        *b__runNb;   //!
+  TBranch        *b__lumiBlock;   //!
+  TBranch        *b__eventNb;   //!
+  TBranch        *b__nVertex;   //!
+  TBranch        *b__weight;   //!
+  TBranch        *b__lheHTIncoming;   //!
+  TBranch        *b__ctauHN;   //!
+  TBranch        *b__nLheWeights;   //!
+  TBranch        *b__lheWeight;   //!
+  TBranch        *b__nTrueInt;   //!
+  TBranch        *b__ttgEventType;   //!
+  TBranch        *b__zgEventType;   //!
+  TBranch        *b__gen_met;   //!
+  TBranch        *b__gen_metPhi;   //!
+  TBranch        *b__gen_nPh;   //!
+  TBranch        *b__gen_phPt;   //!
+  TBranch        *b__gen_phEta;   //!
+  TBranch        *b__gen_phPhi;   //!
+  TBranch        *b__gen_phE;   //!
+  TBranch        *b__gen_phMomPdg;   //!
+  TBranch        *b__gen_phIsPrompt;   //!
+  TBranch        *b__gen_phMinDeltaR;   //!
+  TBranch        *b__gen_phPassParentage;   //!
+  TBranch        *b__gen_nL;   //!
+  TBranch        *b__gen_lPt;   //!
+  TBranch        *b__gen_lEta;   //!
+  TBranch        *b__gen_lPhi;   //!
+  TBranch        *b__gen_lE;   //!
+  TBranch        *b__gen_lFlavor;   //!
+  TBranch        *b__gen_lCharge;   //!
+  TBranch        *b__gen_lMomPdg;   //!
+  TBranch        *b__gen_lIsPrompt;   //!
+  TBranch        *b__passHN_1l;   //!
+  TBranch        *b__HLT_Ele27_WPTight_Gsf;   //!
+  TBranch        *b__HLT_Ele27_WPTight_Gsf_prescale;   //!
+  TBranch        *b__HLT_IsoMu24;   //!
+  TBranch        *b__HLT_IsoMu24_prescale;   //!
+  TBranch        *b__HLT_IsoTkMu24;   //!
+  TBranch        *b__HLT_IsoTkMu24_prescale;   //!
+  TBranch        *b__passHN_eee;   //!
+  TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;   //!
+  TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;   //!
+  TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
+  TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
+  TBranch        *b__passHN_eem;   //!
+  TBranch        *b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL;   //!
+  TBranch        *b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale;   //!
+  TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;   //!
+  TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
+  TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;   //!
+  TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_prescale;   //!
+  TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ;   //!
+  TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
+  TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL;   //!
+  TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale;   //!
+  TBranch        *b__passHN_emm;   //!
+  TBranch        *b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL;   //!
+  TBranch        *b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;   //!
+  TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ;   //!
+  TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;   //!
+  TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL;   //!
+  TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;   //!
+  TBranch        *b__passHN_mmm;   //!
+  TBranch        *b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx;   //!
+  TBranch        *b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale;   //!
+  TBranch        *b__HLT_TripleMu_12_10_5;   //!
+  TBranch        *b__HLT_TripleMu_12_10_5_prescale;   //!
+  TBranch        *b__passMET;   //!
+  TBranch        *b__HLT_MET300;   //!
+  TBranch        *b__HLT_MET300_prescale;   //!
+  TBranch        *b__HLT_HT350_MET100;   //!
+  TBranch        *b__HLT_HT350_MET100_prescale;   //!
+  TBranch        *b__HLT_AllMET300;   //!
+  TBranch        *b__HLT_AllMET300_prescale;   //!
+  TBranch        *b__HLT_AllMET170;   //!
+  TBranch        *b__HLT_AllMET170_prescale;   //!
+  TBranch        *b__HLT_jet;   //!
+  TBranch        *b__HLT_jet_prescale;   //!
+  TBranch        *b__HLT_dijet;   //!
+  TBranch        *b__HLT_dijet_prescale;   //!
+  TBranch        *b__HLT_MET170_BeamHaloCleaned;   //!
+  TBranch        *b__HLT_MET170_BeamHaloCleaned_prescale;   //!
+  TBranch        *b__HLT_MET170_NotCleaned;   //!
+  TBranch        *b__HLT_MET170_NotCleaned_prescale;   //!
+  TBranch        *b__HLT_HT800;   //!
+  TBranch        *b__HLT_HT800_prescale;   //!
+  TBranch        *b__HLT_HT900;   //!
+  TBranch        *b__HLT_HT900_prescale;   //!
+  TBranch        *b__HLT_dijet55met110;   //!
+  TBranch        *b__HLT_dijet55met110_prescale;   //!
+  TBranch        *b__HLT_dijet70met120;   //!
+  TBranch        *b__HLT_dijet70met120_prescale;   //!
+  TBranch        *b__HLT_HT600;   //!
+  TBranch        *b__HLT_HT600_prescale;   //!
+  TBranch        *b__HLT_HT475;   //!
+  TBranch        *b__HLT_HT475_prescale;   //!
+  TBranch        *b__HLT_HT350;   //!
+  TBranch        *b__HLT_HT350_prescale;   //!
+  TBranch        *b__passMETFilters;   //!
+  TBranch        *b__Flag_HBHENoiseFilter;   //!
+  TBranch        *b__Flag_HBHENoiseIsoFilter;   //!
+  TBranch        *b__Flag_EcalDeadCellTriggerPrimitiveFilter;   //!
+  TBranch        *b__Flag_goodVertices;   //!
+  TBranch        *b__Flag_eeBadScFilter;   //!
+  TBranch        *b__Flag_globalTightHalo2016Filter;   //!
+  TBranch        *b__flag_badPFMuonFilter;   //!
+  TBranch        *b__flag_badChCandFilter;   //!
+  TBranch        *b__passTTG_e;   //!
+  TBranch        *b__HLT_Ele105_CaloIdVT_GsfTrkIdT;   //!
+  TBranch        *b__HLT_Ele105_CaloIdVT_GsfTrkIdT_prescale;   //!
+  TBranch        *b__HLT_Ele115_CaloIdVT_GsfTrkIdT;   //!
+  TBranch        *b__HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale;   //!
+  TBranch        *b__passTTG_ee;   //!
+  TBranch        *b__HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
+  TBranch        *b__HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
+  TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL;   //!
+  TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_prescale;   //!
+  TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW;   //!
+  TBranch        *b__HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_prescale;   //!
+  TBranch        *b__passTTG_em;   //!
+  TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;   //!
+  TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;   //!
+  TBranch        *b__HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale;   //!
+  TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL;   //!
+  TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_prescale;   //!
+  TBranch        *b__HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL;   //!
+  TBranch        *b__HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_prescale;   //!
+  TBranch        *b__passTTG_m;   //!
+  TBranch        *b__HLT_Mu50;   //!
+  TBranch        *b__HLT_Mu50_prescale;   //!
+  TBranch        *b__HLT_TkMu50;   //!
+  TBranch        *b__HLT_TkMu50_prescale;   //!
+  TBranch        *b__HLT_Mu45_eta2p1;   //!
+  TBranch        *b__HLT_Mu45_eta2p1_prescale;   //!
+  TBranch        *b__passTTG_mm;   //!
+  TBranch        *b__HLT_Mu30_TkMu11;   //!
+  TBranch        *b__HLT_Mu30_TkMu11_prescale;   //!
+  TBranch        *b__nL;   //!
+  TBranch        *b__nMu;   //!
+  TBranch        *b__nEle;   //!
+  TBranch        *b__nLight;   //!
+  TBranch        *b__nTau;   //!
+  TBranch        *b__nVFit;   //!
+  TBranch        *b__nGoodLeading;   //!
+  TBranch        *b__lIndex;   //!
+  TBranch        *b__vertices;   //!
+  TBranch        *b__lPt;   //!
+  TBranch        *b__lEta;   //!
+  TBranch        *b__lEtaSC;   //!
+  TBranch        *b__lPhi;   //!
+  TBranch        *b__lE;   //!
+  TBranch        *b__lFlavor;   //!
+  TBranch        *b__lCharge;   //!
+  TBranch        *b__dxy;   //!
+  TBranch        *b__dz;   //!
+  TBranch        *b__3dIP;   //!
+  TBranch        *b__3dIPSig;   //!
+  TBranch        *b__2dIP;   //!
+  TBranch        *b__2dIPSig;   //!
+  TBranch        *b__lElectronMva;   //!
+  TBranch        *b__lElectronPassEmu;   //!
+  TBranch        *b__lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto;   //!
+  TBranch        *b__lPOGVeto;   //!
+  TBranch        *b__lPOGLoose;   //!
+  TBranch        *b__lPOGMedium;   //!
+  TBranch        *b__lPOGTight;   //!
+  TBranch        *b__lpassConversionVeto;   //!
+  TBranch        *b__muNumberInnerHits;   //!
+  TBranch        *b__eleNumberInnerHitsMissing;   //!
+  TBranch        *b__relIso;   //!
+  TBranch        *b__puCorr;   //!
+  TBranch        *b__absIso03;   //!
+  TBranch        *b__absIso04;   //!
+  TBranch        *b__sumNeutralHadronEt04;   //!
+  TBranch        *b__sumChargedHadronPt04;   //!
+  TBranch        *b__sumPhotonEt04;   //!
+  TBranch        *b__sumNeutralHadronEt03;   //!
+  TBranch        *b__sumChargedHadronPt03;   //!
+  TBranch        *b__sumPhotonEt03;   //!
+  TBranch        *b__trackIso;   //!
+  TBranch        *b__ecalIso;   //!
+  TBranch        *b__hcalIso;   //!
+  TBranch        *b__deltaBIso;   //!
+  TBranch        *b__ecalPFClusterIso;   //!
+  TBranch        *b__hcalPFClusterIso;   //!
+  TBranch        *b__ptRel;   //!
+  TBranch        *b__ptRatio;   //!
+  TBranch        *b__closestJetCsv;   //!
+  TBranch        *b__selectedTrackMult;   //!
+  TBranch        *b__muonSegComp;   //!
+  TBranch        *b__tauMuonVeto;   //!
+  TBranch        *b__tauEleVeto;   //!
+  TBranch        *b__decayModeFindingNew;   //!
+  TBranch        *b__tauVLooseMvaNew;   //!
+  TBranch        *b__tauLooseMvaNew;   //!
+  TBranch        *b__tauMediumMvaNew;   //!
+  TBranch        *b__tauTightMvaNew;   //!
+  TBranch        *b__tauVTightMvaNew;   //!
+  TBranch        *b__tauVTightMvaOld;   //!
+  TBranch        *b__lIsPrompt;   //!
+  TBranch        *b__lMatchPdgId;   //!
+  TBranch        *b__nPh;   //!
+  TBranch        *b__phPt;   //!
+  TBranch        *b__phEta;   //!
+  TBranch        *b__phEtaSC;   //!
+  TBranch        *b__phPhi;   //!
+  TBranch        *b__phE;   //!
+  TBranch        *b__phCutBasedLoose;   //!
+  TBranch        *b__phCutBasedMedium;   //!
+  TBranch        *b__phCutBasedTight;   //!
+  TBranch        *b__phMva;   //!
+  TBranch        *b__phRandomConeChargedIsolation;   //!
+  TBranch        *b__phChargedIsolation;   //!
+  TBranch        *b__phNeutralHadronIsolation;   //!
+  TBranch        *b__phPhotonIsolation;   //!
+  TBranch        *b__phSigmaIetaIeta;   //!
+  TBranch        *b__phSigmaIetaIphi;   //!
+  TBranch        *b__phHadronicOverEm;   //!
+  TBranch        *b__phPassElectronVeto;   //!
+  TBranch        *b__phHasPixelSeed;   //!
+  TBranch        *b__phIsPrompt;   //!
+  TBranch        *b__phMatchMCPhotonAN15165;   //!
+  TBranch        *b__phMatchMCLeptonAN15165;   //!
+  TBranch        *b__phMatchPdgId;   //!
+  TBranch        *b__nJets;   //!
+  TBranch        *b__jetPt;   //!
+  TBranch        *b__jetPt_JECUp;   //!
+  TBranch        *b__jetPt_JECDown;   //!
+  TBranch        *b__jetPt_JERUp;   //!
+  TBranch        *b__jetPt_JERDown;   //!
+  TBranch        *b__jetEta;   //!
+  TBranch        *b__jetPhi;   //!
+  TBranch        *b__jetE;   //!
+  TBranch        *b__jetCsvV2;   //!
+  TBranch        *b__jetDeepCsv_udsg;   //!
+  TBranch        *b__jetDeepCsv_b;   //!
+  TBranch        *b__jetDeepCsv_c;   //!
+  TBranch        *b__jetDeepCsv_bb;   //!
+  TBranch        *b__jetHadronFlavor;   //!
+  TBranch        *b__jetId;   //!
+  TBranch        *b__met;   //!
+  TBranch        *b__metJECDown;   //!
+  TBranch        *b__metJECUp;   //!
+  TBranch        *b__metUnclDown;   //!
+  TBranch        *b__metUnclUp;   //!
+  TBranch        *b__metPhi;   //!
+  TBranch        *b__metPhiJECDown;   //!
+  TBranch        *b__metPhiJECUp;   //!
+  TBranch        *b__metPhiUnclDown;   //!
+  TBranch        *b__metPhiUnclUp;   //!
     
     
   double hcounter[nSamples];
@@ -1004,7 +1004,7 @@ Double_t        _metPhiUnclUp;
     
   //******************* HISTO **********************
   const int nCat=6;
-  const int nDist = 87;  //Number of distributions to plot
+  const int nDist = 90;  //Number of distributions to plot
   TH1D* Histos[nDist][nCat][nSamples_eff +1];
   const TString catNames[nCat] ={"all","ossf", "no_ossf", "3tracks", "2tracks", "1track"};
   const TString Histnames_ossf[nDist] = {"LeptonPt_le","LeptonPt_subl", "LeptonPt_tr", "Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls",
@@ -1017,9 +1017,11 @@ Double_t        _metPhiUnclUp;
 					 "relIso03_t","absIso03_t","relIso04_t","absIso04_t","trackIso_t", "deltaBIso_t", "sumChargedHadronPt03_t",
 					 "DeltaR_pair","DeltaR_lt","DeltaR_st", "DeltaPhi_pair","DeltaPhi_lt","DeltaPhi_st",
 					 "vertex_X" , "vertex_Y" , "vertex_Z" , "vertex_R" , "vertex_chi2" , "vertex_normalized_chi2" ,
-					 "vertex_X_ls", "vertex_Y_ls", "vertex_Z_ls", "vertex_R_ls", "vertex_chi2_ls", "vertex_normalized_chi2_ls",
-					 "vertex_X_lt", "vertex_Y_lt", "vertex_Z_lt", "vertex_R_lt", "vertex_chi2_lt", "vertex_normalized_chi2_lt",
-					 "vertex_X_st", "vertex_Y_st", "vertex_Z_st", "vertex_R_st", "vertex_chi2_st", "vertex_normalized_chi2_st"};
+					 "vertex_X_ls", "vertex_Y_ls", "vertex_Z_ls", "vertex_R_ls","vertex_Rsign_ls","vertex_R2D_ls","vertex_R2Dsign_ls", "vertex_chi2_ls", "vertex_normalized_chi2_ls",
+					 "vertex_X_lt", "vertex_Y_lt", "vertex_Z_lt", "vertex_R_lt","vertex_Rsign_lt","vertex_R2D_lt","vertex_R2Dsign_lt", "vertex_chi2_lt", "vertex_normalized_chi2_lt",
+					 "vertex_X_st", "vertex_Y_st", "vertex_Z_st", "vertex_R_st","vertex_Rsign_st","vertex_R2D_st","vertex_R2Dsign_st", "vertex_chi2_st", "vertex_normalized_chi2_st"};
+
+
   const TString Xaxes[nDist] = {"P_{T} (leading l)","P_{T} (sub-leading l)", "P_{T} (trailing l)", "SumP_{T}(3leptons)","SumP_{T}(leading+trailing)","SumP_{T}(sub-leading+trailing)","SumP_{T}(leading+sub-leading)",
 				"M_{lll}","M_{ll} (sub-leading+soft)", "M_{ll} (M_{Z} pair)", "M_{T} (no M_{Z} pair)","M_{T} (trailing)","M_{T} (3l+MET)","MET", "MET_phi", "number of jets", "number of b-jets","HT",
 				"|d_{xy}| (leading)","|d_{z}| (leading)","|3D IP| (leading)","|2D IP| (leading)", "|3D IPSig| (leading)", "|2D IPSig| (leading)",
@@ -1030,9 +1032,11 @@ Double_t        _metPhiUnclUp;
 				"relative Iso_{03} (trailing)","absolute Iso_{03} (trailing)","relative Iso_{04} (trailing)","absolute Iso_{04} (trailing)","trackIso (trailing)", "delta #beta Iso_{03} (trailing)", "sumChargedHadronPt03 (trailing)",
 				"#Delta R (M_{Z} pair)","#Delta R (leading-trailing)","#Delta R (sub leading-trailing)", "#Delta #phi (M_{Z} pair)","#Delta #phi (leading-trailing)","#Delta #phi (sub leading-trailing)",
 				"vertex_X" , "vertex_Y" , "vertex_Z" , "vertex_R" , "vertex_#chi ^{2}" , "vertex_normalized_#chi ^{2}" ,
-				"vertex_X (leading-sub leading)", "vertex_Y (leading-sub leading)", "vertex_Z (leading-sub leading)", "vertex_R (leading-sub leading)", "vertex_#chi ^{2} (leading-sub leading)", "vertex_normalized_#chi ^{2} (leading-sub leading)",
-				"vertex_X (leading-trailing)", "vertex_Y (leading-trailing)", "vertex_Z (leading-trailing)", "vertex_R (leading-trailing)", "vertex_#chi ^{2} (leading-trailing)", "vertex_normalized_#chi ^{2} (leading-trailing)",
-				"vertex_X (sub leading-trailing)", "vertex_Y (sub leading-trailing)", "vertex_Z (sub leading-trailing)", "vertex_R (sub leading-trailing)", "vertex_#chi ^{2} (sub leading-trailing)", "vertex_normalized_#chi ^{2} (sub leading-trailing)"};
+				"vertex_X (leading-sub leading)", "vertex_Y (leading-sub leading)", "vertex_Z (leading-sub leading)", "vertex_R (leading-sub leading)","vertex_R significance (leading-sub leading)", "vertex_R2D (leading-sub leading)","vertex_R2D significance (leading-sub leading)", "vertex_#chi ^{2} (leading-sub leading)", "vertex_normalized_#chi ^{2} (leading-sub leading)",
+				"vertex_X (leading-trailing)", "vertex_Y (leading-trailing)", "vertex_Z (leading-trailing)", "vertex_R (leading-trailing)","vertex_R significance (leading-trailing)", "vertex_R2D (leading-trailing)","vertex_R2D significance (leading-trailing)", "vertex_#chi ^{2} (leading-trailing)", "vertex_normalized_#chi ^{2} (leading-trailing)",
+				"vertex_X (sub leading-trailing)", "vertex_Y (sub leading-trailing)", "vertex_Z (sub leading-trailing)", "vertex_R (sub leading-trailing)","vertex_R significance (sub leading-trailing)", "vertex_R2D (sub leading-trailing)","vertex_R2D significance (sub leading-trailing)", "vertex_#chi ^{2} (sub leading-trailing)", "vertex_normalized_#chi ^{2} (sub leading-trailing)"};
+
+
   const TString Units[nDist] = {"GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV", 
 				"GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV","GeV", "","","GeV",
 				"cm","cm","cm","cm","","",
@@ -1043,9 +1047,9 @@ Double_t        _metPhiUnclUp;
 				"", "GeV", "", "GeV", "GeV","", "GeV",
 				"","","","","","",
 				"cm","cm","cm", "cm", "","",
-				"cm","cm","cm", "cm", "","",
-				"cm","cm","cm", "cm", "","",
-				"cm","cm","cm", "cm", "",""};
+				"cm","cm","cm", "cm","","cm","", "","",
+				"cm","cm","cm", "cm","","cm","", "","",
+				"cm","cm","cm", "cm","","cm","", "",""};
   const double HistMin[nDist] = { 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,-3.5, 0, 0,
 				  0, 0, 0, 0, 0, 0,
 				  0, 0, 0, 0, 0, 0,
@@ -1054,10 +1058,10 @@ Double_t        _metPhiUnclUp;
 				  0, 0, 0, 0, 0, 0,0,
 				  0, 0, 0, 0, 0, 0,0,
 				  -0.5,-0.5,-0.5,-0.5,-0.5,-0.5,
-				  -2000, -2000, -5000, -2000, 0,0,
-				  -2000, -2000, -5000, -2000, 0,0,
-				  -2000, -2000, -5000, -2000, 0,0,
-				  -2000, -2000, -5000, -2000, 0,0};
+				  -2000, -2000, -5000, 0, 0,0,
+				  -2000, -2000, -5000, 0,0,0,0, 0,0,
+				  -2000, -2000, -5000, 0,0,0,0, 0,0,
+				  -2000, -2000, -5000, 0,0,0,0, 0,0};
   const double HistMax[nDist] = { 100, 100, 100, 100, 100, 100, 100,
 				  100, 100, 100, 100, 100,  100, 200,3.5, 10,10, 100,
 				  0.5, 1, 10, 1, 100, 80,
@@ -1068,9 +1072,9 @@ Double_t        _metPhiUnclUp;
 				  1, 20, 1, 20, 40, 20,10,
 				  4,4,4,4,4,4,
 				  2000, 2000, 5000, 2000, 100,10,
-				  2000, 2000, 5000, 2000, 100,10,
-				  2000, 2000, 5000, 2000, 100,10,
-				  2000, 2000, 5000, 2000, 100,10}; 
+				  2000, 2000, 5000, 2000,50,2000,50, 100,10,
+				  2000, 2000, 5000, 2000,50,2000,50, 100,10,
+				  2000, 2000, 5000, 2000,50,2000,50, 100,10}; 
   const int nBins[nDist] =      { 25, 25, 25, 25, 25, 25, 25,
 				  25, 25, 25, 25, 25,  25, 50,20, 10,10, 100,
 				  100, 200, 50, 100, 100, 80,
@@ -1081,9 +1085,9 @@ Double_t        _metPhiUnclUp;
 				  50, 100, 50, 100, 400, 200,100,
 				  20,20,20,20,20,20,
 				  4000, 4000, 8000, 4000, 100,100,
-				  4000, 4000, 8000, 4000, 100,100,
-				  4000, 4000, 8000, 4000, 100,100,
-				  4000, 4000, 8000, 4000, 100,100};    
+				  4000, 4000, 8000, 4000,100,4000,100, 100,100,
+				  4000, 4000, 8000, 4000,100,4000,100, 100,100,
+				  4000, 4000, 8000, 4000,100,4000,100, 100,100};    
   cout<<"------ 1"<<endl;
   for(int i = 0; i < nDist; ++i){
     float BinWidth = (HistMax[i] - HistMin[i])/nBins[i];
@@ -1105,16 +1109,16 @@ Double_t        _metPhiUnclUp;
   
   const double met_cuts =100;
   const double mlll_cuts = 90;
-    const int number_veto_leptons=3;
-    const double b_jets_wp= 0.5426;
-    const double b_jets_pt= 25;
+  const int number_veto_leptons=3;
+  const double b_jets_wp= 0.5426;
+  const double b_jets_pt= 25;
 
-    const double MVA_cuts_pt15[3] = {0.77, 0.56, 0.48};
-    const double MVA_cuts_pt25[3] = {0.52, 0.11, -0.01};
-    const double newMVALooseFR[3]= {-0.02, -0.52, -0.52}; 
+  const double MVA_cuts_pt15[3] = {0.77, 0.56, 0.48};
+  const double MVA_cuts_pt25[3] = {0.52, 0.11, -0.01};
+  const double newMVALooseFR[3]= {-0.02, -0.52, -0.52}; 
 
-    const double isolation_loose=0.6;
-    const double isolation_tight=0.1;
+  const double isolation_loose=0.6;
+  const double isolation_tight=0.1;
 
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     
@@ -1149,12 +1153,12 @@ Double_t        _metPhiUnclUp;
 
     // if (sam <= 12 ){
 
-      for (int i =0; i< 20; i++){
-		counters_cut[i] =0.;
-		counters_cut_ossf[i] =0.;
-		counters_cut_no_ossf[i] =0.;
-      }
-      // }
+    for (int i =0; i< 20; i++){
+      counters_cut[i] =0.;
+      counters_cut_ossf[i] =0.;
+      counters_cut_no_ossf[i] =0.;
+    }
+    // }
     double progress = 0; 	//For printing progress bar
         
         
@@ -1245,7 +1249,20 @@ Double_t        _metPhiUnclUp;
       unsigned*          _isWithTrack= new unsigned[_nL];
       unsigned           wTrack=0;
 
-            
+      double            iV_ls=0;
+      double            iV_lt=0;
+      double            iV_st=0;
+
+      double            _vertex_X[3];
+      double            _vertex_Y[3];
+      double            _vertex_Z[3];
+      double            _vertex_R2D[3];
+      double            _vertex_sR2D[3];
+      double            _vertex_R[3];
+      double            _vertex_sR[3];
+      double            _vertex_chi2[3];
+      double            _vertex_normchi2[3];
+	                
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<            
       //------------------------------------------------------------ selection class
       for(unsigned l = 0; l < _nL; ++l){
@@ -1263,7 +1280,7 @@ Double_t        _metPhiUnclUp;
 	  ++lCount;
 	}
       } 
-     if(lCount < number_veto_leptons) continue;
+      if(lCount < number_veto_leptons) continue;
 
       //Order FO leptons by Pt
       for(unsigned k =0; k < lCount; ++k){
@@ -1299,91 +1316,75 @@ Double_t        _metPhiUnclUp;
 	if(_isT[ind[l]]) ++tightC;	
 	else break;
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      tightC = 0;
-      if (skip_event[0] == -1000) continue;
-      // if (effsam== 1 ||effsam== 2 ||effsam== 3 ||effsam== 4 ||effsam== 5 ) cout<< "signal1"<<endl;
-      counters_cut[0] =0;
-      counters_cut[1] =0;
-      counters_cut[2] =0;
-      counters_cut[3] =0;
-      counters_cut[4] =0;
-      counters_cut[5] =0;
-
-      //  if (skip_event[0] == 20 ) continue; 
-      if (skip_event[0] == -100) continue;
-      if (skip_event[0] == -100)  counters_cut[0] =  1;
-      if (skip_event[0] == -90)  {
-	counters_cut[0] =  1;
-	counters_cut[1] =  1;
-      }
-      if (skip_event[0] == -80) {
-	counters_cut[0] =  1;
-	counters_cut[1] =  1;
-	counters_cut[2] =  1;
-      }
-      if (skip_event[0] == -70)  {
-	counters_cut[0] =  1;
-	counters_cut[1] =  1;
-	counters_cut[2] =  1;
-	counters_cut[3] =  1;
-      }
-      if (skip_event[0] == -60)  {
-	counters_cut[0] =  1;
-	counters_cut[1] =  1;
-	counters_cut[2] =  1;
-	counters_cut[3] =  1;
-	counters_cut[4] =  1;
-      }
-      if (skip_event[0] == -55) {
-	counters_cut[0] =  1;
-	counters_cut[1] =  1;
-	counters_cut[2] =  1;
-	counters_cut[3] =  1;
-	counters_cut[4] =  1;
-	counters_cut[5] =  1;
+      for(unsigned l = 0; l < lCount; ++l){
+	if(_isWithTrack[ind[l]]) ++wTrack;	
+	else break;
       }
 
+      
+      //calculate the index for the vertex
+     
+      iV_ls= _lIndex[ind[0]] * 100 +  _lIndex[ind[1]];
+      iV_st= _lIndex[ind[1]] * 100 +  _lIndex[ind[2]];
+      iV_lt= _lIndex[ind[0]] * 100 +  _lIndex[ind[2]];
 
-      if (skip_event[0] == 20){
-	counters_cut[0] =  1;
-	counters_cut[1] =  1;
-	counters_cut[2] =  1;
-	counters_cut[3] =  1;
-	counters_cut[4] =  1;
-	counters_cut[5] =  1;
-      }
-      if (skip_event[0] != 20)continue;
-      // cout<<skip_event[0]<<endl;
-       //cout<<counters_cut[0]<<"  "<<counters_cut[1]<<"  "<<counters_cut[2]<<"  "<<counters_cut[3]<<"  "<<counters_cut[4]<<"  "<<counters_cut[5]<<"  "<<endl;
+      //[0] == ls
+      //[1] == st
+      //[2] == lt
+      for(unsigned v = 0; v < _nVFit; ++v){
+	if (_vertices[0][v] == iV_ls) {
+	  _vertex_X[0]        = _vertices[1][v];
+	  _vertex_Y[0]        = _vertices[2][v];
+	  _vertex_Z[0]        = _vertices[3][v];
+	  _vertex_R2D[0]      = TMath::Sqrt(_vertices[0][v]*_vertices[0][v]+ _vertices[1][v]*_vertices[1][v]);
+	  _vertex_sR2D[0]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[0][v], _vertices[4][v],_vertices[0][v], _vertices[1][v])  + derivate2_with_sigmaR2D(_vertices[1][v], _vertices[5][v],_vertices[0][v], _vertices[1][v])   + 2*_vertices[7][v]*_vertices[7][v] *derivateR2D(_vertices[0][v],_vertices[0][v], _vertices[1][v])*derivateR2D(_vertices[1][v],_vertices[0][v], _vertices[1][v]) );
+	  _vertex_R[0]        = TMath::Sqrt(_vertices[0][v]*_vertices[0][v]+ _vertices[1][v]*_vertices[1][v] + _vertices[2][v]*_vertices[2][v]);
+	  _vertex_sR[0]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[0][v], _vertices[4][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) + 
+				     derivate2_with_sigmaR(_vertices[1][v], _vertices[5][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     derivate2_with_sigmaR(_vertices[2][v], _vertices[6][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[7][v]*_vertices[7][v]*derivateR(_vertices[0][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[1][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[9][v]*_vertices[9][v]*derivateR(_vertices[0][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[2][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[8][v]*_vertices[8][v]*derivateR(_vertices[1][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[2][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])  );
+	  _vertex_chi2[0]     = _vertices[11][v];
+	  _vertex_normchi2[0] = _vertices[11][v]/_vertices[10][v];
+	}
+	if (_vertices[0][v] == iV_st) {
+	  _vertex_X[1]        = _vertices[1][v];
+	  _vertex_Y[1]        = _vertices[2][v];
+	  _vertex_Z[1]        = _vertices[3][v];
+	  _vertex_R2D[1]      = TMath::Sqrt(_vertices[0][v]*_vertices[0][v]+ _vertices[1][v]*_vertices[1][v]);
+	  _vertex_sR2D[1]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[0][v], _vertices[4][v],_vertices[0][v], _vertices[1][v])  + derivate2_with_sigmaR2D(_vertices[1][v], _vertices[5][v],_vertices[0][v], _vertices[1][v])   + 2*_vertices[7][v]*_vertices[7][v] *derivateR2D(_vertices[0][v],_vertices[0][v], _vertices[1][v])*derivateR2D(_vertices[1][v],_vertices[0][v], _vertices[1][v]) );
+	  _vertex_R[1]        = TMath::Sqrt(_vertices[0][v]*_vertices[0][v]+ _vertices[1][v]*_vertices[1][v] + _vertices[2][v]*_vertices[2][v]);
+	  _vertex_sR[1]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[0][v], _vertices[4][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) + 
+				     derivate2_with_sigmaR(_vertices[1][v], _vertices[5][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     derivate2_with_sigmaR(_vertices[2][v], _vertices[6][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[7][v]*_vertices[7][v]*derivateR(_vertices[0][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[1][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[9][v]*_vertices[9][v]*derivateR(_vertices[0][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[2][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[8][v]*_vertices[8][v]*derivateR(_vertices[1][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[2][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])  );
+	  _vertex_chi2[1]     = _vertices[11][v];
+	  _vertex_normchi2[1] = _vertices[11][v]/_vertices[10][v];
+	}
+	if (_vertices[0][v] == iV_lt) {
+	  _vertex_X[2]        = _vertices[1][v];
+	  _vertex_Y[2]        = _vertices[2][v];
+	  _vertex_Z[2]        = _vertices[3][v];
+	  _vertex_R2D[2]      = TMath::Sqrt(_vertices[0][v]*_vertices[0][v]+ _vertices[1][v]*_vertices[1][v]);
+	  _vertex_sR2D[2]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[0][v], _vertices[4][v],_vertices[0][v], _vertices[1][v])  + derivate2_with_sigmaR2D(_vertices[1][v], _vertices[5][v],_vertices[0][v], _vertices[1][v])   + 2*_vertices[7][v]*_vertices[7][v] *derivateR2D(_vertices[0][v],_vertices[0][v], _vertices[1][v])*derivateR2D(_vertices[1][v],_vertices[0][v], _vertices[1][v]) );
+	  _vertex_R[2]        = TMath::Sqrt(_vertices[0][v]*_vertices[0][v]+ _vertices[1][v]*_vertices[1][v] + _vertices[2][v]*_vertices[2][v]);
+	  _vertex_sR[2]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[0][v], _vertices[4][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) + 
+				     derivate2_with_sigmaR(_vertices[1][v], _vertices[5][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     derivate2_with_sigmaR(_vertices[2][v], _vertices[6][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[7][v]*_vertices[7][v]*derivateR(_vertices[0][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[1][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[9][v]*_vertices[9][v]*derivateR(_vertices[0][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[2][v],_vertices[0][v], _vertices[1][v], _vertices[2][v]) +
+				     2*_vertices[8][v]*_vertices[8][v]*derivateR(_vertices[1][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])*derivateR(_vertices[2][v],_vertices[0][v], _vertices[1][v], _vertices[2][v])  );
+	  _vertex_chi2[2]     = _vertices[11][v];
+	  _vertex_normchi2[2] = _vertices[11][v]/_vertices[10][v];
+	}	           
+      }// end loop vertices 
 
-      //  if (skip_event[0] == -60 || skip_event[0] == -100 || skip_event[0] == -90 || skip_event[0] == -80 || skip_event[0] == -70 ) continue; 
-            
-      ind[0] = prov_index[0];
-      ind[1] = prov_index[1];
-      ind[2] = prov_index[2];
-      tightC= prov_number_tight[0];
-      promptC = prov_number_prompt[0];
-      faxtore_FR= faxtore[0];
-      bool tightFail = (tightC < 3);
-      // if (tightFail) continue;
-      //  if ((effsam == 1 ||effsam == 2 ||effsam == 3 ||effsam == 4 ||effsam == 5 ||effsam == 6 ||effsam == 7 ||effsam == 8 ||effsam == 9 ||effsam == 10 ||effsam == 11 ) && prov_number_prompt[0] != 3) continue;
-            
-      //--------------------------------------------------------------------------------
-      fo_3_1gev= fo_3_1gev + 1*scal;
+         
+      //--------------------------------------------------------------------------------   
+      if (!_lPOGMedium[ind[0]]  || _lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_ipPV[ind[0]]) > 0.05 || TMath::Abs(_ipZPV[ind[0]]) > 0.1 || fabs(_3dIPsig [ind[0]]) > 4  ) continue;
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANALYSIS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       for (int i =0; i < 3; i ++){
 	lepton_reco[i].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
@@ -1407,52 +1408,7 @@ Double_t        _metPhiUnclUp;
       bool ossf_event= false;
       if (kind[0] == 1) ossf_event = true;
 
-      if (ossf_event) {
-	if ( counters_cut[0] == 1 ) counters_cut_ossf[0]=  counters_cut_ossf[0] + 1*scal;
-	if ( counters_cut[1] == 1 ) {
-	  //	  cout<<"in"<<endl;
-	  counters_cut_ossf[1]=  counters_cut_ossf[1] + 1*scal;
-	}
-	if ( counters_cut[2] == 1 ){
-	  counters_cut_ossf[2]=  counters_cut_ossf[2] + 1*scal;
-	 
-	}
-	if ( counters_cut[3] == 1 ) {
-	  counters_cut_ossf[3]=  counters_cut_ossf[3] + 1*scal;
-	}
-
-	if ( counters_cut[4] == 1 ) {
-	  counters_cut_ossf[4]=  counters_cut_ossf[4] + 1*scal;	
-	}
-	if ( counters_cut[5] == 1 ) {
-	  counters_cut_ossf[5]=  counters_cut_ossf[5] + 1*scal;	
-	}
-
-      }
-      if (!ossf_event) {
-	if ( counters_cut[0] == 1 ) counters_cut_no_ossf[0]=  counters_cut_no_ossf[0] + 1*scal;
-        if ( counters_cut[1] == 1 ) {
-	  counters_cut_no_ossf[1]=  counters_cut_no_ossf[1] + 1*scal;
-        }
-	if ( counters_cut[2] == 1 ){
-	  counters_cut_no_ossf[2]=  counters_cut_no_ossf[2] + 1*scal;
-	}
-	if ( counters_cut[3] == 1 ) {
-	  counters_cut_no_ossf[3]=  counters_cut_no_ossf[3] + 1*scal;
-	}  
-	if ( counters_cut[4] == 1 ) {
-	  counters_cut_no_ossf[4]=  counters_cut_no_ossf[4] + 1*scal;
-	}
-	if ( counters_cut[5] == 1 ) {
-	  counters_cut_no_ossf[5]=  counters_cut_no_ossf[5] + 1*scal;
-	}
-    
-      }
-
-      if (skip_event[0] == 20  ){
-	if (ossf_event)  counters_cut_ossf[6] = counters_cut_ossf[6] + 1*scal;
-	if (!ossf_event)  counters_cut_no_ossf[6] = counters_cut_no_ossf[6] + 1*scal;
-      }
+     
 
       //if (kind[0] == 0) continue;
       // ---------------- > CHANNELS
@@ -1462,144 +1418,10 @@ Double_t        _metPhiUnclUp;
       //if(lepton_reco[0].Pt() > 55) continue;
       // ---------------- > cut on M_3L > M_W
       if (sum_3l_rec.M() > mlll_cuts) continue;
-      if (skip_event[0] == 20  ){
-	if (ossf_event)  counters_cut_ossf[7] = counters_cut_ossf[7] + 1*scal;
-	if (!ossf_event)  counters_cut_no_ossf[7] = counters_cut_no_ossf[7] + 1*scal;
-      }
+     
       //=============================================================
             
-      //================== Binning variables ========================
-      // ---------------- > Delta R
-      delta_R_max = lepton_reco[0].DeltaR(lepton_reco[1]);
-      if (lepton_reco[0].DeltaR(lepton_reco[2]) > delta_R_max) delta_R_max = lepton_reco[0].DeltaR(lepton_reco[2]);
-      if (lepton_reco[1].DeltaR(lepton_reco[2]) > delta_R_max) delta_R_max = lepton_reco[1].DeltaR(lepton_reco[2]);
-      delta_R_min = lepton_reco[0].DeltaR(lepton_reco[1]);
-      if (lepton_reco[0].DeltaR(lepton_reco[2]) < delta_R_min) delta_R_min = lepton_reco[0].DeltaR(lepton_reco[2]);
-      if (lepton_reco[1].DeltaR(lepton_reco[2]) < delta_R_min) delta_R_min = lepton_reco[1].DeltaR(lepton_reco[2]);
-      // ---------------- > M_min OS
-      check_mt=-1;
-      if ((_lCharge[ind[0]] != _lCharge[ind[1]] )) {
-	_mll_min = (lepton_reco[0]+lepton_reco[1]).M();
-	check_mt= 2;
-      }
-      if ((_lCharge[ind[0]] != _lCharge[ind[2]] ) && (lepton_reco[0]+lepton_reco[2]).M() < _mll_min){
-	_mll_min = (lepton_reco[0]+lepton_reco[2]).M();
-	check_mt= 1;
-      }
-      if ((_lCharge[ind[1]] != _lCharge[ind[2]] ) && (lepton_reco[1]+lepton_reco[2]).M() < _mll_min) {
-	_mll_min = (lepton_reco[1]+lepton_reco[2]).M();
-	check_mt= 0;
-      }
-      // ---------------- > to built later M_T_third
-      if (check_mt == 0 ) lepton_transv.SetPtEtaPhiE(lepton_reco[0].Pt(),0, lepton_reco[0].Phi(), lepton_reco[0].Pt());
-      if (check_mt == 1 ) lepton_transv.SetPtEtaPhiE(lepton_reco[1].Pt(),0, lepton_reco[1].Phi(), lepton_reco[1].Pt());
-      if (check_mt == 2 ) lepton_transv.SetPtEtaPhiE(lepton_reco[2].Pt(),0, lepton_reco[2].Phi(), lepton_reco[2].Pt());
-      //=============================================================
-            
-      //=============== PT cocktail  and PT categories ==============
-      new_pt_checks= 0;
-      if (event_clas[0]== 30){
-	new_pt_checks= 1;
-	if((_lFlavor[ind[2]]== 0 && lepton_reco[2].Pt() < 15) && lepton_reco[0].Pt() < 23)  new_pt_checks= 0;
-	if((_lFlavor[ind[2]]== 1 && lepton_reco[2].Pt()< 8) && (lepton_reco[0].Pt() < 25   || lepton_reco[1].Pt() < 15))  new_pt_checks= 0;
-	if((_lFlavor[ind[2]]== 1 && lepton_reco[2].Pt() > 8) && (lepton_reco[0].Pt() < 23   &&  lepton_reco[1].Pt() < 15))  new_pt_checks= 0;
-      }
-      if (event_clas[0]== 20){
-	new_pt_checks= 1;
-	if((_lFlavor[ind[2]]== 1 && lepton_reco[2].Pt()< 9) && lepton_reco[0].Pt() < 23)  new_pt_checks= 0;
-      }
-      //if (new_pt_checks == 0) continue;
-      // ---------------- > 2 PT categories
-      low_pt_event= false;
-      if (lepton_reco[0].Pt()<= 30) low_pt_event= true;
-      if (lepton_reco[0].Pt()> 30 && lepton_reco[0].Pt() < 55)  high_pt_event = true;
-      //=============================================================
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      TRIGGER     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      // 1* = eee
-      // 2* = emm
-      // 3* = eem
-      // 4* = mmm
-      trigger_fired = false;
-      if ((event_clas[0]== 1 ||  event_clas[0]== 10)   &&  (_passHN_1l   || _passHN_eee)) trigger_fired = true;
-      if ((event_clas[0]== 2 ||  event_clas[0]== 20)   &&  (_passHN_1l   || _passHN_emm)) trigger_fired = true;
-      if ((event_clas[0]== 3 ||  event_clas[0]== 30)   &&  (_passHN_1l   || _passHN_eem)) trigger_fired = true;
-      if ((event_clas[0]== 4 ||  event_clas[0]== 40)   &&  (_passHN_1l   || _passHN_mmm)) trigger_fired = true;
-      //if ( !trigger_fired ) continue;
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      MET and MT     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      nominal=1;
-      jec_check=0;
-      unclustered_met=0;
-      up=0;
-      down=0;
-      // ---------------- > MET and B JETS according with SR-unc
-      //  met_mt_bjets(nominal,  jec_check,  unclustered_met,  up,  down,   _metJECUp,       _met_phiJECUp,       _metOtherUp,       _met_phiOtherUp,       _metJECDown,       _met_phiJECDown,       _metOtherDown,       _met_phiOtherDown,   _jetPt,   _jetPtUp,   _jetPtDown, _met,  _met_phi, _nJets,  _csv, new_met, new_met_phi,  new_number_bjets);
-      MET = new_met[0];
-      MET_PHI = new_met_phi[0];
-      nBjets = new_number_bjets[0];
-      // ------------------- cuts according to new met and bjets veto
-      //if( tightFail) continue;
-      // if (nBjets != 0) continue;
-
-
-      /*
-	bool treeReader::bTagged(const unsigned ind){
-	static const unsigned bTagWP = 0.6324;
-	return (jetDeepCsv_b[ind] + jetDeepCsv_bb[ind]) > bTagWP;
-	}*/
-
-
-      METvec.SetPtEtaPhiE(MET, 0, MET_PHI,MET);
-      m_T= (lepton_transv + METvec).Mag();
-      if (MET > met_cuts) continue;
-      if (skip_event[0] == 20  ){
-	if (ossf_event)  counters_cut_ossf[8] = counters_cut_ossf[8] + 1*scal;
-	if (!ossf_event)  counters_cut_no_ossf[8] = counters_cut_no_ossf[8] + 1*scal;
-      }
-      tight_1gev= tight_1gev + 1*scal;
-      // ----------------------------------------------------------------------------------------------------------------
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      if (effsam == 6) {
-	tot_5gev = tot_5gev + 1;
-	xsec_5gev = 99;
-      }
-            
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    SR DEFINITION     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      for (int i =0; i < 8; i ++){
-	_SR_low[i]= false;
-      }
-      //LOW_SR
-      if (low_pt_event){
-	if (_mll_min <= 10 )_SR_low[0] = true;
-	if (_mll_min > 10  && _mll_min <= 20 )_SR_low[1] = true;
-	if (_mll_min > 20  && _mll_min <= 30 )_SR_low[2] = true;
-	if (_mll_min >30 )_SR_low[3] = true;
-      }
-      if (high_pt_event){
-	if (_mll_min <= 10 )_SR_low[4] = true;
-	if (_mll_min > 10  && _mll_min <= 20 )_SR_low[5] = true;
-	if (_mll_min > 20  && _mll_min <= 30 )_SR_low[6] = true;
-	if (_mll_min >30 )_SR_low[7] = true;
-      }
-            
-      if (_SR_low[0] || _SR_low[4]) search_region_fill[0] = 1;
-      if (_SR_low[1] || _SR_low[5]) search_region_fill[0] = 2;
-      if (_SR_low[2] || _SR_low[6]) search_region_fill[0] = 3;
-      if (_SR_low[3] || _SR_low[7]) search_region_fill[0] = 4;
-            
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      //   if (effsam== 1 ||effsam== 2 ||effsam== 3 ||effsam== 4 ||effsam== 5 ) cout<< "signal"<<endl;
-            
-            
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      NO_PROMPT     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      //if(effsam == 0 && tightFail)  data_control_region=true;
-      unsigned fill = effsam;
-      // if( data_control_region ) fill = nSamples_eff;
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            
+      
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      HISTOGRAMS     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       double pt_cone_leading=          lepton_reco[0].Pt() ;
       double pt_cone_sub_leading=      lepton_reco[1].Pt();
@@ -1612,7 +1434,17 @@ Double_t        _metPhiUnclUp;
       test_dxy2= (fabs(_dxy[ind[1]] - _dxy[ind[0]])  )/ fabs(_dxy[ind[1]]) ;
       // test_dxy2= (fabs(_dxy[ind[1]] - _dxy[ind[0]])  ) ;
             
-      double values[nDist] = { TMath::Abs( pair[0].DeltaPhi(pair[1])),TMath::Abs(lepton_reco[0].DeltaPhi(lepton_reco[2])),TMath::Abs(lepton_reco[1].DeltaPhi(lepton_reco[2])),
+      double values[nDist] = {pt_cone_leading, pt_cone_sub_leading, pt_cone_trailing,
+			      pt_cone_leading+ pt_cone_sub_leading+ pt_cone_trailing,
+			      pt_cone_leading+ pt_cone_trailing,
+			      pt_cone_sub_leading+ pt_cone_trailing,
+			      pt_cone_leading+ pt_cone_sub_leading,
+			      sum_3l_rec.M(),(lepton_reco[1]+lepton_reco[2]).M(), sum_2l_rec_pair.M(),0.,0.,0., _met,_metPhi, static_cast<double>(_nJets), static_cast<double>(nBjets),0.,
+
+
+
+
+ TMath::Abs( pair[0].DeltaPhi(pair[1])),TMath::Abs(lepton_reco[0].DeltaPhi(lepton_reco[2])),TMath::Abs(lepton_reco[1].DeltaPhi(lepton_reco[2])),
 			       pt_cone_leading, pt_cone_sub_leading, pt_cone_trailing,
 			       pt_cone_leading+ pt_cone_sub_leading+ pt_cone_trailing,
 			       pt_cone_leading+ pt_cone_trailing,
@@ -1630,6 +1462,24 @@ Double_t        _metPhiUnclUp;
                 
       };
             
+
+      "LeptonPt_le","LeptonPt_subl", "LeptonPt_tr", "Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls",
+					 "Mlll", "Mll_st", "Mll_pair", "MT_pair", "MT_3body", "MT_t", "MET", "MET_phi", "NJets", "NbJets","HT",
+					 "dxy_l","dz_l","3dIP_l","2dIP_l", "3dIPSig_l", "2dIPSig_l",
+					 "dxy_s","dz_s","3dIP_s","2dIP_s", "3dIPSig_s", "2dIPSig_s",
+					 "dxy_t","dz_t","3dIP_t","2dIP_t", "3dIPSig_t", "2dIPSig_t",
+					 "relIso03_l","absIso03_l","relIso04_l","absIso04_l","trackIso_l", "deltaBIso_l", "sumChargedHadronPt03_l",
+					 "relIso03_s","absIso03_s","relIso04_s","absIso04_s","trackIso_s", "deltaBIso_s", "sumChargedHadronPt03_s",
+					 "relIso03_t","absIso03_t","relIso04_t","absIso04_t","trackIso_t", "deltaBIso_t", "sumChargedHadronPt03_t",
+					 "DeltaR_pair","DeltaR_lt","DeltaR_st", "DeltaPhi_pair","DeltaPhi_lt","DeltaPhi_st",
+					 "vertex_X" , "vertex_Y" , "vertex_Z" , "vertex_R" , "vertex_chi2" , "vertex_normalized_chi2" ,
+					 "vertex_X_ls", "vertex_Y_ls", "vertex_Z_ls", "vertex_R_ls","vertex_Rsign_ls","vertex_R2D_ls","vertex_R2Dsign_ls", "vertex_chi2_ls", "vertex_normalized_chi2_ls",
+					 "vertex_X_lt", "vertex_Y_lt", "vertex_Z_lt", "vertex_R_lt","vertex_Rsign_lt","vertex_R2D_lt","vertex_R2Dsign_lt", "vertex_chi2_lt", "vertex_normalized_chi2_lt",
+					 "vertex_X_st", "vertex_Y_st", "vertex_Z_st", "vertex_R_st","vertex_Rsign_st","vertex_R2D_st","vertex_R2Dsign_st", "vertex_chi2_st", "vertex_normalized_chi2_st"};
+
+
+
+
             
       //      double values_sr[nDist_sr] = {search_region_fill[0], search_region_fill[0]};
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1672,9 +1522,9 @@ Double_t        _metPhiUnclUp;
 
     cout<<sam<<")   -> "<< fileList[sam]<< endl;
     cout<<"OSSF ----- "<< counters_cut_ossf[0]<<"  "<< counters_cut_ossf[1]<<"  "<< counters_cut_ossf[2]<<"  "<< counters_cut_ossf[3]<<"  "<< counters_cut_ossf[4]<<"  "<< counters_cut_ossf[5]<<"  "<< counters_cut_ossf[6]<<"  "<< counters_cut_ossf[7]<<"  "<< counters_cut_ossf[8]<<endl;
-     cout<<"OSSF ------------- "<< 100<<"  "<< 100*counters_cut_ossf[1]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[2]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[3]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[4]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[5]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[6]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[7]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[8]/counters_cut_ossf[0]<<endl;
+    cout<<"OSSF ------------- "<< 100<<"  "<< 100*counters_cut_ossf[1]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[2]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[3]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[4]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[5]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[6]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[7]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[8]/counters_cut_ossf[0]<<endl;
     cout<<"NO OSSF **** "<< counters_cut_no_ossf[0]<<"  "<< counters_cut_no_ossf[1]<<"  "<< counters_cut_no_ossf[2]<<"  "<< counters_cut_no_ossf[3]<<"  "<< counters_cut_no_ossf[4]<<"  "<< counters_cut_no_ossf[5]<<"  "<< counters_cut_no_ossf[6]<<"  "<< counters_cut_no_ossf[7]<<"  "<< counters_cut_no_ossf[8]<<endl;
-cout<<"NO OSSF ************ "<< 100<<"  "<< 100*counters_cut_no_ossf[1]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[2]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[3]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[4]/counters_cut_no_ossf[0]<<"  "<<100* counters_cut_no_ossf[5]/counters_cut_no_ossf[0]<<"  "<<100* counters_cut_no_ossf[6]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[7]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[8]/counters_cut_no_ossf[0]<<endl;
+    cout<<"NO OSSF ************ "<< 100<<"  "<< 100*counters_cut_no_ossf[1]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[2]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[3]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[4]/counters_cut_no_ossf[0]<<"  "<<100* counters_cut_no_ossf[5]/counters_cut_no_ossf[0]<<"  "<<100* counters_cut_no_ossf[6]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[7]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[8]/counters_cut_no_ossf[0]<<endl;
     cout<<"----------"<<endl;
 
 
@@ -1768,6 +1618,31 @@ double Analysis_mc::maximum(double a, double b){
   if (massimo < b) massimo = b;
   return massimo+1;
 }
+//___________________________________________________________________
+double Analysis_mc::derivateR(double a, double x, double y, double z){
+  double result =0;
+  result = a /((x*x + y*y + z*z)*(x*x + y*y + z*z));
+  return result;
+}
+//___________________________________________________________________
+double Analysis_mc::derivate2_with_sigmaR(double a, double sa, double x, double y, double z){
+  double result =0;
+  result = (a*a)*(sa*sa) /(x*x + y*y + z*z);
+  return result;
+}
+//___________________________________________________________________
+double Analysis_mc::derivateR2D(double a, double x, double y){
+  double result =0;
+  result = a /((x*x + y*y )*(x*x + y*y ));
+  return result;
+}
+//___________________________________________________________________
+double Analysis_mc::derivate2_with_sigmaR2D(double a, double sa, double x, double y){
+  double result =0;
+  result = (a*a)*(sa*sa) /(x*x + y*y );
+  return result;
+}
+
 
 //___________________________________________________________________
 

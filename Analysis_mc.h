@@ -46,8 +46,12 @@ class Analysis_mc : public TObject {
     
   void analisi(    int num_histo_kin	   
 		   );
-    
- double maximum(double a, double b);
+  double derivateR(double a, double x, double y, double z);
+  double derivate2_with_sigmaR(double a, double sa, double x, double y, double z);
+  double derivateR2D(double a, double x, double y);
+  double derivate2_with_sigmaR2D(double a, double sa, double x, double y);
+
+  double maximum(double a, double b);
     void from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point);
 
 
