@@ -116,88 +116,76 @@ void Analysis_mc::analisi(int num_histo_kin
   const double coupling_factor_low= 10*low_coupling / 0.0001;
   const double coupling_factor_low_2= 10*low_coupling_2 / 0.0001;
  
-  const int nSamples= 29;
-  const int nSamples_eff = 19;
-  const int nSamples_signal=11;
+  const int nSamples= 48;
+  const int nSamples_eff = 20;
+  const int nSamples_signal=10;
     
-  const TString fileList[nSamples] = { "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",
-        
-				       "1gev.root", "2gev.root","3gev.root","4gev.root","5gev.root","5gev_prompt.root","5_5gev.root","6gev.root","7gev.root","8gev.root","9gev.root",
-        
-				       "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",                  "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", "TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",             "TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",             "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
-        
-				       "ZZTo4L_13TeV_powheg_pythia8.root",
-        
-				       "WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",      "WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",   "ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",
-        
-				       "WGToLNuG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
-        
-				       "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root", "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
-        
-				       "WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8.root",   "WWToLNuQQ_13TeV-powheg.root",            "ZZTo2Q2Nu_13TeV_amcatnloFXFX_madspin_pythia8.root" , "WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root"  };
-    
-    
-    
-  const TString names[nSamples] = { "total",
-        
-				    "trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5","trilMaj5_prompt", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",
-        
-				    "DY_TTbar",    "DY_TTbar",    "DY_TTbar",    "DY_TTbar",    "DY_TTbar",
-        
-				    "ZZ/H",
-        
-				    "triboson", "triboson", "triboson",
-        
-				    "X+gamma",
-        
-				    "TT/T + X","TT/T + X","TT/T + X",
-        
-				    "diboson", "diboson", "diboson",
-				    
-				    "WJets"
+
+  const TString fileList[nSamples] = {  "ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",
+
+					"gev1.root", "gev2.root", "gev3.root", "gev4.root", "gev5.root", "gev5_5.root", "gev6.root", "gev7.root", "gev8.root", "gev9.root",
+
+					"DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",
+
+					"TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root ",
+
+					"ZH_HToZZ_4LFilter_M125_13TeV_powheg2-minlo-HZJ_JHUgenV6_pythia8.root", "VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8.root",
+
+					"WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WZG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WWG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8.root",
+
+					"WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root","ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", 
+					"TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root "    , "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root", "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
+
+					"WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
+
+					"GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8.root","WWTo2L2Nu_13TeV-powheg.root", "WWTo2L2Nu_DoubleScattering_13TeV-pythia8.root","ZZTo4L_13TeV_powheg_pythia8.root ", "WZTo3LNu_mllmin01_13TeV-powheg-pythia8_ext1.root"
+
+					"ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" ,"ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" 
   };
-    
-    
-    
-    
-  const TString eff_names[nSamples_eff +1 ] = {"total",
+
+       
+  const TString names[nSamples]   =       {     "total",      
+						"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+						"DY",    "DY",   
+						"ttbar","ttbar","ttbar"
+						"ZZ/H","ZZ/H",
+						"triboson", "triboson", "triboson","triboson", "triboson", "triboson", "triboson", 
+						"X+gamma","X+gamma",      
+						"TT/T + X","TT/T + X","TT/T + X", "TT/T + X","TT/T + X","TT/T + X",
+						"WJets",
+						"diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson",
+						"single Top", "single Top","single Top", "single Top","single Top"};
+  const TString eff_names[nSamples_eff +1 ] = { "total",      
+						"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+						"DY",  
+						"ttbar",
+						"ZZ/H",
+						"triboson", 
+						"X+gamma",    
+						"TT/T + X",
+						"WJets",
+						"diboson",
+						"single Top"};
+
+  const double xSections[nSamples]= {0,        
+				     0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
         
-					       "trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5","trilMaj5_prompt",  "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",
-        
-					       "DY_TTbar",
-        
-					       "ZZ/H",
-        
-					       "triboson",
-        
-					       "X+gamma",
-        
-					       "TT/T + X",
-        
-					       "diboson","WJets", "no-prompt"};
-    
-  //18610
-  // 18610, 1921.8*3, 87.315, 182.175, 182.75,
-  const double xSections[nSamples]= { 0,
-        
-				      0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.5238 * coupling_factor_low, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
-        
-        
-        
-        
-        
-				      18610, 1921.8*3, 87.315, 182.175, 182.75,
-        
-        
-				      1.256*ZZSF,
-        
-				      0.2086, 0.1651,  0.01398,
-        
-				      489*XgammaSF,
-        
-				      0.2043, 0.2529, 0.0493,
-        
-				      58.59*WZSF,49.997, 4.0, 58.59* 0.652 };
+				     18610, 1921.8*3,
+				     87.315, 182.175, 182.75,
+
+				     0.752,0.001034,
+
+				     0.2086, 0.1651,  0.01398,0.05565,0.04123 , 0.2147 , 1.711,
+
+				     405.271,123.9,
+				     
+				     2.967, 0.01731, 3.697, 0.2043, 0.2529,0.4719,
+				     
+				     61526.7,
+
+				     0.00319,0.00319,0.00319,0.00159,0.00159,0.00159,12.178, 0.1729, 1.256, 58.59*0.652,
+
+				     3.68064, 80.95,  136.02, 35.85, 35.85   };
     
   double luminosity = 35.867;
     
