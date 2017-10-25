@@ -51,7 +51,7 @@ using std::ofstream;
 //include other parts of the code
 #include "tdrstyle.h"
 #include "plotCode_new.h"
-#include "Selection.h"
+//#include "Selection.h"
 
 
 
@@ -116,7 +116,7 @@ void Analysis_mc::analisi(int num_histo_kin
   const double coupling_factor_low= 10*low_coupling / 0.0001;
   const double coupling_factor_low_2= 10*low_coupling_2 / 0.0001;
  
-  const int nSamples= 48;
+  const int nSamples= 49;
   const int nSamples_eff = 20;
   const int nSamples_signal=10;
     
@@ -227,7 +227,7 @@ void Analysis_mc::analisi(int num_histo_kin
   Double_t        _gen_lEta[12];   //[_gen_nL]
   Double_t        _gen_lPhi[12];   //[_gen_nL]
   Double_t        _gen_lE[12];   //[_gen_nL]
-  UChar_t         _gen_lFlavor[12];   //[_gen_nL]
+  UInt_t          _gen_lFlavor[12];   //[_gen_nL]
   Int_t           _gen_lCharge[12];   //[_gen_nL]
   Int_t           _gen_lMomPdg[12];   //[_gen_nL]
   Bool_t          _gen_lIsPrompt[12];   //[_gen_nL]
@@ -364,7 +364,7 @@ void Analysis_mc::analisi(int num_histo_kin
   Double_t        _lEtaSC[20];   //[_nLight]
   Double_t        _lPhi[20];   //[_nL]
   Double_t        _lE[20];   //[_nL]
-  UChar_t         _lFlavor[20];   //[_nL]
+  UInt_t          _lFlavor[20];   //[_nL]
   Int_t           _lCharge[20];   //[_nL]
   Double_t        _dxy[20];   //[_nL]
   Double_t        _dz[20];   //[_nL]
@@ -453,7 +453,7 @@ void Analysis_mc::analisi(int num_histo_kin
   Double_t        _jetDeepCsv_b[20];   //[_nJets]
   Double_t        _jetDeepCsv_c[20];   //[_nJets]
   Double_t        _jetDeepCsv_bb[20];   //[_nJets]
-  Double_t        _jetHadronFlavor[20];   //[_nJets]
+  UInt_t          _jetHadronFlavor[20];   //[_nJets]
   UInt_t          _jetId[20];   //[_nJets]
   Double_t        _met;
   Double_t        _metJECDown;
@@ -735,7 +735,7 @@ void Analysis_mc::analisi(int num_histo_kin
     cout<<"================================= 1"<<endl;
     cout<<"--------> "<< "name " << names[sam] << endl;
     cout<<"--------> "<< "fileList[sam] " << fileList[sam] << endl;
-    hfile[sam] = new TFile("/Users/Martina/Desktop/file/displ_firststep/"+fileList[sam],"read");
+    hfile[sam] = new TFile("/Users/Martina/Desktop/file/displ_first_step/"+fileList[sam],"read");
     hfile[sam]->cd("blackJackAndHookers");
     inputTree[sam] = static_cast<TTree*>(hfile[sam]->Get("blackJackAndHookers/blackJackAndHookersTree"));
     inputTree[sam]->SetBranchAddress("_runNb", &_runNb, &b__runNb);
@@ -1004,7 +1004,7 @@ void Analysis_mc::analisi(int num_histo_kin
     
   //******************* HISTO **********************
   const int nCat=6;
-  const int nDist = 90;  //Number of distributions to plot
+  const int nDist = 96;  //Number of distributions to plot
   TH1D* Histos[nDist][nCat][nSamples_eff +1];
   const TString catNames[nCat] ={"all","ossf", "no_ossf", "3tracks", "2tracks", "1track"};
   const TString Histnames_ossf[nDist] = {"LeptonPt_le","LeptonPt_subl", "LeptonPt_tr", "Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls",
@@ -1189,9 +1189,6 @@ void Analysis_mc::analisi(int num_histo_kin
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> VECTORS AND VARIABLES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       int               nBjets = 0;
       unsigned*         ind = new unsigned[_nL];	//new indices of good leptons
-      unsigned          tightC = 0;//Count number of T leptons
-      unsigned          promptC = 0;
-      double            low_mass_pt_base[1];
       double*           conePt = new double[_nL];
       double            faxtore_FR=0;            
       double            prov_index[3]={-1,-1,-1};
@@ -1238,7 +1235,6 @@ void Analysis_mc::analisi(int num_histo_kin
       unsigned          lCount = 0;	//Count number of FO leptons that are not taus
       unsigned*         _isFO= new unsigned[_nL];
       Bool_t            _passedMVA90[_nL];   
-      double*           conePt = new double[_nL];
       unsigned*          ordind = new unsigned[lCount];	//Order FO leptons by Pt
       std::set<unsigned> usedLep;
       unsigned           tightC = 0;//Count number of T leptons
@@ -1384,7 +1380,7 @@ void Analysis_mc::analisi(int num_histo_kin
 
          
       //--------------------------------------------------------------------------------   
-      if (!_lPOGMedium[ind[0]]  || _lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_ipPV[ind[0]]) > 0.05 || TMath::Abs(_ipZPV[ind[0]]) > 0.1 || fabs(_3dIPsig [ind[0]]) > 4  ) continue;
+      if (!_lPOGMedium[ind[0]]  || _lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_dxy[ind[0]]) > 0.05 || TMath::Abs(_dz[ind[0]]) > 0.1 || fabs(_3dIPSig [ind[0]]) > 4  ) continue;
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANALYSIS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       for (int i =0; i < 3; i ++){
 	lepton_reco[i].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
@@ -1469,6 +1465,7 @@ void Analysis_mc::analisi(int num_histo_kin
 
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  FILLING  HISTOGRAMS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      unsigned fill = effsam;
       // ------------------- Histo kinematics
       for(int numero_histo = 0; numero_histo < nDist; ++numero_histo){
 	Histos[numero_histo][0][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
@@ -1479,9 +1476,9 @@ void Analysis_mc::analisi(int num_histo_kin
 	if (_1tracks)         Histos[numero_histo][5][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);	
       }// end for histo
             
-  }
+    }
     
-    
+  } 
   //Split data and MC histograms for plotting and propagating uncertainties
   TH1D* dataYields[nDist][nCat];
   for(unsigned dist = 0; dist < nDist; ++dist){
@@ -1625,11 +1622,11 @@ return weight;
 
 //==================================================================
 double Analysis_mc::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
-                              TGraphAsymmErrors *fakeRate_e[3],
-                              double eta,
-                              double flavors,
-                              double lptcone
-                              ){
+			      TGraphAsymmErrors *fakeRate_e[3],
+			      double eta,
+			      double flavors,
+			      double lptcone
+			      ){
     
     
   eta = fabs(eta);
