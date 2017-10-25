@@ -165,7 +165,7 @@ void Analysis_mc::analisi(int num_histo_kin
 						"TT/T + X",
 						"WJets",
 						"diboson",
-						"single Top"};
+						"single Top", "no prompt"};
 
   const double xSections[nSamples]= {0,        
 				     0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
@@ -1434,50 +1434,24 @@ void Analysis_mc::analisi(int num_histo_kin
       test_dxy2= (fabs(_dxy[ind[1]] - _dxy[ind[0]])  )/ fabs(_dxy[ind[1]]) ;
       // test_dxy2= (fabs(_dxy[ind[1]] - _dxy[ind[0]])  ) ;
             
-      double values[nDist] = {pt_cone_leading, pt_cone_sub_leading, pt_cone_trailing,
-			      pt_cone_leading+ pt_cone_sub_leading+ pt_cone_trailing,
-			      pt_cone_leading+ pt_cone_trailing,
-			      pt_cone_sub_leading+ pt_cone_trailing,
-			      pt_cone_leading+ pt_cone_sub_leading,
-			      sum_3l_rec.M(),(lepton_reco[1]+lepton_reco[2]).M(), sum_2l_rec_pair.M(),0.,0.,0., _met,_metPhi, static_cast<double>(_nJets), static_cast<double>(nBjets),0.,
-
-
-
-
- TMath::Abs( pair[0].DeltaPhi(pair[1])),TMath::Abs(lepton_reco[0].DeltaPhi(lepton_reco[2])),TMath::Abs(lepton_reco[1].DeltaPhi(lepton_reco[2])),
-			       pt_cone_leading, pt_cone_sub_leading, pt_cone_trailing,
-			       pt_cone_leading+ pt_cone_sub_leading+ pt_cone_trailing,
-			       pt_cone_leading+ pt_cone_trailing,
-			       pt_cone_sub_leading+ pt_cone_trailing,
-			       pt_cone_leading+ pt_cone_sub_leading,
-			       sum_3l_rec.M(),sum_2l_rec_pair.M(),sum_2l_rec_pair.M(),
-			       _met,m_T,
-			       static_cast<double>(_nJets), static_cast<double>(nBjets), _met,
-			       pair[0].DeltaR(pair[1]),lepton_reco[0].DeltaR(lepton_reco[2]),lepton_reco[1].DeltaR(lepton_reco[2]),
-			       test_dxy,test_dxy2,
-			       fabs(_dxy[ind[1]]),fabs(_dxy[ind[2]]),
-			       fabs(_dz[ind[1]]),fabs(_dz[ind[2]]),
-			       fabs(_3dIPSig[ind[1]]), fabs(_3dIPSig[ind[2]]),
-			       (fabs(_3dIP[ind[1]] - _3dIP[ind[2]]))/ fabs(_3dIP[ind[1]])  , fabs(_3dIP[ind[1]] - _3dIP[ind[0]])/ fabs(_3dIP[ind[1]])
-                
-      };
+      double values[nDist] ={pt_cone_leading, pt_cone_sub_leading, pt_cone_trailing,
+			     pt_cone_leading+ pt_cone_sub_leading+ pt_cone_trailing,
+			     pt_cone_leading+ pt_cone_trailing,
+			     pt_cone_sub_leading+ pt_cone_trailing,
+			     pt_cone_leading+ pt_cone_sub_leading,
+			     sum_3l_rec.M(),(lepton_reco[1]+lepton_reco[2]).M(), sum_2l_rec_pair.M(),0.,0.,0., _met,_metPhi, static_cast<double>(_nJets), static_cast<double>(nBjets),0.,
+			     fabs(_dxy[ind[0]]),fabs(_dz[ind[0]]), fabs(_3dIP[ind[0]]), fabs(_2dIP[ind[0]]), fabs(_3dIPSig[ind[0]]), fabs(_2dIPSig[ind[0]]),
+			     fabs(_dxy[ind[1]]),fabs(_dz[ind[1]]), fabs(_3dIP[ind[1]]), fabs(_2dIP[ind[1]]), fabs(_3dIPSig[ind[1]]), fabs(_2dIPSig[ind[1]]),
+			     fabs(_dxy[ind[2]]),fabs(_dz[ind[2]]), fabs(_3dIP[ind[2]]), fabs(_2dIP[ind[2]]), fabs(_3dIPSig[ind[2]]), fabs(_2dIPSig[ind[2]]),
+			     _relIso[ind[0]], _absIso03[ind[0]], _absIso04[ind[0]]/lepton_reco[0].Pt(), _absIso04[ind[0]], _trackIso[ind[0]], _deltaBIso[ind[0]],_sumChargedHadronPt03[ind[0]],
+			     _relIso[ind[1]], _absIso03[ind[1]], _absIso04[ind[1]]/lepton_reco[1].Pt(), _absIso04[ind[1]], _trackIso[ind[1]], _deltaBIso[ind[1]],_sumChargedHadronPt03[ind[1]],
+			     _relIso[ind[2]], _absIso03[ind[2]], _absIso04[ind[2]]/lepton_reco[2].Pt(), _absIso04[ind[2]], _trackIso[ind[2]], _deltaBIso[ind[2]],_sumChargedHadronPt03[ind[2]],
+			     pair[0].DeltaR(pair[1]),lepton_reco[0].DeltaR(lepton_reco[2]),lepton_reco[1].DeltaR(lepton_reco[2]), TMath::Abs(pair[0].DeltaPhi(pair[1])),TMath::Abs(lepton_reco[0].DeltaPhi(lepton_reco[2])),TMath::Abs(lepton_reco[1].DeltaPhi(lepton_reco[2])),
+			     _vertex_X[0], _vertex_Y[0],_vertex_Z[0], _vertex_R[0],_vertex_chi2[0],_vertex_normchi2[0],
+			     _vertex_X[0], _vertex_Y[0],_vertex_Z[0], _vertex_R[0], _vertex_R[0]/ _vertex_sR[0], _vertex_R2D[0], _vertex_R2D[0]/ _vertex_sR2D[0],_vertex_chi2[0],_vertex_normchi2[0],
+			     _vertex_X[2], _vertex_Y[2],_vertex_Z[2], _vertex_R[2], _vertex_R[2]/ _vertex_sR[2], _vertex_R2D[2], _vertex_R2D[2]/ _vertex_sR2D[2],_vertex_chi2[2],_vertex_normchi2[2],
+			     _vertex_X[1], _vertex_Y[1],_vertex_Z[1], _vertex_R[1], _vertex_R[1]/ _vertex_sR[1], _vertex_R2D[1], _vertex_R2D[1]/ _vertex_sR2D[1],_vertex_chi2[1],_vertex_normchi2[1] };
             
-
-      "LeptonPt_le","LeptonPt_subl", "LeptonPt_tr", "Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls",
-					 "Mlll", "Mll_st", "Mll_pair", "MT_pair", "MT_3body", "MT_t", "MET", "MET_phi", "NJets", "NbJets","HT",
-					 "dxy_l","dz_l","3dIP_l","2dIP_l", "3dIPSig_l", "2dIPSig_l",
-					 "dxy_s","dz_s","3dIP_s","2dIP_s", "3dIPSig_s", "2dIPSig_s",
-					 "dxy_t","dz_t","3dIP_t","2dIP_t", "3dIPSig_t", "2dIPSig_t",
-					 "relIso03_l","absIso03_l","relIso04_l","absIso04_l","trackIso_l", "deltaBIso_l", "sumChargedHadronPt03_l",
-					 "relIso03_s","absIso03_s","relIso04_s","absIso04_s","trackIso_s", "deltaBIso_s", "sumChargedHadronPt03_s",
-					 "relIso03_t","absIso03_t","relIso04_t","absIso04_t","trackIso_t", "deltaBIso_t", "sumChargedHadronPt03_t",
-					 "DeltaR_pair","DeltaR_lt","DeltaR_st", "DeltaPhi_pair","DeltaPhi_lt","DeltaPhi_st",
-					 "vertex_X" , "vertex_Y" , "vertex_Z" , "vertex_R" , "vertex_chi2" , "vertex_normalized_chi2" ,
-					 "vertex_X_ls", "vertex_Y_ls", "vertex_Z_ls", "vertex_R_ls","vertex_Rsign_ls","vertex_R2D_ls","vertex_R2Dsign_ls", "vertex_chi2_ls", "vertex_normalized_chi2_ls",
-					 "vertex_X_lt", "vertex_Y_lt", "vertex_Z_lt", "vertex_R_lt","vertex_Rsign_lt","vertex_R2D_lt","vertex_R2Dsign_lt", "vertex_chi2_lt", "vertex_normalized_chi2_lt",
-					 "vertex_X_st", "vertex_Y_st", "vertex_Z_st", "vertex_R_st","vertex_Rsign_st","vertex_R2D_st","vertex_R2Dsign_st", "vertex_chi2_st", "vertex_normalized_chi2_st"};
-
-
 
 
             
@@ -1485,49 +1459,26 @@ void Analysis_mc::analisi(int num_histo_kin
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      SF and FR     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      //scal = scal * faxtore_FR;
+      bool _3tracks = false;
+      bool _2tracks = false;	    
+      bool _1tracks = false;
+
+      if (wTrack == 3) _3tracks = true;
+      if (wTrack == 2) _2tracks = true;
+      if (wTrack == 1) _1tracks = true;
+
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  FILLING  HISTOGRAMS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       // ------------------- Histo kinematics
       for(int numero_histo = 0; numero_histo < nDist; ++numero_histo){
-	if (ossf_event)       Histos[numero_histo][0][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (!ossf_event)      Histos[numero_histo][1][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
+	Histos[numero_histo][0][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
+	if (ossf_event)       Histos[numero_histo][1][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
+	if (!ossf_event)      Histos[numero_histo][2][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
+	if (_3tracks)         Histos[numero_histo][3][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
+	if (_2tracks)         Histos[numero_histo][4][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
+	if (_1tracks)         Histos[numero_histo][5][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);	
       }// end for histo
             
-            
-           
-            
-            
-      if (sam == 14){
-	d2d_test[0]->Fill(_dxy[ind[1]],_dxy[ind[0]] );
-	d2d_test[1]->Fill(_dxy[ind[1]],_dxy[ind[2]] );
-	d2d_test[2]->Fill(_dz[ind[1]],_dz[ind[0]] );
-	d2d_test[3]->Fill(_dz[ind[1]],_dz[ind[2]] );
-	d2d_test[4]->Fill(_3dIP[ind[1]],_3dIP[ind[0]] );
-	d2d_test[5]->Fill(_3dIP[ind[1]],_3dIP[ind[2]] );
-	d2d_test[6]->Fill(_3dIPSig[ind[1]],_3dIPSig[ind[0]] );
-	d2d_test[7]->Fill(_3dIPSig[ind[1]],_3dIPSig[ind[2]] );                
-	d2d_test[8]->Fill(_3dIP[ind[0]],_dxy[ind[0]] );
-	d2d_test[9]->Fill(_3dIP[ind[1]],_dxy[ind[1]] );
-	d2d_test[10]->Fill(_3dIP[ind[2]],_dxy[ind[2]] );
-                
-      }
-            
-      // ------------------- Histo SR
-      // if (low_pt_event) 	Histos_sr[0][0][fill]->Fill(TMath::Min(values_sr[0], maxBinC_sr[0]), scal);
-      //  if (high_pt_event)	Histos_sr[1][0][fill]->Fill(TMath::Min(values_sr[1], maxBinC_sr[1]), scal);
-            
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    }
-
-    cout<<sam<<")   -> "<< fileList[sam]<< endl;
-    cout<<"OSSF ----- "<< counters_cut_ossf[0]<<"  "<< counters_cut_ossf[1]<<"  "<< counters_cut_ossf[2]<<"  "<< counters_cut_ossf[3]<<"  "<< counters_cut_ossf[4]<<"  "<< counters_cut_ossf[5]<<"  "<< counters_cut_ossf[6]<<"  "<< counters_cut_ossf[7]<<"  "<< counters_cut_ossf[8]<<endl;
-    cout<<"OSSF ------------- "<< 100<<"  "<< 100*counters_cut_ossf[1]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[2]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[3]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[4]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[5]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[6]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[7]/counters_cut_ossf[0]<<"  "<< 100*counters_cut_ossf[8]/counters_cut_ossf[0]<<endl;
-    cout<<"NO OSSF **** "<< counters_cut_no_ossf[0]<<"  "<< counters_cut_no_ossf[1]<<"  "<< counters_cut_no_ossf[2]<<"  "<< counters_cut_no_ossf[3]<<"  "<< counters_cut_no_ossf[4]<<"  "<< counters_cut_no_ossf[5]<<"  "<< counters_cut_no_ossf[6]<<"  "<< counters_cut_no_ossf[7]<<"  "<< counters_cut_no_ossf[8]<<endl;
-    cout<<"NO OSSF ************ "<< 100<<"  "<< 100*counters_cut_no_ossf[1]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[2]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[3]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[4]/counters_cut_no_ossf[0]<<"  "<<100* counters_cut_no_ossf[5]/counters_cut_no_ossf[0]<<"  "<<100* counters_cut_no_ossf[6]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[7]/counters_cut_no_ossf[0]<<"  "<< 100*counters_cut_no_ossf[8]/counters_cut_no_ossf[0]<<endl;
-    cout<<"----------"<<endl;
-
-
   }
     
     
@@ -1535,21 +1486,21 @@ void Analysis_mc::analisi(int num_histo_kin
   TH1D* dataYields[nDist][nCat];
   for(unsigned dist = 0; dist < nDist; ++dist){
     for(unsigned cat = 0; cat < nCat; ++cat){
-      dataYields[dist][cat] = (TH1D*) Histos[dist][cat][12]->Clone();
+      dataYields[dist][cat] = (TH1D*) Histos[dist][cat][11]->Clone();
     }
   }
     
   // cout<< "ok 1"<<endl;
     
-  TH1D* bkgYields[nDist][nCat][nSamples_eff -11]; //change to nSamples_eff if sig is removed
+  TH1D* bkgYields[nDist][nCat][nSamples_eff -10]; //change to nSamples_eff if sig is removed
   for(unsigned dist = 0; dist < nDist; ++dist){
     for(unsigned cat = 0; cat < nCat; ++cat){
-      for(unsigned effsam1 = 12; effsam1 < nSamples_eff +1 ; ++effsam1){
+      for(unsigned effsam1 = 11; effsam1 < nSamples_eff +1 ; ++effsam1){
                 
 	//	cout<< effsam1<<"   "<<nSamples_eff<<endl;
-	bkgYields[dist][cat][effsam1 -12] = (TH1D*) Histos[dist][cat][effsam1]->Clone();
-	if(effsam1 > 12 && effsam1 < 18){
-	  dataYields[dist][cat]->Add(bkgYields[dist][cat][effsam1 -12]);
+	bkgYields[dist][cat][effsam1 -11] = (TH1D*) Histos[dist][cat][effsam1]->Clone();
+	if(effsam1 > 11 && effsam1 < 20){
+	  dataYields[dist][cat]->Add(bkgYields[dist][cat][effsam1 -11]);
 	}
       }
     }
@@ -1557,7 +1508,7 @@ void Analysis_mc::analisi(int num_histo_kin
     
     
     
-  const TString sigNames[ nSamples_signal] = {"m_{N} = 1 |V|^{2} = 10^{-4}", "m_{N} = 2 |V|^{2} = 10^{-4}", "m_{N} = 3 |V|^{2} = 10^{-4}", "m_{N} = 4 |V|^{2} = 10^{-4}","m_{N} = 5 |V|^{2} = 10^{-5}","m_{N} = 5 PROMPT! ", "m_{N} = 5.5 |V|^{2} = 10^{-5}", "m_{N} = 6 |V|^{2} = 10^{-5}", "m_{N} = 7 |V|^{2} = 10^{-5}", "m_{N} = 8 |V|^{2} = 10^{-5}", "m_{N} = 9 |V|^{2} = 10^{-5}"};
+  const TString sigNames[ nSamples_signal] = {"m_{N} = 1 |V|^{2} = 10^{-4}", "m_{N} = 2 |V|^{2} = 10^{-4}", "m_{N} = 3 |V|^{2} = 10^{-4}", "m_{N} = 4 |V|^{2} = 10^{-4}","m_{N} = 5 |V|^{2} = 10^{-5}", "m_{N} = 5.5 |V|^{2} = 10^{-5}", "m_{N} = 6 |V|^{2} = 10^{-5}", "m_{N} = 7 |V|^{2} = 10^{-5}", "m_{N} = 8 |V|^{2} = 10^{-5}", "m_{N} = 9 |V|^{2} = 10^{-5}"};
   TH1D* signals[nSamples_signal];
   //Plot the yields as a function of the search region
   for(unsigned dist = 0; dist < nDist; ++dist){
@@ -1572,32 +1523,15 @@ void Analysis_mc::analisi(int num_histo_kin
       signals[7] = (TH1D*) Histos[dist][cat][8]->Clone() ;
       signals[8] = (TH1D*) Histos[dist][cat][9]->Clone() ;
       signals[9] = (TH1D*) Histos[dist][cat][10]->Clone() ;
-      signals[10] = (TH1D*) Histos[dist][cat][11]->Clone() ;
             
-      plotDataVSMC(dataYields[dist][cat], bkgYields[dist][cat], eff_names, nSamples_eff -  nSamples_signal - 1, Histnames_ossf[dist] + "_" +  catNames[cat], true, 0, true, signals,  sigNames , nSamples_signal, false);
+      plotDataVSMC(dataYields[dist][cat], bkgYields[dist][cat], eff_names, nSamples_eff -  nSamples_signal - 1, Histnames_ossf[dist] + "_" +  catNames[cat], false, 0, true, signals,  sigNames , nSamples_signal, false);
       //   cout<< "ok 4"<<endl;
     }
   }
     
     
     
-  TCanvas *c_2d= new TCanvas("c_2D","c_2D");
-  c_2d->Divide(4,3);
-  for(int h=0; h< 11; h++ ){
-    c_2d->cd(h+1);
-    d2d_test[h]->Draw("COLZ");
-  }
-  c_2d->Print("plots_pdf/c_2d.pdf");
-  c_2d->Print("plots_root/c_2d.root");
-  delete  c_2d ;
-    
-    
-    
-  cout<<"*************************************************"<<endl;
-  cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\\:     "<<tot_5gev<<endl;
-    
-    
-    
+  
     
     
     
