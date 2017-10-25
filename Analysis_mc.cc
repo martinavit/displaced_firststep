@@ -227,7 +227,7 @@ void Analysis_mc::analisi(int num_histo_kin
   Double_t        _gen_lEta[12];   //[_gen_nL]
   Double_t        _gen_lPhi[12];   //[_gen_nL]
   Double_t        _gen_lE[12];   //[_gen_nL]
-  UInt_t          _gen_lFlavor[12];   //[_gen_nL]
+  //UInt_t          _gen_lFlavor[12];   //[_gen_nL]
   Int_t           _gen_lCharge[12];   //[_gen_nL]
   Int_t           _gen_lMomPdg[12];   //[_gen_nL]
   Bool_t          _gen_lIsPrompt[12];   //[_gen_nL]
@@ -495,7 +495,7 @@ void Analysis_mc::analisi(int num_histo_kin
   TBranch        *b__gen_lEta;   //!
   TBranch        *b__gen_lPhi;   //!
   TBranch        *b__gen_lE;   //!
-  TBranch        *b__gen_lFlavor;   //!
+  //TBranch        *b__gen_lFlavor;   //!
   TBranch        *b__gen_lCharge;   //!
   TBranch        *b__gen_lMomPdg;   //!
   TBranch        *b__gen_lIsPrompt;   //!
@@ -766,7 +766,7 @@ void Analysis_mc::analisi(int num_histo_kin
     inputTree[sam]->SetBranchAddress("_gen_lEta", _gen_lEta, &b__gen_lEta);
     inputTree[sam]->SetBranchAddress("_gen_lPhi", _gen_lPhi, &b__gen_lPhi);
     inputTree[sam]->SetBranchAddress("_gen_lE", _gen_lE, &b__gen_lE);
-    inputTree[sam]->SetBranchAddress("_gen_lFlavor", _gen_lFlavor, &b__gen_lFlavor);
+    //inputTree[sam]->SetBranchAddress("_gen_lFlavor", _gen_lFlavor, &b__gen_lFlavor);
     inputTree[sam]->SetBranchAddress("_gen_lCharge", _gen_lCharge, &b__gen_lCharge);
     inputTree[sam]->SetBranchAddress("_gen_lMomPdg", _gen_lMomPdg, &b__gen_lMomPdg);
     inputTree[sam]->SetBranchAddress("_gen_lIsPrompt", _gen_lIsPrompt, &b__gen_lIsPrompt);
@@ -898,7 +898,7 @@ void Analysis_mc::analisi(int num_histo_kin
     inputTree[sam]->SetBranchAddress("_lEtaSC", _lEtaSC, &b__lEtaSC);
     inputTree[sam]->SetBranchAddress("_lPhi", _lPhi, &b__lPhi);
     inputTree[sam]->SetBranchAddress("_lE", _lE, &b__lE);
-    inputTree[sam]->SetBranchAddress("_lFlavor", _lFlavor, &b__lFlavor);
+    //inputTree[sam]->SetBranchAddress("_lFlavor", _lFlavor, &b__lFlavor);
     inputTree[sam]->SetBranchAddress("_lCharge", _lCharge, &b__lCharge);
     inputTree[sam]->SetBranchAddress("_dxy", _dxy, &b__dxy);
     inputTree[sam]->SetBranchAddress("_dz", _dz, &b__dz);
@@ -985,7 +985,7 @@ void Analysis_mc::analisi(int num_histo_kin
     inputTree[sam]->SetBranchAddress("_jetDeepCsv_b", _jetDeepCsv_b, &b__jetDeepCsv_b);
     inputTree[sam]->SetBranchAddress("_jetDeepCsv_c", _jetDeepCsv_c, &b__jetDeepCsv_c);
     inputTree[sam]->SetBranchAddress("_jetDeepCsv_bb", _jetDeepCsv_bb, &b__jetDeepCsv_bb);
-    inputTree[sam]->SetBranchAddress("_jetHadronFlavor", _jetHadronFlavor, &b__jetHadronFlavor);
+    //inputTree[sam]->SetBranchAddress("_jetHadronFlavor", _jetHadronFlavor, &b__jetHadronFlavor);
     inputTree[sam]->SetBranchAddress("_jetId", _jetId, &b__jetId);
     inputTree[sam]->SetBranchAddress("_met", &_met, &b__met);
     inputTree[sam]->SetBranchAddress("_metJECDown", &_metJECDown, &b__metJECDown);
@@ -1265,6 +1265,16 @@ void Analysis_mc::analisi(int num_histo_kin
 	if (_lFlavor[l] == 0 && _lPt[l] < 5 ) counters_cut[0]++;
 	if (_lFlavor[l] == 1 && _lPt[l] < 3.5 ) counters_cut[0]++;
       }
+
+      for(unsigned l = 0; l < _nL; ++l){
+	if (l < _nMu ) _lFlavor[l] = 1;
+	else if (l >= _nMu  && l < _nE) _lFlavor[l] = 0;
+	else _lFlavor[l] = 2;
+      }
+
+
+
+
       //FO
       for(unsigned l = 0; l < _nL; ++l){
 	_isFO[l] = false;
