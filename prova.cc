@@ -28,7 +28,7 @@
 #include <TGraphAsymmErrors.h>
 #include <THStack.h>
 #include <TPaveText.h>
-#include <Analysis_mc.h>
+#include <Analysis_tables.h>
 #include "TApplication.h"
 #include "TColor.h"
 #include <tuple>
@@ -51,7 +51,7 @@ using std::ofstream;
 //include other parts of the code
 #include "tdrstyle.h"
 #include "plotCode_new.h"
-//#include "Selection.h"
+#include "Selection.h"
 
 
 
@@ -62,25 +62,26 @@ using namespace std;
 
 
 static Double_t pigreco= TMath::ACos(-1);
-ClassImp(Analysis_mc)
+ClassImp(Analysis_tables)
 
 //_______________________________________________________default constructor_____
-Analysis_mc::Analysis_mc():TObject()
+Analysis_tables::Analysis_tables():TObject()
 
 {
 }
 //_______________________________________________________ constructor_____
-Analysis_mc::Analysis_mc(int selezione, string FileNameTree_in):TObject()
+Analysis_tables::Analysis_tables(string FileNameTree_in):TObject()
 
 {
 }
 //________________________________________________________________distruttore_____
-Analysis_mc::~Analysis_mc()	 {
+Analysis_tables::~Analysis_tables()	 {
   // destructor
 }
 
+
 //_______________________________________________________ constructor_____
-void Analysis_mc::printProgress(double progress){
+void Analysis_tables::printProgress(double progress){
   const unsigned barWidth = 100;
   std::cout << "[";
   unsigned pos = barWidth * progress;
@@ -94,19 +95,22 @@ void Analysis_mc::printProgress(double progress){
 
 
 
-
-
 //==================================================================
-void Analysis_mc::analisi(int selezione, int num_histo_kin
-                          ){
-    
-  cout<<"in analisi"<<endl;
-  cout<<"---------------------------"<<endl;   
-  setTDRStyle();
-    
-    
+void Analysis_tables::analisi(int num_histo_kin
+ ){
   
-  const double glugluToZZkFactor = 1;
+  cout<<"in analisi"<<endl;
+  cout<<"---------------------------"<<endl;
+
+  setTDRStyle();
+  //gROOT->SetBatch(kTRUE);
+ 
+
+
+  
+
+
+ const double glugluToZZkFactor = 1;
   const double WZSF = 1;
   const double ZZSF = 1;
   const double XgammaSF = 1;
@@ -117,81 +121,79 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
   const double coupling_factor_low_2= low_coupling_2 / 0.0001;
  
   const int nSamples= 50;
-  const int nSamples_eff = 17;
+  const int nSamples_eff = 20;
   const int nSamples_signal=10;
     
 
   const TString fileList[nSamples] = {  "ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",
 
-					"gev1.root", "gev2.root", "gev3.root", "gev4.root", "gev5.root", "gev5_5.root", "gev6.root", "gev7.root", "gev8.root", "gev9.root",
+"gev1.root", "gev2.root", "gev3.root", "gev4.root", "gev5.root", "gev5_5.root", "gev6.root", "gev7.root", "gev8.root", "gev9.root",
 
-					"DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",
+"DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",
 
-					"TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root ",	"ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" ,"ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root",
-					
-					"WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
+"TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root ",
 
+"ZH_HToZZ_4LFilter_M125_13TeV_powheg2-minlo-HZJ_JHUgenV6_pythia8.root", "VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8.root",
 
-					"ZH_HToZZ_4LFilter_M125_13TeV_powheg2-minlo-HZJ_JHUgenV6_pythia8.root", "VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8.root",
+"WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WZG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WWG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8.root",
 
-					"WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WZG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WWG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8.root",
-					
-					"GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8.root","WWTo2L2Nu_13TeV-powheg.root", "WWTo2L2Nu_DoubleScattering_13TeV-pythia8.root","ZZTo4L_13TeV_powheg_pythia8.root ", "WZTo3LNu_mllmin01_13TeV-powheg-pythia8_ext1.root",
+"WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root","ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", 
+"TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root "    , "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8___1.root", "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root","tZq_ll_4f_13TeV-amcatnlo-pythia8.root",
 
+"WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
 
-					"WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root","ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", 
+"GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8.root","WWTo2L2Nu_13TeV-powheg.root", "WWTo2L2Nu_DoubleScattering_13TeV-pythia8.root","ZZTo4L_13TeV_powheg_pythia8.root ", "WZTo3LNu_mllmin01_13TeV-powheg-pythia8_ext1.root",
 
-					"TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root "    , "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8___1.root", "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root","tZq_ll_4f_13TeV-amcatnlo-pythia8.root"
-
-
-				 
+"ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" ,"ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" 
   };
 
        
   const TString names[nSamples]   =  {  "total",      
-					"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
-					"DY",    "DY",   
-					"TTbar","TTbar","TTbar","TTbar", "TTbar","TTbar", "TTbar","TTbar",
-					"WJets",
-					"multiboson","multiboson",
-					"multiboson", "multiboson", "multiboson","multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson", "multiboson",
-					"X+#gamma","X+#gamma",      
-					"TT/T + X","TT/T + X","TT/T + X", "TT/T + X","TT/T + X","TT/T + X","TT/T + X"
-				
-					
-  };
+"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+"DY",    "DY",   
+"ttbar","ttbar","ttbar",
+"ZZ/H","ZZ/H",
+"triboson", "triboson", "triboson","triboson", "triboson", "triboson", "triboson", 
+"X+gamma","X+gamma",      
+"TT/T + X","TT/T + X","TT/T + X", "TT/T + X","TT/T + X","TT/T + X","TT/T + X",
+"WJets",
+"diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson",
+"single Top", "single Top","single Top", "single Top","single Top"};
   const TString eff_names[nSamples_eff +1 ] = { "total",      
-						"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
-						"DY",  
-						"t#bar{t}",
-						"WJets",
-						"multiboson", 
-						"X+#gamma",    
-						"TT/T + X",		
-						"no prompt"};
-
-  // 9 0.05173
+"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+"DY",  
+"ttbar",
+"ZZ/H",
+"triboson", 
+"X+gamma",    
+"TT/T + X",
+"WJets",
+"diboson",
+"single Top", "no prompt"};
 
   const double xSections[nSamples]= {0,        
-				     0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
+    0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
         
-				     18610, 1921.8*3,
-				     87.315, 182.175, 182.75,3.36 , 26.38 ,  44.33 , 35.85, 35.85 , 
-				     61526.7,
+    18610, 1921.8*3,
+    87.315, 182.175, 182.75,
 
-				     0.752,0.001034,
+    0.752,0.001034,
 
-				     0.2086, 0.1651,  0.01398,0.05565,0.04123 , 0.2147 , 1.711, 0.00319,0.00319,0.00319,0.00159,0.00159,0.00159,12.178, 0.1729, 1.256, 58.59*0.652,
+    0.2086, 0.1651,  0.01398,0.05565,0.04123 , 0.2147 , 1.711,
+
+    405.271,123.9,
+    
+    2.967, 0.01731, 3.697, 0.2043, 0.2529,0.4719,0.0758,
+    
+    61526.7,
+
+    0.00319,0.00319,0.00319,0.00159,0.00159,0.00159,12.178, 0.1729, 1.256, 58.59*0.652,
+
+    3.36 , 26.38 ,  44.33 , 35.85, 35.85   };
 
 
-				     405.271,123.9,
-				     
-				     2.967, 0.01731, 3.697, 0.2043, 0.2529,0.4719,0.0758
-				     
-				    
 
-				    
-  };
+
     
   double luminosity = 35.867;
     
@@ -361,10 +363,10 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
   _nLight = 20;
   UChar_t         _nTau;
   UChar_t         _nVFit;
-  _nVFit  = 25;
+  _nVFit  = 6;
   UChar_t         _nGoodLeading;
   Double_t        _lIndex[20];   //[_nL]
-  Double_t        _vertices[25][12];
+  Double_t        _vertices[_nVFit][12];
   Double_t        _lPt[20];   //[_nL]
   Double_t        _lEta[20];   //[_nL]
   Double_t        _lEtaSC[20];   //[_nLight]
@@ -898,7 +900,7 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
     inputTree[sam]->SetBranchAddress("_nVFit", &_nVFit, &b__nVFit);
     inputTree[sam]->SetBranchAddress("_nGoodLeading", &_nGoodLeading, &b__nGoodLeading);
     inputTree[sam]->SetBranchAddress("_lIndex", _lIndex, &b__lIndex);
-    inputTree[sam]->SetBranchAddress("_vertices", _vertices, &b__vertices);
+    //inputTree[sam]->SetBranchAddress("_vertices", _vertices, &b__vertices);
     inputTree[sam]->SetBranchAddress("_lPt", _lPt, &b__lPt);
     inputTree[sam]->SetBranchAddress("_lEta", _lEta, &b__lEta);
     inputTree[sam]->SetBranchAddress("_lEtaSC", _lEtaSC, &b__lEtaSC);
@@ -1008,214 +1010,69 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
     hcounter[sam] = _hCounter->GetBinContent(1);
   }//end for on tree
     
-  //******************* HISTO **********************
-  const int nCat=42;
-  const int nDist = 120;  //Number of distributions to plo
-
-  TH1D* Histos[nDist][nCat][nSamples_eff +1];
-
-  const TString catNames[nCat]= {"_0", "_1", "_2", "_3", "_4", "_5", "_final", "_0_ossf", "_1_ossf", "_2_ossf", "_3_ossf", "_4_ossf", "_5_ossf", "_final_ossf", "_0_no_ossf", "_1_no_ossf", "_2_no_ossf", "_3_no_ossf", "_4_no_ossf", "_5_no_ossf", "_final_no_ossf", 
-				 "__prompt__0", "__prompt__1", "__prompt__2", "__prompt__3", "__prompt__4", "__prompt__5", "__prompt__final", "__prompt__0_ossf", "__prompt__1_ossf", "__prompt__2_ossf", "__prompt__3_ossf", "__prompt__4_ossf", "__prompt__5_ossf", "__prompt__final_ossf", "__prompt__0_no_ossf", "__prompt__1_no_ossf", "__prompt__2_no_ossf", "__prompt__3_no_ossf", "__prompt__4_no_ossf", "__prompt__5_no_ossf", "__prompt__final_no_ossf"};
-  const TString Histnames_ossf[nDist] = {"categories","categories_talk", "prompt",
-					 "LeptonPt_le","LeptonPt_subl", "LeptonPt_tr", "Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls",
-					 "Mlll","Mll_min","Mll_min_os", "Mll_l2l3", "Mll_pair", "MT_pair", "MT_3body", "MT_t", "MET", "MET_phi", "NJets", "NbJets","HT",
-					 "dxy_l","dz_l","3dIP_l","2dIP_l", "3dIPSig_l", "2dIPSig_l",
-					 "dxy_s","dz_s","3dIP_s","2dIP_s", "3dIPSig_s", "2dIPSig_s",
-					 "dxy_t","dz_t","3dIP_t","2dIP_t", "3dIPSig_t", "2dIPSig_t",
-					 "relIso03_l","absIso03_l","relIso04_l","absIso04_l","trackIso_l", "deltaBIso_l", "sumChargedHadronPt03_l",
-					 "relIso03_s","absIso03_s","relIso04_s","absIso04_s","trackIso_s", "deltaBIso_s", "sumChargedHadronPt03_s",
-					 "relIso03_t","absIso03_t","relIso04_t","absIso04_t","trackIso_t", "deltaBIso_t", "sumChargedHadronPt03_t",
-					 "DeltaR_pair","DeltaR_lt","DeltaR_st", "DeltaPhi_pair","DeltaPhi_lt","DeltaPhi_st",
-					 "vertex_X_ls", "vertex_Y_ls", "vertex_Z_ls", "vertex_R_ls","vertex_Rsign_ls","vertex_R2D_ls","vertex_R2Dsign_ls", "vertex_chi2_ls", "vertex_normalized_chi2_ls","vertex_chi2_ls_talk", "vertex_normalized_chi2_ls_talk","chi2_Y_ls", "R_X_ls",
-					 "vertex_X_lt", "vertex_Y_lt", "vertex_Z_lt", "vertex_R_lt","vertex_Rsign_lt","vertex_R2D_lt","vertex_R2Dsign_lt", "vertex_chi2_lt", "vertex_normalized_chi2_lt","vertex_chi2_lt_talk", "vertex_normalized_chi2_lt_talk","chi2_Y_lt", "R_X_lt",
-					 "vertex_X_st", "vertex_Y_st", "vertex_Z_st", "vertex_R_st","vertex_Rsign_st","vertex_R2D_st","vertex_R2Dsign_st", "vertex_chi2_st", "vertex_normalized_chi2_st","vertex_chi2_st_talk", "vertex_normalized_chi2_st_talk","chi2_Y_st", "R_X_st",
-					 "minDeltaPhi", "ratioDeltaPhi1", "ratioDeltaPhi2","ratioDeltaPhi_withmin1", "ratioDeltaPhi_withmin2","RatioDeltaRPhi1","RatioDeltaRPhi2","mlll_met", "trasverseMass_met",
-					 "SR_2DSIP", "SR_vtxR", "SR_vtxR2D", "SR_vtxX"};
-
-
-  const TString Xaxes[nDist] = {"categories"," ","#prompt",
-				"P_{T} #left(l_{1} #right) (GeV)","P_{T} #left(l_{2} #right) (GeV)", "P_{T} #left(l_{3} #right) (GeV)", "SumP_{T}#left(3leptons#right) (GeV)","SumP_{T}#left(l+l_{3} #right) (GeV)","SumP_{T}#left(l_{2}+l_{3} #right) (GeV)","SumP_{T}#left(l+l_{2} #right) (GeV)",
-				"M_{lll} (GeV)","M_{ll}min (GeV)","M_{ll}minOS (GeV)","M_{ll} #left(l_{2}+l_{3} #right) (GeV)", "M_{ll} #left(M_{Z} pair#right) (GeV)", "M_{T} #left(no M_{Z} pair#right) (GeV)","M_{T} #left(l_{3} #right) (GeV)","M_{T} #left(3l+MET#right) (GeV)","MET (GeV)", "MET_phi (GeV)", "number of jets", "number of b-jets","HT",
-				"#left|#it{d}_{xy}#right| #left(l_{1} #right) (cm)","#left|#it{d}_{z}#right| #left(l_{1} #right) (cm)","3D IP #left(l_{1} #right) (cm)","2D IP #left(l_{1} #right) (cm)", "3D SIP #left(l_{1} #right)", "2D SIP #left(l_{1} #right)",
-				"#left|#it{d}_{xy}#right| #left(l_{2} #right) (cm)","#left|#it{d}_{z}#right| #left(l_{2} #right) (cm)","3D IP #left(l_{2} #right) (cm)","2D IP #left(l_{2} #right) (cm)", "3D SIP #left(l_{2} #right)", "2D SIP #left(l_{2} #right)",
-				"#left|#it{d}_{xy}#right| #left(l_{3} #right) (cm)","#left|#it{d}_{z}#right| #left(l_{3} #right) (cm)","3D IP #left(l_{3} #right) (cm)","2D IP #left(l_{3} #right) (cm)", "3D SIP #left(l_{3} #right)", "2D SIP #left(l_{3} #right)",
-				"relative Iso_{03} #left(l_{1} #right)","absolute Iso_{03} #left(l_{1} #right)", "relative Iso_{04} #left(l_{1} #right)","absolute Iso_{04} #left(l_{1} #right)","trackIso #left(l_{1} #right)", "delta#beta Iso_{03} #left(l_{1} #right)", "sumChargedHadronPt03 #left(l_{1} #right)",
-				"relative Iso_{03} #left(l_{2} #right)","absolute Iso_{03} #left(l_{2} #right)","relative Iso_{04} #left(l_{2} #right)","absolute Iso_{04} #left(l_{2} #right)","trackIso #left(l_{2} #right)", "delta#beta Iso_{03} #left(l_{2} #right)", "sumChargedHadronPt03 #left(l_{2} #right)",
-				"relative Iso_{03} #left(l_{3} #right)","absolute Iso_{03} #left(l_{3} #right)","relative Iso_{04} #left(l_{3} #right)","absolute Iso_{04} #left(l_{3} #right)","trackIso #left(l_{3} #right)", "delta#beta Iso_{03} #left(l_{3} #right)", "sumChargedHadronPt03 #left(l_{3} #right)",
-				"#Delta#it{R} #left(M_{Z} pair#right)","#Delta#it{R} #left(l_{1}-l_{3} #right)","#Delta#it{R} #left(l_{2}-l_{3} #right)", "#Delta#phi #left(M_{Z} pair#right)","#Delta#phi #left(l_{1}-l_{3} #right)","#Delta#phi #left(l_{2}-l_{3} #right)",
-				"vertex X (l_{1}-l_{2} ) (cm)", "vertex Y (l_{1}-l_{2} ) (cm)", "vertex Z (l_{1}-l_{2} ) (cm)", "vertex R (l_{1}-l_{2} ) (cm)","vertex R significance (l_{1}-l_{2} )", "vertex R2D (l_{1}-l_{2} ) (cm)","vertex R2D significance (l_{1}-l_{2} )", "vertex #chi ^{2} (l_{1}-l_{2} )", "vertex normalize#it{d}_#chi ^{2} (l_{1}-l_{2} )","vertex #chi ^{2} (l_{1}-l_{2} )", "vertex normalize#it{d}_#chi ^{2} (l_{1}-l_{2} )","#chi^{2}/vertex Y (l_{1}-l_{2} )", "R/vertex X  (l_{1}-l_{2} )",
-				"vertex X (l_{1}-l_{3} ) (cm)", "vertex Y (l_{1}-l_{3} ) (cm)", "vertex Z (l_{1}-l_{3} ) (cm)", "vertex R (l_{1}-l_{3} ) (cm)","vertex R significance (l_{1}-l_{3} )", "vertex R2D (l_{1}-l_{3} ) (cm)","vertex R2D significance (l_{1}-l_{3} )", "vertex #chi ^{2} (l_{1}-l_{3} )", "vertex normalize#it{d}_#chi ^{2} (l_{1}-l_{3} )","vertex #chi ^{2} (l_{1}-l_{3} )", "vertex normalize#it{d}_#chi ^{2} (l_{1}-l_{3} )","#chi^{2}/vertex Y (l_{1}-l_{3} )", "R/vertex X  (l_{1}-l_{3} )",
-				"vertex X (l_{2}-l_{3} ) (cm)", "vertex Y (l_{2}-l_{3} ) (cm)", "vertex Z (l_{2}-l_{3} ) (cm)", "vertex R (l_{2}-l_{3} ) (cm)","vertex R significance (l_{2}-l_{3} )", "vertex R2D (l_{2}-l_{3} ) (cm)","vertex R2D significance (l_{2}-l_{3} )", "vertex #chi ^{2} (l_{2}-l_{3} )", "vertex normalize#it{d}_#chi ^{2} (l_{2}-l_{3} )","vertex #chi ^{2} (l_{2}-l_{3} )", "vertex normalize#it{d}_#chi ^{2} (l_{2}-l_{3} )", "#chi^{2}/vertex Y (l_{2}-l_{3} )", "R/vertex X  (l_{2}-l_{3} )",
-				"min #Delta#phi #left(l_{1}-other#right)",
-				"(#Delta#phi(l_{2}-l_{3}))/(#Delta#phi(l_{1}-l_{2}))",
-				"(#Delta#phi(l_{1}-l_{2}))/(#Delta#phi(l_{2}-l_{3}))",
-				"(#Delta#phi(l_{2}-l_{3}))/(min #Delta#phi (l_{1}-other))",
-				"(min #Delta#phi (l_{1}-other))/(#Delta#phi(l_{2}-l_{3}))",
-				"(#Delta#it{R}(l_{2}-l_{3}))/(min #Delta#phi (l_{1}-other))",
-				"(min #Delta#phi (l_{1}-other))/(#Delta#it{R}(l_{2}-l_{3}))",
-
-
-
-
-				"M_{lll}+MET (GeV)", "MT+MET(GeV)",
-
-
-				"SR_2DSIP", "SR_vtxR", "SR_vtxR2D", "SR_vtxX"
-
-
-  };
-
-
-  const TString Units[nDist] = {" "," "," ",
-				"GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV", 
-				"GeV","GeV","GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV","GeV", "","","GeV",
-				"cm","cm","cm","cm","","",
-				"cm","cm","cm","cm","","",
-				"cm","cm","cm","cm","","",
-				"", "GeV", "", "GeV", "GeV","", "GeV",
-				"", "GeV", "", "GeV", "GeV","", "GeV",
-				"", "GeV", "", "GeV", "GeV","", "GeV",
-				"","","","","","",
-				"cm","cm","cm", "cm","","cm","", "","","","","cm^{-1}", "",
-				"cm","cm","cm", "cm","","cm","", "","","","","cm^{-1}", "",
-				"cm","cm","cm", "cm","","cm","", "","","","","cm^{-1}", "",
-				"", "", "","","","","","GeV", "GeV",
-				"","","",""};
-  const double HistMin[nDist] = {-0.5,-0.5,-0.5,
-				 0, 0, 0, 0, 0, 0, 0,
-				 20, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 40,0,
-				 0, 0, 0, 0, 0, 0,
-				 0, 0, 0, 0, 0, 0,
-				 0, 0, 0, 0, 0, 0,
-				 0, 0, 0, 0, 0, 0,0,
-				 0, 0, 0, 0, 0, 0,0,
-				 0, 0, 0, 0, 0, 0,0,
-				 0,0,0,0,0,0,
-				 -50, -50, -200, 0,0,0,0, -20,-20,0,0,0,0,
-				 -50, -50, -200, 0,0,0,0, -20,-20,0,0,0,0,
-				 -50, -50, -200, 0,0,0,0, -20,-20,0,0,0,0,
-				 0,0,0,0,0,0,0,0,0,
-				 -0.5,-0.5,-0.5,-0.5};
-  const double HistMax[nDist] = { 41.5,11.5, 3.5,
-				  200, 100, 100, 100, 100, 100, 100,
-				  140,100,100, 100, 100, 100, 100,  100, 150,3.5, 10,10, 100,
-				  0.5, 1, 20, 2, 100, 100,
-				  0.5, 1, 20, 2, 100, 100,
-				  0.5, 1, 20, 2, 100, 100,
-				  1, 20, 1, 30, 40, 20,20,
-				  1, 20, 1, 30, 40, 20,20,
-				  1, 20, 1, 30, 40, 20,20,
-				  4,4,4,3.3,3.3,3.3,
-				  50, 50, 200, 50,1000,30,1000, 200,50,60,100,100,100,
-				  50, 50, 200, 50,1000,30,1000, 200,50,60,100,100,100,
-				  50, 50, 200, 50,1000,30,1000, 200,50,60,100,100,100,
-				  3.15,0.3, 300,0.3,300,0.4,400,200, 200,
-				  5.5,8.5,8.5,6.5};
-  const int nBins[nDist] =      { 42,12,4,
-				  25, 25, 25, 25, 25, 25, 25,
-				  21,25,25, 25, 25, 25, 25,  25, 25,20, 10,10, 100,
-				  30, 50, 30, 50, 50, 40,
-				  30, 50, 30, 50, 50, 40,
-				  30, 50, 30, 50, 50, 40,
-				  50, 100, 50, 100, 100, 50,100,
-				  50, 100, 50, 100, 100, 50,100,
-				  50, 100, 50, 100, 100, 50,100,
-				  20,20,20,20,20,20,
-				  25, 25, 100, 50,100,30,100, 50,100,20,10, 100,100,
-				  25, 25, 100, 50,100,30,100, 50,100,20,10, 100,100,
-				  25, 25, 100, 50,100,30,100, 50,100 ,20,10,100,100,
-				  20,30,60,30,60,40,80,50,50,
-				  6,9,9,7};    
-  cout<<"------ 1"<<endl;
-  for(int i = 0; i < nDist; ++i){
-    float BinWidth = (HistMax[i] - HistMin[i])/nBins[i];
-    std::ostringstream strs; strs << BinWidth; std::string Yaxis = strs.str();
-    for(int effsam = 0; effsam < nSamples_eff + 1; ++effsam){
-      for(int cat = 0; cat < nCat; ++cat){               
-	Histos[i][cat][effsam] = new TH1D(eff_names[effsam] + catNames[cat] + Histnames_ossf[i] , eff_names[effsam] + catNames[cat] + Histnames_ossf[i] + ";" + Xaxes[i] + "; events /" + Yaxis + Units[i], nBins[i], HistMin[i], HistMax[i]);
-	Histos[i][cat][effsam]->Sumw2();
-      }
-    }
-  }
-  //Calculate the center of the maximum bin of each histogram
-  double maxBinC[nDist];
-  for(int i = 0; i < nDist; ++i){
-    maxBinC[i] = Histos[i][0][0]->GetBinCenter(Histos[i][0][0]->GetNbinsX());
-  }
-    
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARAMETERS AND CUTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ 
   
-  const double met_cuts =80;
-  const double mlll_cuts = 85;
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARAMETERS AND CUTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   const int number_veto_leptons=3;
   const double b_jets_wp= 0.5426;
   const double b_jets_pt= 25;
-
-  const double MVA_cuts_pt15[3] = {0.77, 0.56, 0.48};
-  const double MVA_cuts_pt25[3] = {0.52, 0.11, -0.01};
-  const double newMVALooseFR[3]= {-0.02, -0.52, -0.52}; 
-
-  const double isolation_loose=0.6;
-  const double isolation_tight=0.1;
-
+  const double met_cuts = 75;
+  const double mlll_cuts = 80;
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    
+
   //Loop over all samples
   Double_t Counter[nSamples];
   for(int i = 0; i  < nSamples; ++i){
     Counter[i] = 0;
   }
   Double_t scale[nSamples];
-    
-    
+  
+
   //-------------->  LOOP ON ALL SAMPLES
   for(int sam = 0, effsam = 0; sam < nSamples; ++sam, ++effsam){
     Long64_t nEntries = inputTree[sam]->GetEntries();
-    cout<<"----------------"<<endl;
     if(sam != 0){
-      cout<<"=========  effsam: "<<effsam<<" "<<names[sam]<<"   "<<sam<<endl;
       if(names[sam] == names[sam -1]) --effsam;
-      cout<<"+++++++++  effsam: "<<effsam<<" "<<names[sam]<<"   "<<sam<<endl;
-
     }
     if(sam >= 0){ // 1 data set
       scale[sam] = xSections[sam]*luminosity*1000/(hcounter[sam]);
     }
     //if (effsam == 0) continue;
     std::cout<<"Entries in "<< fileList[sam] <<" "<<nEntries<<std::endl;
-    cout << effsam << endl;
-        
+    cout << effsam << "   "<<sam<<endl;
+    //if (sam < 26) continue;
+
     //if (effsam !=1) continue;
-    //  if (sam > 7) continue;
-        
+ 
+
     double counters_cut[20] ;
     double counters_cut_ossf[20] ;
     double counters_cut_no_ossf[20] ;
 
 
-    // if (sam <= 12 ){
+    if (sam <= 11 ){
 
     for (int i =0; i< 20; i++){
       counters_cut[i] =0.;
       counters_cut_ossf[i] =0.;
       counters_cut_no_ossf[i] =0.;
     }
-    // }
-    double progress = 0; 	//For printing progress bar
+     }
+    double progress = 0; //For printing progress bar
         
         
     //--------------> LOOOP ON THE TREE"S ENTRIES
     for (Long64_t it = 0; it < nEntries; ++it){
       inputTree[sam]->GetEntry(it);
-      
       //if (it%10000 == 0) cout<<'.'<<flush;
             
       if(it%100 == 0 && it != 0){
-	progress += (double) (100./nEntries);
-	printProgress(progress);
+progress += (double) (100./nEntries);
+printProgress(progress);
       } else if(it == nEntries -1){
-	progress = 1.;
-	printProgress(progress);
+progress = 1.;
+printProgress(progress);
       }
             
             
@@ -1224,13 +1081,13 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
      
             
       if (effsam == 0) continue;
-      if (effsam == 17) continue;   
+      if (effsam == 20) continue;     
             
             
             
       // if(_nL < number_veto_leptons) continue;
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> VECTORS AND VARIABLES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      int               nBjets = 0;
+     int               nBjets = 0;
       unsigned*         ind = new unsigned[_nL];	//new indices of good leptons
       //double*           conePt = new double[_nL];
       double            faxtore_FR=0;            
@@ -1246,16 +1103,13 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
       TLorentzVector    sum_3l_rec;	//M_3l
       TLorentzVector    pair [3];
       int               kind[1] ={-1}; // 0 no-ossf
-      TLorentzVector    sum_2l_rec_pair; 	//M_2l best Z candidate
+      TLorentzVector    sum_2l_rec_pair; //M_2l best Z candidate
       int               event_clas[1]={-1}; // 1* = eee   2* = emm   3* = eem  4* = mmm
       int               check_mt= -1;
-      int               check_deltaR= -1;
-      int               check_mt_os= -1;
       Double_t          delta_R_max=-1;
       Double_t          delta_R_min=-1;
       Double_t          _mll_min=50000;
-      Double_t          _mll_min_os=50000;
-      TLorentzVector    lepton_transv[3];
+      TLorentzVector    lepton_transv;
       TLorentzVector    METvec;
       double            m_T=0;
       double            MET=0;
@@ -1280,6 +1134,9 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
 
       unsigned          lCount = 0;	//Count number of FO leptons that are not taus
       unsigned*         _isFO= new unsigned[_nL];
+
+       unsigned          lCount1 = 0;	//Count number of FO leptons that are not taus
+      unsigned*         _isFO1= new unsigned[_nL];
       Bool_t            _passedMVA90[_nL];   
       
      
@@ -1302,43 +1159,68 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
       double            _vertex_sR[3];
       double            _vertex_chi2[3];
       double            _vertex_normchi2[3];
-
-      unsigned         ind_new_leading=0;
-      unsigned         ind_new_p=0;
-      unsigned         ind_new_pp=0;
-
-      bool             isAll = false;
-      bool             isAll_met_mlll = false;
+      
 
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<            
       //------------------------------------------------------------ selection class
+      counters_cut[0] =0;
+      counters_cut[1] =0;
+      counters_cut[2] =0;
+      counters_cut[3] =0;
+      counters_cut[4] =0;
+      counters_cut[5] =0;
+      counters_cut[6] =0;
+      counters_cut[7] =0;
+      counters_cut[8] =0;
+      counters_cut[9] =0;
+
+
+      counters_cut[0] = 1;
+      
+      
+
+
+      /*for(unsigned l = 0; l < _nL; ++l){
+	if (l < _nMu ) _lFlavor[l] = 1;
+	else if (l >= _nMu  && l < (_nMu + _nEle)) _lFlavor[l] = 0;
+	else _lFlavor[l] = 2;
+	}*/
+
       //FO
+       
       for(unsigned l = 0; l < _nL; ++l){
 	_isFO[l] = false;
-	if (_lFlavor[l] == 0 && _lPt[l] < 10 ) continue;
-	if (_lFlavor[l] == 1 && _lPt[l] < 5 ) continue;
-	if ( _relIso[l] > 0.2) continue;
-	if (_lFlavor[l] == 0 && !_lPOGLoose[l]) continue;
-	if (_lFlavor[l] == 1 && !_lPOGLoose[l]) continue; 
-	_isFO[l] = true;
+	_isFO1[l] = false;
+	//if (_lFlavor[l] == 0 && _lPt[l] < 5 ) continue;
+	//if (_lFlavor[l] == 1 && _lPt[l] < 3.5 ) continue;
+	if (_lFlavor[l]== 1 && _lPOGLoose[l] )       _isFO1[l] = true; // tracker or global muon --> loose definition from POG
+	if (_lFlavor[l]== 0 && _lpassConversionVeto[l] && _eleNumberInnerHitsMissing[l]<=1)    _isFO1[l] = true; //no conversion and number missing hits
+	if (_lFlavor[l]== 1 && _lPOGLoose[l]  && _sumChargedHadronPt03[l] < 10 )       _isFO[l] = true; // tracker or global muon --> loose definition from POG
+	if (_lFlavor[l]== 0 && _lpassConversionVeto[l] && _eleNumberInnerHitsMissing[l]<=1  && _sumChargedHadronPt03[l] < 10)    _isFO[l] = true; //no conversion and number missing hits
+	if(_isFO1[l] && _lFlavor[l] != 2){
+	  ++lCount1;
+	}
 	if(_isFO[l] && _lFlavor[l] != 2){
 	  ind[lCount] = l;
 	  ++lCount;
 	}
-      } 
 
-  
+      } 
+      if(lCount1 < 3) continue;
+
+      if(lCount1 >= 3) counters_cut[1]=1;
+      if(lCount >= 3) counters_cut[2]=1;
+
       double*  conePt = new double[_nL];
       for(unsigned l = 0; l < lCount; ++l){
 	conePt[ind[l]] =0.;
 	conePt[ind[l]] = _lPt[ind[l]];
       }
-      
 
-      if(lCount < 3) continue;
       //Order FO leptons by Pt
       unsigned* ordind = new unsigned[lCount];
-      std::set<unsigned> usedLep;      
+      std::set<unsigned> usedLep;
+      
       for(unsigned k =0; k < lCount; ++k){
 	//unsigned maxI = 999;
 	double maxConePt = 0;
@@ -1355,879 +1237,246 @@ void Analysis_mc::analisi(int selezione, int num_histo_kin
       for(unsigned i = 0; i < lCount; ++i){
 	ind[i] = ordind[i];
       }
-      //======================= new Selection!
-      ind_new_leading = -1;
-      int counter_leading=0;
-      for(unsigned l = 0; l < lCount; ++l){
-	if (counter_leading == 0){
-	  if ((_lFlavor[ind[l]]== 1 && _lPOGLoose[ind[l]] && _lPOGMedium[ind[l]] && _relIso[ind[l]] < 0.1 && TMath::Abs(_dxy[ind[l]]) < 0.05 && TMath::Abs(_dz[ind[l]]) < 0.1 && fabs(_3dIPSig [ind[l]]) < 4 && _lPt[ind[l]]> 25 ) || (_lFlavor[ind[l]]== 0 && _lPOGLoose[ind[l]] && _lPOGMedium[ind[l]] && _relIso[ind[l]] < 0.1 && TMath::Abs(_dxy[ind[l]]) < 0.05 && TMath::Abs(_dz[ind[l]]) < 0.1 && fabs(_3dIPSig [ind[l]]) < 4 && _lPt[ind[l]]> 30)   ) {
-	    ++counter_leading;
-	    ind_new_leading = ind[l];
-	  }
-	}
-      }
-      if (counter_leading <1)continue;
-      unsigned displacedC = 0;
-      unsigned* _isDisplaced= new unsigned[_nL];
-      for(unsigned l = 0; l < lCount; ++l){
-	_isDisplaced[ind[l]] = false;
-	//if ((TMath::Abs(_dxy[ind[l]]) > 0.05 || TMath::Abs(_dz[ind[l]]) > 0.1 || fabs(_3dIPSig[ind[l]]) > 4))	_isDisplaced[ind[l]] = true;
-	//if ( fabs(_3dIPSig[ind[l]]) > 4)	_isDisplaced[ind[l]] = true;
-	if (TMath::Abs(_dxy[ind[l]]) > 0.05 )	_isDisplaced[ind[l]] = true;
 
-
-      }     
+      int pt_treshold = 100;
       for(unsigned l = 0; l < lCount; ++l){
-	if(_isDisplaced[ind[l]]) ++displacedC;	
+if((_lFlavor[ind[l]] == 0 && conePt[ind[l]] < 5)  ) pt_treshold = -1;
+if((_lFlavor[ind[l]] == 1 && conePt[ind[l]] < 3.5)  ) pt_treshold = -1;
       }
-      if (displacedC < 2) continue;
-      //if (displacedC == 2) continue;
-      // ===================== 3 leptons selected ======================
+      if(pt_treshold != -1)       counters_cut[3]=1;
      
-      // leading lepton
-      for (int i =0; i < lCount; i ++){
-	if (ind[i] == ind_new_leading) {
-	  lepton_reco[0].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-	  flavors_3l[0]=_lFlavor[ind[i]];
-	  charge_3l[0]=_lCharge[ind[i]];
-	  conePt[0] =  _lPt[ind[i]];
-	}
-      }
-      // easy case == just 2 leptons
-      TLorentzVector   lepton_tobeselected[20];
-      int              index_displaced[20];
-      int index_l[2];
 
+      //Check number of tight leptons
+      unsigned tightC = 0;
+      unsigned* _isT= new unsigned[_nL];
+      for(unsigned l = 0; l < lCount; ++l){
+_isWithTrack[ind[l]] = false;
+if (!_isFO[ind[l]]) continue;
 
-      if (displacedC == 2) {
-	int check_disp= 0;
-	for (int i =0; i < lCount; i ++){
-	  if (_isDisplaced[ind[i]] && check_disp==0) {
-	    lepton_reco[1].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-	    flavors_3l[1]=_lFlavor[ind[i]];
-	    charge_3l[1]=_lCharge[ind[i]];
-	    conePt[1] =  _lPt[ind[i]];
-	    check_disp = 1;
-	    index_l[0] =ind[i]; 
-	    index_displaced[0] = ind[i];
-	    lepton_tobeselected[0].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-	  }
-	  if (_isDisplaced[ind[i]] && check_disp!=0) {
-	    lepton_reco[2].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-	    flavors_3l[2]=_lFlavor[ind[i]];
-	    charge_3l[2]=_lCharge[ind[i]];
-	    conePt[2] =  _lPt[ind[i]];
-	    index_l[1] =ind[i]; 
-	    index_displaced[1] = ind[i];
-	    lepton_tobeselected[1].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-
-	  }
-	}
-      }
-     
-      // more than 2 leptons!!! 
-      if (displacedC > 2){
-	
-	for (int i =0; i < 20; i ++){
-	  index_displaced[i] = -50;
-	  lepton_tobeselected[i].SetPtEtaPhiE( 0,  0, 0, 0);
-	}
-	int displacedC_check=0;
-	for (int i =0; i < lCount; i ++){
-	  if (_isDisplaced[ind[i]]){	    
-	    lepton_tobeselected[displacedC_check].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-	    index_displaced[displacedC_check] = ind[i];
-	    displacedC_check++;
-	  }
-	}
-	find_leptons(selezione,displacedC, lepton_tobeselected,index_displaced, index_l);
-	lepton_reco[1].SetPtEtaPhiE( _lPt[index_l[0]],  _lEta[index_l[0]], _lPhi[index_l[0]], _lE[index_l[0]]);
-	flavors_3l[1]=_lFlavor[index_l[0]];
-	charge_3l[1]=_lCharge[index_l[0]];
-	conePt[1] =  _lPt[index_l[0]];
-	lepton_reco[2].SetPtEtaPhiE( _lPt[index_l[1]],  _lEta[index_l[1]], _lPhi[index_l[1]], _lE[index_l[1]]);
-	flavors_3l[2]=_lFlavor[index_l[1]];
-	charge_3l[2]=_lCharge[index_l[1]];
-	conePt[2] =  _lPt[index_l[1]];
-      }// end >2
+       	if (_lFlavor[ind[l]]== 1 && _lPOGLoose[ind[l]] && _lPOGMedium[ind[l]] && _relIso[ind[l]] < 0.6)       _isWithTrack[ind[l]] = true; // tracker or global muon --> loose definition from POG
+       	if (_lFlavor[ind[l]]== 0 && _lpassConversionVeto[ind[l]] && _eleNumberInnerHitsMissing[ind[l]]<=1 && _lPOGMedium[ind[l]] && _relIso[ind[l]] < 0.6)    _isWithTrack[ind[l]] = true; //no conversion and number missing hits
+_isT[ind[l]] = false;
+       	if (_lFlavor[ind[l]]== 1 && _lPOGLoose[ind[l]] ){
+ if ( _lPOGMedium[ind[l]] )       _isT[ind[l]] = true; 
+}
+       	if (_lFlavor[ind[l]]== 0 && _lpassConversionVeto[ind[l]] && _eleNumberInnerHitsMissing[ind[l]]<=1 && _lPOGMedium[ind[l]])    _isT[ind[l]] = true; 
+      }    
 
       
-
-      /////////////////////////////// --------------- ////////////////////////
-      /////////////////////////////// --------------- ////////////////////////
-
-      if (_lIsPrompt[ind_new_leading]) promptC++;
-      if (_lIsPrompt[index_l[1]])promptC++;
-      if (_lIsPrompt[index_l[0]])promptC++;
-
-       
-      //calculate the index for the vertex
-      iV_ls= _lIndex[ind_new_leading] * 100 +  _lIndex[index_l[0]];
-      iV_st= _lIndex[index_l[0]] * 100 +  _lIndex[index_l[1]];
-      iV_lt= _lIndex[ind_new_leading] * 100 +  _lIndex[index_l[1]];
-
-      //[0] == ls
-      //[1] == st
-      //[2] == lt
-
-      _vertex_chi2[0]     = -10;
-      _vertex_normchi2[0] = -10;
-      _vertex_chi2[1]     = -10;
-      _vertex_normchi2[1] = -10;
-      _vertex_chi2[2]     = -10;
-      _vertex_normchi2[2] = -10;
-
       
+      for(unsigned l = 0; l < lCount; ++l){
+if(_isT[ind[l]] && l < 3 ) ++tightC;
+else break;
+      }
+
+      for(unsigned l = 0; l < lCount; ++l){
+if(_lIsPrompt[ind[l]] && l < 3 ) ++promptC;
+else break;
+      }
+      
+      for(unsigned l = 0; l < lCount; ++l){
+if(_isWithTrack[ind[l]] && l < 3) ++wTrack;
+else break;
+      }
+
+      //--------------------------------------------------------------------------------   
+if (_lPOGMedium[ind[0]]  && _lPt[ind[0]] > 20 && _relIso[ind[0]] < 0.1 && TMath::Abs(_dxy[ind[0]]) < 0.05 && TMath::Abs(_dz[ind[0]]) < 0.1 && fabs(_3dIPSig [ind[0]]) < 4  )       counters_cut[4]=1;
+      
+
+      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANALYSIS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      for(unsigned i = 0; i < lCount; ++i){
+lepton_reco[i].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
+flavors_3l[i]=_lFlavor[ind[i]];
+charge_3l[i]=_lCharge[ind[i]];
+conePt[i] =  _lPt[ind[i]];
+      }
       //M_3l
       sum_3l_rec.SetPtEtaPhiE(0,0,0,0);
       sum_3l_rec= (lepton_reco[0]+ lepton_reco[1]+lepton_reco[2] );
-
-
-      if (charge_3l[0] == charge_3l[1] ){
-	_vertex_chi2[0]     = -12;
-	_vertex_normchi2[0] = -12;	
-      }
-      if (charge_3l[1] == charge_3l[2] ){
-	_vertex_chi2[1]     = -14;
-	_vertex_normchi2[1] = -14;
-      }
-      if (charge_3l[0] == charge_3l[2] ){
-	_vertex_chi2[2]     = -16;
-	_vertex_normchi2[2] = -16;	
-      }
-
-      /* if (_vertices[0][0] == 102 && _vertices[1][0] == 305){
-	_vertices[0][0] = 102;
-	_vertices[1][0] = 302; 
-      }
-      if (_vertices[0][0] == 103 && _vertices[1][0] == 206){
-	_vertices[0][0] = 103;
-	_vertices[1][0] = 203; 
-      }
-      if (_vertices[0][0] == 103 && _vertices[1][0] == 204){
-	_vertices[0][0] = 103;
-	_vertices[1][0] = 203; 
-	}*/
-
-
-      for(unsigned v = 0; v < _nVFit; ++v){
-	if ((_vertices[v][0] == (_lIndex[ind_new_leading] * 100 +  _lIndex[index_l[0]])) || (_vertices[v][0] == (_lIndex[ind_new_leading]  +  _lIndex[index_l[0]]*100))) {
-	  _vertex_X[0]        = _vertices[v][1];
-	  _vertex_Y[0]        = _vertices[v][2];
-	  _vertex_Z[0]        = _vertices[v][3];
-	  _vertex_R2D[0]      = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2]);
-	  _vertex_sR2D[0]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2])  + derivate2_with_sigmaR2D(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2])   + 2*_vertices[v][7]*_vertices[v][7] *derivateR2D(_vertices[v][1],_vertices[v][1], _vertices[v][2])*derivateR2D(_vertices[v][2],_vertices[v][1], _vertices[v][2]) );
-	  _vertex_R[0]        = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2] + _vertices[v][3]*_vertices[v][3]);
-	  _vertex_sR[0]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     derivate2_with_sigmaR(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     derivate2_with_sigmaR(_vertices[v][3], _vertices[v][6],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][7]*_vertices[v][7]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][9]*_vertices[v][9]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][8]*_vertices[v][8]*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3])  );
-	  _vertex_chi2[0]     = _vertices[v][11];
-	  _vertex_normchi2[0] = _vertices[v][11]/_vertices[v][10];
-	}
-	if ((_vertices[v][0] == (_lIndex[index_l[0]] * 100 +  _lIndex[index_l[1]] )) ||(_vertices[v][0] == (_lIndex[index_l[0]] +  _lIndex[index_l[1]] *100) )) {
-	  _vertex_X[1]        = _vertices[v][1];
-	  _vertex_Y[1]        = _vertices[v][2];
-	  _vertex_Z[1]        = _vertices[v][3];
-	  _vertex_R2D[1]      = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2]);
-	  _vertex_sR2D[1]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2])  + derivate2_with_sigmaR2D(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2])   + 2*_vertices[v][7]*_vertices[v][7] *derivateR2D(_vertices[v][1],_vertices[v][1], _vertices[v][2])*derivateR2D(_vertices[v][2],_vertices[v][1], _vertices[v][2]) );
-	  _vertex_R[1]        = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2] + _vertices[v][3]*_vertices[v][3]);
-	  _vertex_sR[1]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     derivate2_with_sigmaR(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     derivate2_with_sigmaR(_vertices[v][3], _vertices[v][6],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][7]*_vertices[v][7]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][9]*_vertices[v][9]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][8]*_vertices[v][8]*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3])  );
-	  _vertex_chi2[1]     = _vertices[v][11];
-	  _vertex_normchi2[1] = _vertices[v][11]/_vertices[v][10];
-	}
-	if ((_vertices[v][0] == (_lIndex[ind_new_leading] * 100 +  _lIndex[index_l[1]])) || (_vertices[v][0] == (_lIndex[ind_new_leading] +  _lIndex[index_l[1]]*100))) {
-	  _vertex_X[2]        = _vertices[v][1];
-	  _vertex_Y[2]        = _vertices[v][2];
-	  _vertex_Z[2]        = _vertices[v][3];
-	  _vertex_R2D[2]      = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2]);
-	  _vertex_sR2D[2]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2])  + derivate2_with_sigmaR2D(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2])   + 2*_vertices[v][7]*_vertices[v][7] *derivateR2D(_vertices[v][1],_vertices[v][1], _vertices[v][2])*derivateR2D(_vertices[v][2],_vertices[v][1], _vertices[v][2]) );
-	  _vertex_R[2]        = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2] + _vertices[v][3]*_vertices[v][3]);
-	  _vertex_sR[2]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     derivate2_with_sigmaR(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     derivate2_with_sigmaR(_vertices[v][3], _vertices[v][6],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][7]*_vertices[v][7]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][9]*_vertices[v][9]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
-				     2*_vertices[v][8]*_vertices[v][8]*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3])  );
-	  _vertex_chi2[2]     = _vertices[v][11];
-	  _vertex_normchi2[2] = _vertices[v][11]/_vertices[v][10];
-	}	           
-      }// end loop vertices
-
-      // if ( _vertex_chi2[1] != -10 ) continue;
-      /*cout<<"------------- all'inizio! "<<endl;
-      cout<<"lCount: "<<lCount<< "   displacedC: "<<displacedC<<endl;
-      for (int i =0; i < lCount; i ++){
-	cout<<i<<") "<< ind[i]<<"   ---> index general: "<< _lIndex[ind[i]]<<endl;
-	cout<<"_lFlavor: "<< _lFlavor[ind[i]]<<"_charge: "<< _lCharge[ind[i]]<< " pt: "<<_lPt[ind[i]]<<"  "<<  _lEta[ind[i]]<<"  "<< _lPhi[ind[i]]<<"  "<< _lE[ind[i]]<<endl;
-	cout<<"medium: "<<_lPOGLoose[ind[i]] <<"  iso: "<<_relIso[ind[i]]<< "    dxy, dz,3D: "<<_dxy[ind[i]]<<" "<<_dz[ind[i]]<< " "<<_3dIPSig [ind[i]]<<endl;
-	cout<<"prompt: "<<  _lIsPrompt[ind[i]]<<endl; 
-	TLorentzVector vec1;
-	TLorentzVector vec2;
-	for (int s =0; s < lCount; s ++){
-	  vec1.SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
-	  vec2.SetPtEtaPhiE( _lPt[ind[s]],  _lEta[ind[s]], _lPhi[ind[s]], _lE[ind[s]]);
-	  if (s != i ) cout<< "i - s "<<i<<" - "<< s<< "  mas: "<< (vec1+vec2).M()<<"   delta: "<< vec1.DeltaR(vec2)<<endl;
-	}
-      }
-      cout<<"------>   "<< "index leading: "<< ind_new_leading<< "  which correspond to index vertex: "<< _lIndex[ind_new_leading]<<endl;
-      cout<< "leading: "<< lepton_reco[0].Pt()<<"  vs   "<< _lPt[ind_new_leading]<<endl;
-      cout<< "displaced check: =======> "<<endl;
-      for (int i =0; i < displacedC; i ++){
-	cout<<"numeber displacedC: "<< i << "  pt associato: "<< lepton_tobeselected[i].Pt() << "  index: "<<index_displaced[i]<<endl;
-      }
-      cout<<"indici trovati:  "<<index_l[0]<<"  "<<index_l[1]<<"  which correspond to index vertex: "<< _lIndex[index_l[0]]<<"  "<< _lIndex[index_l[1]]<<endl;
-      cout<< lepton_reco[1].Pt()<<"   "<< lepton_reco[2].Pt()<<endl;
-      cout<<(lepton_reco[1] + lepton_reco[2]).M()<<endl;
-
-      cout<<"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ "<<endl;
-      for (int i =0; i < 3; i ++){
-	cout<<i<<"} "<< lepton_reco[i].Pt()<<endl;
-      }
-       for(unsigned v = 0; v < _nVFit; ++v){
-	 cout<<v<<">>>> "<< _vertices[v][0]<<endl;
-	 }*/
-
-      // cout<<"file: "<<fileList[sam]  <<"     ---> event: "<<_eventNb <<" run "<<_runNb<<endl;
-
-      //--------------------------------------------------------------------------------   
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANALYSIS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-   
-
             
       //================== event classification ========================
       // ---------------- > OSSF or NO_OSSF
-      ossf_no_ossf( kind, pair,lepton_reco[0], lepton_reco[1], lepton_reco[2], flavors_3l, charge_3l);
-      if (kind[0]  == -1) continue;
+    ossf_no_ossf( kind, pair,lepton_reco[0], lepton_reco[1], lepton_reco[2], flavors_3l, charge_3l);
 
-      //---------------- > M_2l best Z candidate
+      if (kind[0]  == -1) continue;
+      // counters_cut[6] = counters_cut[6] + 1*scal;
+
+
+
+
+
+
+      //M_2l best Z candidate
       sum_2l_rec_pair.SetPtEtaPhiE(0,0,0,0);
       sum_2l_rec_pair= (pair[0]+pair[1] );
       bool ossf_event= false;
       if (kind[0] == 1) ossf_event = true;
 
-      
-      METvec.SetPtEtaPhiE(_met, 0, _metPhi,_met);    
-      lepton_transv[0].SetPtEtaPhiE(lepton_reco[0].Pt(),0, lepton_reco[0].Phi(), lepton_reco[0].Pt());
-      lepton_transv[1].SetPtEtaPhiE(lepton_reco[1].Pt(),0, lepton_reco[1].Phi(), lepton_reco[1].Pt());
-      lepton_transv[2].SetPtEtaPhiE(lepton_reco[2].Pt(),0, lepton_reco[2].Phi(), lepton_reco[2].Pt());	
+     
 
-      double mT_met = 0;
-      mT_met = (lepton_transv[0] +lepton_transv[1] +lepton_transv[2] + METvec).Mag();
-      double mlll_met = 0;
-      mlll_met=  (lepton_reco[0] +lepton_reco[1] +lepton_reco[2]).Mag() +_met;
-  
-    
-
-
+      //if (kind[0] == 0) continue;
       // ---------------- > CHANNELS
-      class_os( event_clas,  flavors_3l, charge_3l);
+      if (lCount >= 3) class_os( event_clas,  flavors_3l, charge_3l);
       if (event_clas[0] == -1) continue;
-      // 1* = eee
-      // 2* = emm
-      // 3* = eem
-      // 4* = mmm
-      isAll = true;
+      ////// ===============>  LOW mass selection:
+      //if(lepton_reco[0].Pt() > 55) continue;
+      // ---------------- > cut on M_3L > M_W
+      if (ossf_event) {
+if ( counters_cut[0] == 1 ) counters_cut_ossf[0]=  counters_cut_ossf[0] + 1*scal;
+if ( counters_cut[1] == 1 ) {
+ //	  cout<<"in"<<endl;
+ counters_cut_ossf[1]=  counters_cut_ossf[1] + 1*scal;
+ if ( counters_cut[2] == 1) {
+   counters_cut_ossf[2]=  counters_cut_ossf[2] + 1*scal;
+ 
+   if ( counters_cut[3] == 1) {
+     counters_cut_ossf[3]=  counters_cut_ossf[3] + 1*scal;
+     if ( counters_cut[4] == 1 ) {
+counters_cut_ossf[4]=  counters_cut_ossf[4] + 1*scal;
 
-      // ---------------- > M_min
-      check_mt=-1;    
-      _mll_min = (lepton_reco[0]+lepton_reco[1]).M();
-      check_mt= 2;    
-      if ( (lepton_reco[0]+lepton_reco[2]).M() < _mll_min){
-	_mll_min = (lepton_reco[0]+lepton_reco[2]).M();
-	check_mt= 1;
-      }
-      if ( (lepton_reco[1]+lepton_reco[2]).M() < _mll_min) {
-	_mll_min = (lepton_reco[1]+lepton_reco[2]).M();
-	check_mt= 0;
-      }   
-      // 2 == ls
-      // 1 == lt
-      // 0 == st
-      // ---------------- > M_min OS
-      check_mt_os=-1;
-      if ((charge_3l[0] != charge_3l[1] )) {
-	_mll_min_os = (lepton_reco[0]+lepton_reco[1]).M();
-	check_mt_os= 2;
-      }
-      if ((charge_3l[0] != charge_3l[2] ) && (lepton_reco[0]+lepton_reco[2]).M() < _mll_min_os){
-	_mll_min_os = (lepton_reco[0]+lepton_reco[2]).M();
-	check_mt_os= 1;
-      }
-      if ((charge_3l[1] != charge_3l[2] ) && (lepton_reco[1]+lepton_reco[2]).M() < _mll_min_os) {
-	_mll_min_os = (lepton_reco[1]+lepton_reco[2]).M();
-	check_mt_os= 0;
-      }   
-      check_deltaR=-1;
-      delta_R_min = lepton_reco[0].DeltaR(lepton_reco[1]);
-      check_deltaR=2;
-      if (lepton_reco[0].DeltaR(lepton_reco[2]) < delta_R_min) {
-	delta_R_min = lepton_reco[0].DeltaR(lepton_reco[2]);
-	check_deltaR=1;
-      }
-      if (lepton_reco[1].DeltaR(lepton_reco[2]) < delta_R_min) {
-	delta_R_min = lepton_reco[1].DeltaR(lepton_reco[2]);
-	check_deltaR=0;
+if ( (TMath::Abs(_dxy[ind[1]]) > 0.05 || TMath::Abs(_dz[ind[1]]) > 0.1 || _3dIPSig[ind[1]] > 4)  ) {
+ counters_cut_ossf[5] = counters_cut_ossf[5] + 1*scal;
+
+ if ((TMath::Abs(_dxy[ind[2]]) > 0.05 || TMath::Abs(_dz[ind[2]]) > 0.1 || _3dIPSig[ind[2]] > 4)  )  {
+   counters_cut_ossf[6] = counters_cut_ossf[6] + 1*scal;
+
+   if (sum_3l_rec.M() < mlll_cuts) {
+     counters_cut_ossf[7] = counters_cut_ossf[7] + 1*scal;
+     if (_met < 100) {
+counters_cut_ossf[8] = counters_cut_ossf[8] + 1*scal;
+
+if( ( _lPOGLoose[ind[1]] && _lPOGMedium[ind[1]] && _relIso[ind[1]] < 0.6)  && ( _lPOGLoose[ind[2]] && _lPOGMedium[ind[2]] && _relIso[ind[2]] < 0.6)) {
+ counters_cut_ossf[9] = counters_cut_ossf[9] + 1*scal;
+}
+     }
+   }
+ }
+}
+     }
+   }
+ }
+}
       }
 
 
 
-      double min_delta_phi = 0;
-      min_delta_phi = fabs(lepton_reco[0].DeltaPhi(lepton_reco[1]));
-      if (fabs(lepton_reco[0].DeltaPhi(lepton_reco[2])) < min_delta_phi)  min_delta_phi = fabs(lepton_reco[0].DeltaPhi(lepton_reco[2]));
-      double ration1_deltaphi = fabs(lepton_reco[1].DeltaPhi(lepton_reco[2]))/fabs(lepton_reco[0].DeltaPhi(lepton_reco[1]));
-      double ration2_deltaphi = fabs(lepton_reco[0].DeltaPhi(lepton_reco[1]))/fabs(lepton_reco[2].DeltaPhi(lepton_reco[1]));
-
-      double ration1_deltaphimin = fabs(lepton_reco[1].DeltaPhi(lepton_reco[2]))/min_delta_phi;
-      double ration2_deltaphimin = min_delta_phi/fabs(lepton_reco[2].DeltaPhi(lepton_reco[1]));
-
-      double ration1_deltaphiRmin = fabs(lepton_reco[1].DeltaR(lepton_reco[2]))/min_delta_phi;
-      double ration2_deltaphiRmin = min_delta_phi/fabs(lepton_reco[2].DeltaR(lepton_reco[1]));
 
 
-      //=============================================================
+      /* if (ossf_event) {
+if ( counters_cut[0] == 1 ) counters_cut_ossf[0]=  counters_cut_ossf[0] + 1*scal;
+if ( counters_cut[1] == 0 ) continue;
+//	  cout<<"in"<<endl;
+counters_cut_ossf[1]=  counters_cut_ossf[1] + 1*scal;
+if ( counters_cut[2] == 0) continue;
+counters_cut_ossf[2]=  counters_cut_ossf[2] + 1*scal;
+ 
+if ( counters_cut[3] == 0) continue;
+counters_cut_ossf[3]=  counters_cut_ossf[3] + 1*scal;
+if ( counters_cut[4] == 0 ) continue;
+counters_cut_ossf[4]=  counters_cut_ossf[4] + 1*scal;
+
+if ( (TMath::Abs(_dxy[ind[1]]) < 0.05 && TMath::Abs(_dz[ind[1]]) < 0.1 && _3dIPSig[ind[1]] < 4)  ) continue;
+counters_cut_ossf[5] = counters_cut_ossf[5] + 1*scal;
+
+if ((TMath::Abs(_dxy[ind[2]]) < 0.05 && TMath::Abs(_dz[ind[2]]) < 0.1 && _3dIPSig[ind[2]] < 4)  )  continue;
+counters_cut_ossf[6] = counters_cut_ossf[6] + 1*scal;
+
+if (sum_3l_rec.M() > mlll_cuts) continue;
+counters_cut_ossf[7] = counters_cut_ossf[7] + 1*scal;
+if (_met > 100) continue;
+counters_cut_ossf[8] = counters_cut_ossf[8] + 1*scal;
+
+if( ( !_lPOGLoose[ind[1]] || !_lPOGMedium[ind[1]] || _relIso[ind[1]] > 0.6)  || ( !_lPOGLoose[ind[2]] || !_lPOGMedium[ind[2]] || _relIso[ind[2]] > 0.6)) continue;
+counters_cut_ossf[9] = counters_cut_ossf[9] + 1*scal;
+      }
+      */
+      if (!ossf_event) {
+if ( counters_cut[0] == 1 ) counters_cut_no_ossf[0]=  counters_cut_no_ossf[0] + 1*scal;
+if ( counters_cut[1] == 0 ) continue;
+ counters_cut_no_ossf[1]=  counters_cut_no_ossf[1] + 1*scal;
+        
+if ( counters_cut[2] == 0) continue;
+ counters_cut_no_ossf[2]=  counters_cut_no_ossf[2] + 1*scal;
+if ( counters_cut[3] == 0) continue;
+ counters_cut_no_ossf[3]=  counters_cut_no_ossf[3] + 1*scal;
+ 
+if ( counters_cut[4] == 0 ) continue;
+ counters_cut_no_ossf[4]=  counters_cut_no_ossf[4] + 1*scal;
+if ( (TMath::Abs(_dxy[ind[1]]) < 0.05 && TMath::Abs(_dz[ind[1]]) < 0.1 && _3dIPSig[ind[1]] < 4)  ) continue;
+counters_cut_no_ossf[5] = counters_cut_no_ossf[5] + 1*scal;
+
+if ((TMath::Abs(_dxy[ind[2]]) < 0.05 && TMath::Abs(_dz[ind[2]]) < 0.1 && _3dIPSig[ind[2]] < 4)  )  continue;
+counters_cut_no_ossf[6] = counters_cut_no_ossf[6] + 1*scal;
+
+if (sum_3l_rec.M() > mlll_cuts) continue;
+counters_cut_no_ossf[7] = counters_cut_no_ossf[7] + 1*scal;
+if (_met > 100) continue;
+counters_cut_no_ossf[8] = counters_cut_no_ossf[8] + 1*scal;
+
+if( ( !_lPOGLoose[ind[1]] || !_lPOGMedium[ind[1]] || _relIso[ind[1]] > 0.6)  || ( !_lPOGLoose[ind[2]] || !_lPOGMedium[ind[2]] || _relIso[ind[2]] > 0.6)) continue;
+counters_cut_no_ossf[9] = counters_cut_no_ossf[9] + 1*scal;
+      }
+    
+     
+      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      //   if (effsam== 1 ||effsam== 2 ||effsam== 3 ||effsam== 4 ||effsam== 5 ) cout<< "signal"<<endl;
+
+
+     
       
+    
+
+      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      SF and FR     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>         
+      //scal = scal * faxtore_FR;
+      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  FILLING  HISTOGRAMS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  
+   
       
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      HISTOGRAMS     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      double pt_cone_leading=          lepton_reco[0].Pt() ;
-      double pt_cone_sub_leading=      lepton_reco[1].Pt();
-      double pt_cone_trailing=         lepton_reco[2].Pt();
+      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    }
+    cout<<sam<<")   -> "<< fileList[sam]<< endl;
+    cout<<"OSSF ----- "<< counters_cut_ossf[0]<<"  "<< counters_cut_ossf[1]<<"  "<< counters_cut_ossf[2]<<"  "<< counters_cut_ossf[3]<<"  "<< counters_cut_ossf[4]<<"  "<< counters_cut_ossf[5]<<"  "<< counters_cut_ossf[6]<<"  "<< counters_cut_ossf[7]<<"  "<< counters_cut_ossf[8]<<"  "<< counters_cut_ossf[9]<<endl;
+    cout<<"OSSF ------------- "<< 100<<"  "<< 100*counters_cut_ossf[1]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[2]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[3]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[4]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[5]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[6]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[7]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[8]/counters_cut_ossf[1]<<"  "<< 100*counters_cut_ossf[9]/counters_cut_ossf[1]<<endl;
+    cout<<"NO OSSF **** "<< counters_cut_no_ossf[0]<<"  "<< counters_cut_no_ossf[1]<<"  "<< counters_cut_no_ossf[2]<<"  "<< counters_cut_no_ossf[3]<<"  "<< counters_cut_no_ossf[4]<<"  "<< counters_cut_no_ossf[5]<<"  "<< counters_cut_no_ossf[6]<<"  "<< counters_cut_no_ossf[7]<<"  "<< counters_cut_no_ossf[8]<<"  "<< counters_cut_no_ossf[9]<<endl;
+    cout<<"NO OSSF ************ "<< 100<<"  "<< 100*counters_cut_no_ossf[1]/counters_cut_no_ossf[1]<<"  "<< 100*counters_cut_no_ossf[2]/counters_cut_no_ossf[1]<<"  "<< 100*counters_cut_no_ossf[3]/counters_cut_no_ossf[1]<<"  "<< 100*counters_cut_no_ossf[4]/counters_cut_no_ossf[1]<<"  "<<100* counters_cut_no_ossf[5]/counters_cut_no_ossf[1]<<"  "<<100* counters_cut_no_ossf[6]/counters_cut_no_ossf[1]<<"  "<< 100*counters_cut_no_ossf[7]/counters_cut_no_ossf[1]<<"  "<< 100*counters_cut_no_ossf[8]/counters_cut_no_ossf[1]<<"  "<< 100*counters_cut_no_ossf[9]/counters_cut_no_ossf[1]<<endl;
+    cout<<"----------"<<endl;
+
+  }
+
   
-      double trackIso_subleading =_trackIso[index_l[0]];
-      double trackIso_trailing= _trackIso[index_l[1]];
-
-      if (lepton_reco[1].DeltaR(lepton_reco[2]) < 0.3){
-	_trackIso[index_l[1]] =  _trackIso[index_l[1]] - pt_cone_sub_leading;
-	_trackIso[index_l[0]] =  _trackIso[index_l[0]] - pt_cone_trailing;
-      }
-            
-
-      bool _ss_st = false;
-      bool _ss_mll = false;
-      bool _ss_delta = false;
-      bool _os_st = false;
-      bool _os_mll = false;
-      bool _os_delta = false;
-      bool _no_prompt = false;
-      bool _prompt = false;
-      bool _delta = false;
-      bool _chi2 = false;
-
-      bool _delta2=false;
-      bool _mlll_cuts = false;
-      bool _mll_cut = false;
-      bool _minDeltaphi=false;
-      
-      if (effsam < 11 && promptC < 3) _no_prompt = true;
-      if ((effsam < 11 && promptC == 3) ||(effsam >=11) ) _prompt = true;
-
-      bool selection_0=false;
-      bool selection_1=false;
-      bool selection_2=false;
-      bool selection_3=false;
-      bool selection_4=false;
-      bool selection_5=false;
-      bool selection_final=false;
-
-
-      // cout<<min_delta_phi<<endl;
-
-
-      if (charge_3l[2] != charge_3l[1])                                        selection_0 = true;
-      if ( selection_0 && lepton_reco[1].DeltaR(lepton_reco[2]) < 1)           selection_1 = true;
-      // if ( selection_1 &&  ration1_deltaphimin< 0.12)                          selection_2 = true;
-      if ( selection_1 &&  min_delta_phi> 2)                                   selection_2 = true;
-
-      if ( selection_2 &&  sum_3l_rec.M() > 45 && sum_3l_rec.M() < 85)         selection_3 = true;
-      if ( selection_3 &&  _met < 85)                                          selection_4 = true;
-       if ( selection_4 &&  _vertex_chi2[1] < 50 && _vertex_chi2[1] != -10)                               selection_5 = true;
-      //if ( selection_4 &&  _vertex_chi2[1] < 50)                               selection_5 = true;
-
-      if ( selection_5 )                                                       selection_final = true;
-     
-      //************************   SR    ********************************
-      bool _sr_bool_2dsip[6] ;
-      bool _sr_bool_vtxR[9];
-      bool _sr_bool_vtx2R[9];
-      bool _sr_bool_vtxX[7];
-      
-      for (int i = 0; i < 6 ; i++){
-	_sr_bool_2dsip[i]=false;
-      }
-      for (int i = 0; i < 9 ; i++){
-	_sr_bool_vtxR[i]=false;
-	_sr_bool_vtx2R[i]=false;
-      }
-      for (int i = 0; i < 7 ; i++){
-	_sr_bool_vtxX[i]=false;
-      }
-      if (fabs(_2dIPSig[index_l[0]]) < 10)                                       _sr_bool_2dsip[0] = true;
-      if (fabs(_2dIPSig[index_l[0]]) > 10 &&  fabs(_2dIPSig[index_l[0]]) < 20)   _sr_bool_2dsip[1] = true;
-      if (fabs(_2dIPSig[index_l[0]]) > 20 &&  fabs(_2dIPSig[index_l[0]]) < 40)   _sr_bool_2dsip[2] = true;
-      if (fabs(_2dIPSig[index_l[0]]) > 40 &&  fabs(_2dIPSig[index_l[0]]) < 60)   _sr_bool_2dsip[3] = true;
-      if (fabs(_2dIPSig[index_l[0]]) > 60 &&  fabs(_2dIPSig[index_l[0]]) < 80)   _sr_bool_2dsip[4] = true;
-      if (fabs(_2dIPSig[index_l[0]]) > 80)                                       _sr_bool_2dsip[5] = true;
-
-      if (_vertex_R[1] < 2 )                                                     _sr_bool_vtxR[0] = true;
-      if (_vertex_R[1] > 2  && _vertex_R[1] < 4)                                 _sr_bool_vtxR[1] = true;
-      if (_vertex_R[1] > 4  && _vertex_R[1] < 6)                                 _sr_bool_vtxR[2] = true;
-      if (_vertex_R[1] > 6  && _vertex_R[1] < 8)                                 _sr_bool_vtxR[3] = true;
-      if (_vertex_R[1] > 8  && _vertex_R[1] < 10)                                _sr_bool_vtxR[4] = true;
-      if (_vertex_R[1] > 10  && _vertex_R[1] < 20)                               _sr_bool_vtxR[5] = true;
-      if (_vertex_R[1] > 20  && _vertex_R[1] < 30)                               _sr_bool_vtxR[6] = true;
-      if (_vertex_R[1] > 30  && _vertex_R[1] < 50)                               _sr_bool_vtxR[7] = true;
-      if (_vertex_R[1] > 50  )                                                   _sr_bool_vtxR[8] = true;
-
-      if (_vertex_R2D[1] < 2 )                                                    _sr_bool_vtx2R[0] = true;
-      if (_vertex_R2D[1] > 2  && _vertex_R2D[1] < 4)                              _sr_bool_vtx2R[1] = true;
-      if (_vertex_R2D[1] > 4  && _vertex_R2D[1] < 6)                              _sr_bool_vtx2R[2] = true;
-      if (_vertex_R2D[1] > 6  && _vertex_R2D[1] < 8)                              _sr_bool_vtx2R[3] = true;
-      if (_vertex_R2D[1] > 8  && _vertex_R2D[1] < 10)                             _sr_bool_vtx2R[4] = true;
-      if (_vertex_R2D[1] > 10  && _vertex_R2D[1] < 15)                            _sr_bool_vtx2R[5] = true;
-      if (_vertex_R2D[1] > 15  && _vertex_R2D[1] < 20)                            _sr_bool_vtx2R[6] = true;
-      if (_vertex_R2D[1] > 20  && _vertex_R2D[1] < 30)                            _sr_bool_vtx2R[7] = true;
-      if (_vertex_R2D[1] > 30  )                                                  _sr_bool_vtx2R[8] = true;
-
-      if (_vertex_X[1] < 2 )                                                      _sr_bool_vtxX[0] = true;
-      if (_vertex_X[1] > 2  && _vertex_X[1] < 5)                                  _sr_bool_vtxX[1] = true;
-      if (_vertex_X[1] > 5  && _vertex_X[1] < 10)                                 _sr_bool_vtxX[2] = true;
-      if (_vertex_X[1] > 10  && _vertex_X[1] < 20)                                _sr_bool_vtxX[3] = true;
-      if (_vertex_X[1] > 20  && _vertex_X[1] < 30)                                _sr_bool_vtxX[4] = true;
-      if (_vertex_X[1] > 30  && _vertex_X[1] < 40)                                _sr_bool_vtxX[5] = true;
-      if (_vertex_X[1] > 40)                                                      _sr_bool_vtxX[6] = true;
-     
-
-      //****************************************************************
-    
-
-
-      bool _eee = false;
-      bool _emm = false;	    
-      bool _eem = false;
-      bool _mmm = false;
-      if (event_clas[0] == 1 || event_clas[0] == 10) _eee= true;
-      if (event_clas[0] == 2 || event_clas[0] == 20) _emm= true;
-      if (event_clas[0] == 3 || event_clas[0] == 30) _eem= true;
-      if (event_clas[0] == 4 || event_clas[0] == 40) _mmm= true;
-
-     
-            
-      double values[nDist] ={static_cast<double>(0) ,static_cast<double>(0) , static_cast<double>(promptC),
-			   
-	                     pt_cone_leading, pt_cone_sub_leading, pt_cone_trailing,
-			     pt_cone_leading+ pt_cone_sub_leading+ pt_cone_trailing,
-			     pt_cone_leading+ pt_cone_trailing,
-			     pt_cone_sub_leading+ pt_cone_trailing,
-			     pt_cone_leading+ pt_cone_sub_leading,
-			     sum_3l_rec.M(),_mll_min,_mll_min_os,(lepton_reco[1]+lepton_reco[2]).M(), sum_2l_rec_pair.M(),0.,0.,0., _met,_metPhi, static_cast<double>(_nJets), static_cast<double>(nBjets),0.,
-			     fabs(_dxy[ind_new_leading]),fabs(_dz[ind_new_leading]), fabs(_3dIP[ind_new_leading]), fabs(_2dIP[ind_new_leading]), fabs(_3dIPSig[ind_new_leading]), fabs(_2dIPSig[ind_new_leading]),
-			     fabs(_dxy[index_l[0]]),fabs(_dz[index_l[0]]), fabs(_3dIP[index_l[0]]), fabs(_2dIP[index_l[0]]), fabs(_3dIPSig[index_l[0]]), fabs(_2dIPSig[index_l[0]]),
-			     fabs(_dxy[index_l[1]]),fabs(_dz[index_l[1]]), fabs(_3dIP[index_l[1]]), fabs(_2dIP[index_l[1]]), fabs(_3dIPSig[index_l[1]]), fabs(_2dIPSig[index_l[1]]),
-			     _relIso[ind_new_leading], _absIso03[ind_new_leading], _absIso04[ind_new_leading]/lepton_reco[0].Pt(), _absIso04[ind_new_leading], _trackIso[ind_new_leading], _deltaBIso[ind_new_leading],_sumChargedHadronPt03[ind_new_leading],
-			     _relIso[index_l[0]], _absIso03[index_l[0]], _absIso04[index_l[0]]/lepton_reco[1].Pt(), _absIso04[index_l[0]], _trackIso[index_l[0]], _deltaBIso[index_l[0]],_sumChargedHadronPt03[index_l[0]],
-			     _relIso[index_l[1]], _absIso03[index_l[1]], _absIso04[index_l[1]]/lepton_reco[2].Pt(), _absIso04[index_l[1]], _trackIso[index_l[1]], _deltaBIso[index_l[1]],_sumChargedHadronPt03[index_l[1]],
-			     pair[0].DeltaR(pair[1]),lepton_reco[0].DeltaR(lepton_reco[2]),lepton_reco[1].DeltaR(lepton_reco[2]), TMath::Abs(pair[0].DeltaPhi(pair[1])),TMath::Abs(lepton_reco[0].DeltaPhi(lepton_reco[2])),TMath::Abs(lepton_reco[1].DeltaPhi(lepton_reco[2])),
-			     _vertex_X[0], _vertex_Y[0],_vertex_Z[0], _vertex_R[0], _vertex_R[0]/ _vertex_sR[0], _vertex_R2D[0], _vertex_R2D[0]/ _vertex_sR2D[0],_vertex_chi2[0],_vertex_normchi2[0],_vertex_chi2[0],_vertex_normchi2[0],_vertex_chi2[0]/fabs(_vertex_Y[0]),_vertex_R[0]/fabs(_vertex_X[0]), 
-			     _vertex_X[2], _vertex_Y[2],_vertex_Z[2], _vertex_R[2], _vertex_R[2]/ _vertex_sR[2], _vertex_R2D[2], _vertex_R2D[2]/ _vertex_sR2D[2],_vertex_chi2[2],_vertex_normchi2[2],_vertex_chi2[2],_vertex_normchi2[2],_vertex_chi2[2]/fabs(_vertex_Y[2]),_vertex_R[2]/fabs(_vertex_X[2]), 
-			     _vertex_X[1], _vertex_Y[1],_vertex_Z[1], _vertex_R[1], _vertex_R[1]/ _vertex_sR[1], _vertex_R2D[1], _vertex_R2D[1]/ _vertex_sR2D[1],_vertex_chi2[1],_vertex_normchi2[1] ,_vertex_chi2[1],_vertex_normchi2[1] , _vertex_chi2[1]/fabs(_vertex_Y[1]), _vertex_R[1]/fabs(_vertex_X[1]),		
-			     min_delta_phi, ration1_deltaphi, ration2_deltaphi, ration1_deltaphimin, ration2_deltaphimin, ration1_deltaphiRmin, ration2_deltaphiRmin, mlll_met,mT_met,
-
-			     static_cast<double>(0) ,static_cast<double>(0) ,static_cast<double>(0) ,static_cast<double>(0) 
-
-      };
-            
+  
 
 
 
-            
-      //      double values_sr[nDist_sr] = {search_region_fill[0], search_region_fill[0]};
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            
- 
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  FILLING  HISTOGRAMS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      unsigned fill = effsam;
-      // ------------------- Histo kinematics
-      for(int numero_histo = 0; numero_histo < nDist; ++numero_histo){
-	if (numero_histo == 0  || numero_histo == 1 ||numero_histo == 119 ||numero_histo == 118 ||numero_histo == 117 ||numero_histo == 116 ) continue;
-	if (selection_0)      Histos[numero_histo][0][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (selection_1)      Histos[numero_histo][1][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (selection_2)      Histos[numero_histo][2][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (selection_3)      Histos[numero_histo][3][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (selection_4)      Histos[numero_histo][4][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (selection_5)      Histos[numero_histo][5][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (selection_final)  Histos[numero_histo][6][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	if (ossf_event ){
-	  if (selection_0)      Histos[numero_histo][7][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_1)      Histos[numero_histo][8][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_2)      Histos[numero_histo][9][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_3)      Histos[numero_histo][10][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_4)      Histos[numero_histo][11][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_5)      Histos[numero_histo][12][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_final)  Histos[numero_histo][13][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	}//end ossf
-	if (!ossf_event ){
-	  if (selection_0)      Histos[numero_histo][14][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_1)      Histos[numero_histo][15][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_2)      Histos[numero_histo][16][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_3)      Histos[numero_histo][17][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_4)      Histos[numero_histo][18][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_5)      Histos[numero_histo][19][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_final)  Histos[numero_histo][20][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	}//end ossf
-
-	if (_prompt){
-	  if (selection_0)      Histos[numero_histo][21][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_1)      Histos[numero_histo][22][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_2)      Histos[numero_histo][23][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_3)      Histos[numero_histo][24][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_4)      Histos[numero_histo][25][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_5)      Histos[numero_histo][26][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (selection_final)  Histos[numero_histo][27][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  if (ossf_event ){
-	    if (selection_0)      Histos[numero_histo][28][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_1)      Histos[numero_histo][29][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_2)      Histos[numero_histo][30][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_3)      Histos[numero_histo][31][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_4)      Histos[numero_histo][32][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_5)      Histos[numero_histo][33][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_final)  Histos[numero_histo][34][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  }//end ossf
-	  if (!ossf_event ){
-	    if (selection_0)      Histos[numero_histo][35][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_1)      Histos[numero_histo][36][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_2)      Histos[numero_histo][37][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_3)      Histos[numero_histo][38][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_4)      Histos[numero_histo][39][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_5)      Histos[numero_histo][40][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	    if (selection_final)  Histos[numero_histo][41][fill]->Fill(TMath::Min(values[numero_histo], maxBinC[numero_histo]), scal);
-	  }//end ossf
-	}//end prompt
-      }//end histo
-      
-      if (selection_0)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(0), maxBinC[0]), scal);
-      if (selection_1)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(1), maxBinC[0]), scal);
-      if (selection_2)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(2), maxBinC[0]), scal);
-      if (selection_3)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(3), maxBinC[0]), scal);
-      if (selection_4)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(4), maxBinC[0]), scal);
-      if (selection_5)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(5), maxBinC[0]), scal);
-      if (selection_final)  Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(6), maxBinC[0]), scal);
-      if (ossf_event ){
-	if (selection_0)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(7), maxBinC[0]), scal);
-        if (selection_1)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(8), maxBinC[0]), scal);
-	if (selection_2)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(9), maxBinC[0]), scal);
-	if (selection_3)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(10), maxBinC[0]), scal);
-	if (selection_4)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(11), maxBinC[0]), scal);
-	if (selection_5)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(12), maxBinC[0]), scal);
-	if (selection_final)  Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(13), maxBinC[0]), scal);
-      }//end ossf
-      if (!ossf_event ){
-	if (selection_0)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(14), maxBinC[0]), scal);
-        if (selection_1)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(15), maxBinC[0]), scal);
-	if (selection_2)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(16), maxBinC[0]), scal);
-	if (selection_3)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(17), maxBinC[0]), scal);
-	if (selection_4)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(18), maxBinC[0]), scal);
-	if (selection_5)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(19), maxBinC[0]), scal);
-	if (selection_final)  Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(20), maxBinC[0]), scal);
-      }//end ossf
-
-      if (_prompt){
-	if (selection_0)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(21), maxBinC[0]), scal);
-        if (selection_1)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(22), maxBinC[0]), scal);
-	if (selection_2)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(23), maxBinC[0]), scal);
-	if (selection_3)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(24), maxBinC[0]), scal);
-	if (selection_4)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(25), maxBinC[0]), scal);
-	if (selection_5)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(26), maxBinC[0]), scal);
-	if (selection_final)  Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(27), maxBinC[0]), scal);
-	if (ossf_event ){
-	  if (selection_0)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(28), maxBinC[0]), scal);
-	  if (selection_1)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(29), maxBinC[0]), scal);
-	  if (selection_2)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(30), maxBinC[0]), scal);
-	  if (selection_3)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(31), maxBinC[0]), scal);
-	  if (selection_4)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(32), maxBinC[0]), scal);
-	  if (selection_5)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(33), maxBinC[0]), scal);
-	  if (selection_final)  Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(34), maxBinC[0]), scal);
-	}//end ossf
-	if (!ossf_event ){
-	  if (selection_0)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(35), maxBinC[0]), scal);
-	  if (selection_1)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(36), maxBinC[0]), scal);
-	  if (selection_2)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(37), maxBinC[0]), scal);
-	  if (selection_3)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(38), maxBinC[0]), scal);
-	  if (selection_4)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(39), maxBinC[0]), scal);
-	  if (selection_5)      Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(40), maxBinC[0]), scal);
-	  if (selection_final)  Histos[0][0][fill]->Fill(TMath::Min(static_cast<double>(41), maxBinC[0]), scal);
-	}//end ossf
-      }//end prompt
 
 
-      if (_prompt){
-	if (ossf_event ){
-	  if (selection_0)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(0), maxBinC[0]), scal);
-	  if (selection_1)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(1), maxBinC[0]), scal);
-	  if (selection_2)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(2), maxBinC[0]), scal);
-	  if (selection_3)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(3), maxBinC[0]), scal);
-	  if (selection_4)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(4), maxBinC[0]), scal);
-	  if (selection_5)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(5), maxBinC[0]), scal);
-	}//end ossf
-	if (!ossf_event ){
-	  if (selection_0)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(6), maxBinC[0]), scal);
-	  if (selection_1)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(7), maxBinC[0]), scal);
-	  if (selection_2)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(8), maxBinC[0]), scal);
-	  if (selection_3)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(9), maxBinC[0]), scal);
-	  if (selection_4)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(10), maxBinC[0]), scal);
-	  if (selection_5)      Histos[1][0][fill]->Fill(TMath::Min(static_cast<double>(11), maxBinC[0]), scal);
-	}//end ossf
-      }//end prompt
-
-      if (selection_final){
-	if (_prompt){
-	  for (int i =0; i < 6; i++){
-	    if (_sr_bool_2dsip[i])                                         Histos[116][27][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (ossf_event && _sr_bool_2dsip[i])                           Histos[116][34][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (!ossf_event && _sr_bool_2dsip[i])                          Histos[116][41][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	  }//end 2dsip
-	  for (int i =0; i < 9; i++){
-	    if (_sr_bool_vtxR[i])                                         Histos[117][27][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (ossf_event && _sr_bool_vtxR[i])                           Histos[117][34][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (!ossf_event && _sr_bool_vtxR[i])                          Histos[117][41][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-            
-	    if (_sr_bool_vtx2R[i])                                         Histos[118][27][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (ossf_event && _sr_bool_vtx2R[i])                           Histos[118][34][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (!ossf_event && _sr_bool_vtx2R[i])                          Histos[118][41][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	  }//end 2dsip
-	  for (int i =0; i < 7; i++){
-	    if (_sr_bool_vtxX[i])                                         Histos[119][27][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (ossf_event && _sr_bool_vtxX[i])                           Histos[119][34][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	    if (!ossf_event && _sr_bool_vtxX[i])                          Histos[119][41][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	  }//end 2dsip
-	}//ed prompt
-    
-	for (int i =0; i < 6; i++){
-	  if (_sr_bool_2dsip[i])                                         Histos[116][6][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	}//end 2dsip
-	for (int i =0; i < 9; i++){
-	  if (_sr_bool_vtxR[i])                                         Histos[117][6][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	  if (_sr_bool_vtx2R[i])                                         Histos[118][6][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	}//end 2dsip
-	for (int i =0; i < 7; i++){
-	  if (_sr_bool_vtxX[i])                                         Histos[119][6][fill]->Fill(TMath::Min(static_cast<double>(i), maxBinC[0]), scal);
-	}//end 2dsip
-      }//end final
-
-    
-    }
-    
-  } 
-  //Split data and MC histograms for plotting and propagating uncertainties
-  TH1D* dataYields[nDist][nCat];
-  for(unsigned dist = 0; dist < nDist; ++dist){
-    for(unsigned cat = 0; cat < nCat; ++cat){
-      dataYields[dist][cat] = (TH1D*) Histos[dist][cat][11]->Clone();
-    }
-  }
-    
-  // cout<< "ok 1"<<endl;
-    
-    
-  TH1D* bkgYields[nDist][nCat][nSamples_eff -10]; //change to nSamples_eff if sig is removed
-  for(unsigned dist = 0; dist < nDist; ++dist){
-    for(unsigned cat = 0; cat < nCat; ++cat){
-      for(unsigned effsam1 = 11; effsam1 < nSamples_eff +1 ; ++effsam1){
-	
-	//	cout<< effsam1<<"   "<<nSamples_eff<<endl;
-	bkgYields[dist][cat][effsam1 -11] = (TH1D*) Histos[dist][cat][effsam1]->Clone();
-	if (dist == 1 && cat ==0){
-	  cout<<"**********  "<<eff_names[effsam1]<<endl;
-	  for (int i = 0; i < 12; i ++){
-	    cout<<"bin# "<<i+1<<") : "<<bkgYields[dist][cat][effsam1 -11] -> GetBinContent (i+1)<<endl;
-	  }
-	}
 
 
-	if(effsam1 > 11 && effsam1 < 17){
-	  
-	   dataYields[dist][cat]->Add(bkgYields[dist][cat][effsam1 -11]);
-	}
-      }
-    }
-  }
-    
-    
-    
-  const TString sigNames[ nSamples_signal] = {"m_{N} = 1 ", "m_{N} = 2 ", "m_{N} = 3 ", "m_{N} = 4 ","m_{N} = 5 |V|^{2} = 10^{-5}", "m_{N} = 5.5 |V|^{2} = 10^{-5}", "m_{N} = 6 ", "m_{N} = 7 |V|^{2} = 10^{-5}", "m_{N} = 8 |V|^{2} = 10^{-5}", "m_{N} = 9 "};
-  TH1D* signals[nSamples_signal];
-  //Plot the yields as a function of the search region
-  for(unsigned dist = 0; dist < nDist; ++dist){
-    for(unsigned cat = 0; cat < nCat; ++cat){
-     
-      signals[0] = (TH1D*) Histos[dist][cat][1]->Clone() ;
-      signals[1] = (TH1D*) Histos[dist][cat][2]->Clone() ;
-      signals[2] = (TH1D*) Histos[dist][cat][3]->Clone() ;
-      signals[3] = (TH1D*) Histos[dist][cat][4]->Clone() ;
-      signals[4] = (TH1D*) Histos[dist][cat][5]->Clone() ;
-      signals[5] = (TH1D*) Histos[dist][cat][6]->Clone() ;
-      signals[6] = (TH1D*) Histos[dist][cat][7]->Clone() ;
-      signals[7] = (TH1D*) Histos[dist][cat][8]->Clone() ;
-      signals[8] = (TH1D*) Histos[dist][cat][9]->Clone() ;
-      signals[9] = (TH1D*) Histos[dist][cat][10]->Clone() ;
-     // if (dist != 0 && cat !=0){      
-      //plotDataVSMC(cat,dist,dataYields[dist][cat], bkgYields[dist][cat], eff_names, nSamples_eff -  nSamples_signal - 1, Histnames_ossf[dist] + "_" +  catNames[cat], catNames[cat], true, 2, true, signals,  sigNames , nSamples_signal, false);
-      //   cout<< "ok 4"<<endl;
-      //}
-      if (dist == 1 && cat ==0){
-	cout<<"------------------"<<endl;
-	plotDataVSMC(cat,dist,dataYields[dist][cat], bkgYields[dist][cat], eff_names, nSamples_eff -  nSamples_signal - 1, Histnames_ossf[dist] + "_" +  catNames[cat], catNames[cat], true, 2, true, signals,  sigNames , nSamples_signal, false);
-	for (int i = 0; i < 12; i ++){
-	  
-	cout<<"===="<<endl;
-	cout<<"bin# "<<i+1<<") signal: "<<signals[0] -> GetBinContent (i+1)<<" "<<signals[1] -> GetBinContent (i+1)<<" "<<signals[2] -> GetBinContent (i+1)<<" "<<signals[3] -> GetBinContent (i+1)<<" "<<signals[4] -> GetBinContent (i+1)<<" "<<signals[5] -> GetBinContent (i+1)<<" "<<signals[6] -> GetBinContent (i+1)<<" "<<signals[7] -> GetBinContent (i+1)<<" "<<signals[8] -> GetBinContent (i+1)<<" "<<signals[9] -> GetBinContent (i+1)<<endl;
-	  
-	}    
-      }
 
 
-    }
-  }
-    
- 
-    
-    
-    
-    
-    
-    
 }// end analisi
 
-//==================================================================
 
-void Analysis_mc::find_leptons(int selezione,  unsigned displacedC, TLorentzVector lepton_tobeselected[20], int index_displaced[20], int index_s[2]){
-  // ordine in pT
-  int index_1=-5;
-  int index_2= -5;
-  if (selezione == 0 ){
-    index_1 = index_displaced[0];
-    index_2 = index_displaced[1];	
-  }
-
-  Double_t          delta_R_min=-1;
-  Double_t          _mll_min=50000;
- 
-  //min mass
-  if (selezione == 1 ){
-    for (int h = 0; h <displacedC; h ++ ){
-      for (int g = 0; g < displacedC; g ++){
-	if (h != g) {
-	  if (h == 0 && g ==1) {
-	    _mll_min = (lepton_tobeselected[h]+lepton_tobeselected[g]).M();
-	    index_1 = index_displaced[h];
-	    index_2 = index_displaced[g];
-	    if (lepton_tobeselected[h].Pt() < lepton_tobeselected[g].Pt()) {
-	      index_1 = index_displaced[g];
-	      index_2 = index_displaced[h];
-	    }
-
-	  }
-	  if((lepton_tobeselected[h]+lepton_tobeselected[g]).M() < _mll_min) {
-	    _mll_min = (lepton_tobeselected[h]+lepton_tobeselected[g]).M();
-	    index_1 = index_displaced[h];
-	    index_2 = index_displaced[g];
-	    if (lepton_tobeselected[h].Pt() < lepton_tobeselected[g].Pt()) {
-	      index_1 = index_displaced[g];
-	      index_2 = index_displaced[h];
-	    }
-
-	  }
-	}
-      }// loop1
-    }//loop 2
-  }//selezione1
-
-  //min delta
-  if (selezione == 2 ){
-    for (int h = 0; h <displacedC; h ++ ){
-      for (int g = 0; g < displacedC; g ++){
-	if (h != g) {
-	  if (h == 0 && g ==1) {
-	    delta_R_min=  lepton_tobeselected[h].DeltaR(lepton_tobeselected[g]);
-	    index_1 = index_displaced[h];
-	    index_2 = index_displaced[g];
-
-	    if (lepton_tobeselected[h].Pt() < lepton_tobeselected[g].Pt()) {
-	      index_1 = index_displaced[g];
-	      index_2 = index_displaced[h];
-	    }
-
-	  }
-	  if(lepton_tobeselected[h].DeltaR(lepton_tobeselected[g]) < delta_R_min) {
-	    delta_R_min=  lepton_tobeselected[h].DeltaR(lepton_tobeselected[g]);
-	    index_1 = index_displaced[h];
-	    index_2 = index_displaced[g];
-
-	    if (lepton_tobeselected[h].Pt() < lepton_tobeselected[g].Pt()) {
-	      index_1 = index_displaced[g];
-	      index_2 = index_displaced[h];
-	    }
-	  }
-	}	
-      }// loop1
-    }//loop 2
-  }
-  index_s [0] = index_1;
-  index_s[1]  = index_2; 
-
-}//end funciton
 
 
 
 
 //==================================================================
-double Analysis_mc::maximum(double a, double b){
+double Analysis_tables::maximum(double a, double b){
   double massimo=0;
   massimo = a;
-  if (massimo < b) massimo = b;
-  return massimo+1;
+  if (massimo < b) massimo = b; 
+  return massimo+1; 
 }
-//___________________________________________________________________
-double Analysis_mc::derivateR(double a, double x, double y, double z){
-  double result =0;
-  result = a /((x*x + y*y + z*z)*(x*x + y*y + z*z));
-  return result;
-}
-//___________________________________________________________________
-double Analysis_mc::derivate2_with_sigmaR(double a, double sa, double x, double y, double z){
-  double result =0;
-  result = (a*a)*(sa*sa) /(x*x + y*y + z*z);
-  return result;
-}
-//___________________________________________________________________
-double Analysis_mc::derivateR2D(double a, double x, double y){
-  double result =0;
-  result = a /((x*x + y*y )*(x*x + y*y ));
-  return result;
-}
-//___________________________________________________________________
-double Analysis_mc::derivate2_with_sigmaR2D(double a, double sa, double x, double y){
-  double result =0;
-  result = (a*a)*(sa*sa) /(x*x + y*y );
-  return result;
-}
-
 
 //___________________________________________________________________
 
-void Analysis_mc::from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point){
-    
+void Analysis_tables::from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point){
+
   const int numero= number_point;
-    
+
   double x_graph[numero];
-  double y_graph[numero];
+  double y_graph[numero];  
   for (int i =0; i <number_point; i ++){
     x_graph[i]=0;
     y_graph[i]=0;
@@ -2235,9 +1484,9 @@ void Analysis_mc::from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, in
   for (int i =0; i <number_point; i ++){
     graph -> GetPoint(i, x_graph[i], y_graph[i]);
     histo->SetBinContent (i+1, x_graph[i],  y_graph[i]);
-        
+
     //cout<<i<<") "<<y_graph[i]<<"  "<< histo->GetBinContent (i+1)<<endl;
-        
+
   }
 }
 /*
@@ -2266,12 +1515,12 @@ return weight;
 
 
 //==================================================================
-double Analysis_mc::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
-			      TGraphAsymmErrors *fakeRate_e[3],
-			      double eta,
-			      double flavors,
-			      double lptcone
-			      ){
+double Analysis_tables::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
+                              TGraphAsymmErrors *fakeRate_e[3],
+                              double eta,
+                              double flavors,
+                              double lptcone
+                              ){
     
     
   eta = fabs(eta);
@@ -2301,24 +1550,24 @@ double Analysis_mc::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
   if (flavors == 0){
     if (momentum < 49){
       if (eta < 0.8){
-	factore = fakeRate_e_histo[0]->GetBinContent(fakeRate_e_histo[0]->FindBin(momentum));
+factore = fakeRate_e_histo[0]->GetBinContent(fakeRate_e_histo[0]->FindBin(momentum));
       }//eta1
       else if (eta > 0.8 && eta<1.479){
-	factore = fakeRate_e_histo[1]->GetBinContent(fakeRate_e_histo[1]->FindBin(momentum));
+factore = fakeRate_e_histo[1]->GetBinContent(fakeRate_e_histo[1]->FindBin(momentum));
       }//eta1
       else {
-	factore = fakeRate_e_histo[2]->GetBinContent(fakeRate_e_histo[2]->FindBin(momentum));
+factore = fakeRate_e_histo[2]->GetBinContent(fakeRate_e_histo[2]->FindBin(momentum));
       }//eta1
     }// <70
     else {
       if (eta < 0.8){
-	factore = fakeRate_e_histo[0]->GetBinContent(fakeRate_e_histo[0]->FindBin(45));
+factore = fakeRate_e_histo[0]->GetBinContent(fakeRate_e_histo[0]->FindBin(45));
       }//eta1
       else if (eta > 0.8 && eta<1.479){
-	factore = fakeRate_e_histo[1]->GetBinContent(fakeRate_e_histo[1]->FindBin(45));
+factore = fakeRate_e_histo[1]->GetBinContent(fakeRate_e_histo[1]->FindBin(45));
       }//eta1
       else {
-	factore = fakeRate_e_histo[2]->GetBinContent(fakeRate_e_histo[2]->FindBin(45));
+factore = fakeRate_e_histo[2]->GetBinContent(fakeRate_e_histo[2]->FindBin(45));
       }//eta1
     }
   }//e
@@ -2326,24 +1575,24 @@ double Analysis_mc::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
   if (flavors == 1){
     if (momentum < 49){
       if (eta < 0.8){
-	factore = fakeRate_mu_histo[0]->GetBinContent(fakeRate_mu_histo[0]->FindBin(momentum));
+factore = fakeRate_mu_histo[0]->GetBinContent(fakeRate_mu_histo[0]->FindBin(momentum));
       }//eta1
       else if (eta > 0.8 && eta<1.479){
-	factore = fakeRate_mu_histo[1]->GetBinContent(fakeRate_mu_histo[1]->FindBin(momentum));
+factore = fakeRate_mu_histo[1]->GetBinContent(fakeRate_mu_histo[1]->FindBin(momentum));
       }//eta1
       else {
-	factore = fakeRate_mu_histo[2]->GetBinContent(fakeRate_mu_histo[2]->FindBin(momentum));
+factore = fakeRate_mu_histo[2]->GetBinContent(fakeRate_mu_histo[2]->FindBin(momentum));
       }//eta1
     }// <70
     else {
       if (eta < 0.8){
-	factore = fakeRate_mu_histo[0]->GetBinContent(fakeRate_mu_histo[0]->FindBin(45));
+factore = fakeRate_mu_histo[0]->GetBinContent(fakeRate_mu_histo[0]->FindBin(45));
       }//eta1
       else if (eta > 0.8 && eta<1.479){
-	factore = fakeRate_mu_histo[1]->GetBinContent(fakeRate_mu_histo[1]->FindBin(45));
+factore = fakeRate_mu_histo[1]->GetBinContent(fakeRate_mu_histo[1]->FindBin(45));
       }//eta1
       else {
-	factore = fakeRate_mu_histo[2]->GetBinContent(fakeRate_mu_histo[2]->FindBin(45));
+factore = fakeRate_mu_histo[2]->GetBinContent(fakeRate_mu_histo[2]->FindBin(45));
       }//eta1
     }
   }//e
@@ -2366,7 +1615,7 @@ double Analysis_mc::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
 
 
 //___________________________________________________________________
-void Analysis_mc::class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l[3]){
+void Analysis_tables::class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l[3]){
     
   int ch_lepton1=charge_3l[0];
   int ch_lepton2=charge_3l[1];
@@ -2374,23 +1623,23 @@ void Analysis_mc::class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l
   int fl_lepton1=flavors_3l[0];
   int fl_lepton2=flavors_3l[1];
   int fl_lepton3=flavors_3l[2];
-    
-    
+
+
   // 1* = eee
   // 2* = emm
   // 3* = eem
   // 4* = mmm
-    
-    
-    
-    
+
+  
+
+
     
   event_clas[0]=-1;
-    
-    
+
+
   if (ch_lepton1 == ch_lepton2 && ch_lepton1 == ch_lepton3 && ch_lepton3 == ch_lepton2)   event_clas[0]=-1;
-    
-    
+
+
   if (fl_lepton2 == 0 ||  fl_lepton3  == 0 ||  fl_lepton1== 0) {
     if ((fl_lepton2 + fl_lepton3 + fl_lepton1) == 0 ) event_clas[0] = 10; //e e e
     if ((fl_lepton2 + fl_lepton3 + fl_lepton1) == 1 ) event_clas[0] = 30; //e e mu
@@ -2404,7 +1653,7 @@ void Analysis_mc::class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l
   else {
     event_clas[0] =-1;
   }
-    
+
   if (event_clas[0]  == 30){
     if ((fl_lepton1 == 0 && fl_lepton2 == 0 && fl_lepton3 == 1) ) { // e e mu
       if ((ch_lepton1 + ch_lepton2) == 0) event_clas[0] = 3;
@@ -2416,8 +1665,8 @@ void Analysis_mc::class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l
       if ((ch_lepton2 + ch_lepton3) == 0) event_clas[0] = 3;
     }
   }
-    
-    
+  
+ 
   if (event_clas[0]  == 20){
     if ((fl_lepton1 == 1 && fl_lepton2 == 1 && fl_lepton3 == 0) ) { // e e mu
       if ((ch_lepton1 + ch_lepton2) == 0) event_clas[0] = 2;
@@ -2429,23 +1678,23 @@ void Analysis_mc::class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l
       if  ((ch_lepton2 + ch_lepton3) == 0)event_clas[0] = 2;
     }
   }
-    
-    
+
+
   if (event_clas[0]  == 10 ) {
     if ((ch_lepton1 + ch_lepton2 + ch_lepton3) == 1 || (ch_lepton1 + ch_lepton2 + ch_lepton3) == -1)  event_clas[0] =1;
   }
-    
+
   if (event_clas[0]  == 40 ) {
     if ((ch_lepton1 + ch_lepton2 + ch_lepton3) == 1 || (ch_lepton1 + ch_lepton2 + ch_lepton3) == -1)  event_clas[0] =4;
   }
-    
-    
+
+
 }
 
 
 
 //___________________________________________________________________
-void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector leep1, TLorentzVector leep2,TLorentzVector leep3, int  flavors_3l[3], int  charge_3l[3]){
+void Analysis_tables::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector leep1, TLorentzVector leep2,TLorentzVector leep3, int  flavors_3l[3], int  charge_3l[3]){
     
   int ch_lepton1=charge_3l[0];
   int ch_lepton2=charge_3l[1];
@@ -2456,15 +1705,15 @@ void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector
     
     
   kind[0] = -1;
-    
+
   if (ch_lepton1 == ch_lepton2 && ch_lepton1 == ch_lepton3 && ch_lepton3 == ch_lepton2)   kind[0] = -1;
-    
+
     
   // OSSF
   if (     ((ch_lepton1 != ch_lepton2)    && (fl_lepton1 == fl_lepton2))  || ((ch_lepton1 != ch_lepton3)   && (fl_lepton1 == fl_lepton3)) || ((ch_lepton2 != ch_lepton3)  && (fl_lepton3 == fl_lepton2)) ){ // ossf
     //cout<<"in function where kind is 1: "<<kind[0]<<endl;
-        
-        
+
+
     kind[0] = 1;
     double i_m[3]={33333,33333,33333};
     double mass_inv=0;
@@ -2477,8 +1726,8 @@ void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector
       if (i_m[i] == 33333) continue;
       mass_inv = i_m[i];
       if (min_mass > mass_inv ){
-	min_mass = mass_inv;
-	index_inv = i;
+min_mass = mass_inv;
+index_inv = i;
       }
     }
     if (index_inv == 0) {
@@ -2490,13 +1739,13 @@ void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector
       pair[0].SetPtEtaPhiE( leep1.Pt(),  leep1.Eta(), leep1.Phi(), leep1.E());
       pair[1].SetPtEtaPhiE( leep3.Pt(),  leep3.Eta(), leep3.Phi(), leep3.E());
       pair[2].SetPtEtaPhiE( leep2.Pt(),  leep2.Eta(), leep2.Phi(), leep2.E());
-            
+
     }
     if (index_inv == 2) {
       pair[0].SetPtEtaPhiE( leep2.Pt(),  leep2.Eta(), leep2.Phi(), leep2.E());
       pair[1].SetPtEtaPhiE( leep3.Pt(),  leep3.Eta(), leep3.Phi(), leep3.E());
       pair[2].SetPtEtaPhiE( leep1.Pt(),  leep1.Eta(), leep1.Phi(), leep1.E());
-            
+
     }
   }// end ossf
   // No_OSSF
@@ -2514,8 +1763,8 @@ void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector
       if (i_m[i] == 33333) continue;
       mass_inv = i_m[i];
       if (min_mass > mass_inv ){
-	min_mass = mass_inv;
-	index_inv = i;
+min_mass = mass_inv;
+index_inv = i;
       }
     }
     if (index_inv == 0) {
@@ -2527,13 +1776,13 @@ void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector
       pair[0].SetPtEtaPhiE( leep1.Pt(),  leep1.Eta(), leep1.Phi(), leep1.E());
       pair[1].SetPtEtaPhiE( leep3.Pt(),  leep3.Eta(), leep3.Phi(), leep3.E());
       pair[2].SetPtEtaPhiE( leep2.Pt(),  leep2.Eta(), leep2.Phi(), leep2.E());
-            
+
     }
     if (index_inv == 2) {
       pair[0].SetPtEtaPhiE( leep2.Pt(),  leep2.Eta(), leep2.Phi(), leep2.E());
       pair[1].SetPtEtaPhiE( leep3.Pt(),  leep3.Eta(), leep3.Phi(), leep3.E());
       pair[2].SetPtEtaPhiE( leep1.Pt(),  leep1.Eta(), leep1.Phi(), leep1.E());
-            
+
     }
         
         
@@ -2555,8 +1804,8 @@ void Analysis_mc::ossf_no_ossf(int kind[1],TLorentzVector pair[3],TLorentzVector
 
 
 //___________________________________________________________________
-void Analysis_mc::fr_selection(int number, TLorentzVector lepton_fake_order[3],TLorentzVector leep1, TLorentzVector leep2,TLorentzVector leep3, int index_leptons[3],  int flavor_leptons[3], int origin_leptons[3],int index_3l[3],  int flavor_3l[3], int origin_3l[3]){
-    
+void Analysis_tables::fr_selection(int number, TLorentzVector lepton_fake_order[3],TLorentzVector leep1, TLorentzVector leep2,TLorentzVector leep3, int index_leptons[3],  int flavor_leptons[3], int origin_leptons[3],int index_3l[3],  int flavor_3l[3], int origin_3l[3]){
+
   lepton_fake_order[0].SetPtEtaPhiE(0,0,0,0);
   lepton_fake_order[1].SetPtEtaPhiE(0,0,0,0);
   lepton_fake_order[2].SetPtEtaPhiE(0,0,0,0);
@@ -2565,7 +1814,7 @@ void Analysis_mc::fr_selection(int number, TLorentzVector lepton_fake_order[3],T
     flavor_leptons[i]= -5;
     origin_leptons[i]= -5;
   }
-    
+
   if (number == 3) {
     lepton_fake_order[0].SetPtEtaPhiE(leep1.Pt(),leep1.Eta(),leep1.Phi(),leep1.E());
     lepton_fake_order[1].SetPtEtaPhiE(leep2.Pt(),leep2.Eta(),leep2.Phi(),leep2.E());
@@ -2594,7 +1843,7 @@ void Analysis_mc::fr_selection(int number, TLorentzVector lepton_fake_order[3],T
     origin_leptons[1]=origin_3l[1];
     origin_leptons[2]=origin_3l[2];
   }
-    
-    
-    
+
+  
+
 }//end fr

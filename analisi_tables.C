@@ -26,16 +26,16 @@
 #include <TClonesArray.h>
 #include <TLegendEntry.h>
 #include <TGraphAsymmErrors.h>
-#include <Analysis_mc.h>
+#include <Analysis_tables.h>
 #include <THStack.h>
 #include <TPaveText.h>
 #include <THStack.h>
 
-void majo (int selezione = 1, string inputRootFile= "file_mva_gen1.root");
+void majo (string inputRootFile= "file_mva_gen1.root");
 
 
 // ********************************************************************
-void majo(int selezione, string inputRootFile){
+void majo(string inputRootFile){
     Double_t pigreco= TMath::ACos(-1);
     
     cout<<"in analisi"<<endl;
@@ -43,8 +43,8 @@ void majo(int selezione, string inputRootFile){
     
 
 //==========================================================================================
-    Analysis_mc all(selezione, "/Users/Martina/Desktop/CMS/file_bck/zg.root");
-    all.analisi(selezione, 1);
+    Analysis_tables all("/Users/Martina/Desktop/CMS/file_bck/zg.root");
+    all.analisi(1);
 
 
 }

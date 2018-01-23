@@ -18,8 +18,8 @@ void drawLumi(TPad* pad, const TString& extraText, const bool data){
   	const float r = pad->GetRightMargin();
   	const float b = pad->GetBottomMargin();
 
-	float CMSTextSize = pad->GetTopMargin()*0.8;
-	float lumiTextSize = pad->GetTopMargin()*0.6;
+	float CMSTextSize = pad->GetTopMargin()*0.6;
+	float lumiTextSize = pad->GetTopMargin()*0.4;
 
 	float CMSTextOffset = pad->GetTopMargin()*0.7;
 	float lumiTextOffset = pad->GetTopMargin()*0.7;

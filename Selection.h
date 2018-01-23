@@ -53,17 +53,14 @@ public:
 		    Double_t        _lE[7],   
 		    Bool_t          _lPOGMedium[7],   
 		    Bool_t          _lPOGLoose[7],   
-		    Int_t           _lFlavor[7],   
+		    UInt_t                 _lFlavor[20],   
 		    Int_t        _lCharge[7],   
 		    Double_t        _relIso[7],
 		    Double_t        _ipPV[7],   
 		    Double_t        _ipZPV[7],   
 		    Double_t        _3dIP[7],   
 		    Double_t        _3dIPsig[7], 
-		    Bool_t          _lHNLoose[7],   
-		    Bool_t          _lHNFO[7],   
-		    Bool_t          _lHNTight[7],  
-		    Float_t        _lElectronMva[7],   
+		      
 		    Bool_t           _lIsPrompt[7],
 		    double index[3],
 		    double number_tight[1],
@@ -71,13 +68,13 @@ public:
 		    int skip_event[1],
 			      
 		    int effsam,
-		    TGraphAsymmErrors *fakeRate_mu[3],
-		    TGraphAsymmErrors *fakeRate_e[3],
+		  
 		    double faxtore[1],
-		    Double_t        _gen_lPt[7], 
-		    Double_t        _gen_lEta[7],
-		    Bool_t        _gen_lIsPrompt[22],
-		    Int_t            _gen_lFlavor[20]
+		  
+		     Bool_t          _lpassConversionVeto[20],   
+			     Double_t        _muNumberInnerHits[20],  
+		    Double_t        _eleNumberInnerHitsMissing[20],
+		     Double_t        _sumChargedHadronPt03[20]
 		    
 
 

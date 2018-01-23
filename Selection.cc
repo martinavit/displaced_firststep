@@ -69,37 +69,36 @@ Selection::~Selection()	 {
 
 //==================================================================
 void Selection::selezione(   Int_t _gen_nL,
-			  Int_t           _nL,
-			      Double_t        _lPt[7], 
-			      Double_t        _lEta[7],   
-			      Double_t        _lE[7],   
-			      Bool_t          _lPOGMedium[7],   
-			      Bool_t          _lPOGLoose[7],   
-			      Int_t           _lFlavor[7],   
-			      Int_t        _lCharge[7],   
-			      Double_t        _relIso[7],
-			      Double_t        _ipPV[7],   
-			      Double_t        _ipZPV[7],   
-			      Double_t        _3dIP[7],   
-			      Double_t        _3dIPsig[7], 
-			      Bool_t          _lHNLoose[7],   
-			      Bool_t          _lHNFO[7],   
-			      Bool_t          _lHNTight[7],  
-			      Float_t        _lElectronMva[7],   
-			      Bool_t           _lIsPrompt[7],
-			      double index[3],
-			      double number_tight[1],
-			      double number_prompt[1],
-			      int skip_event[1],
+		   Int_t           _nL,
+		    Double_t        _lPt[7], 
+		    Double_t        _lEta[7],   
+		    Double_t        _lE[7],   
+		    Bool_t          _lPOGMedium[7],   
+		    Bool_t          _lPOGLoose[7],   
+		    UInt_t                 _lFlavor[20],   
+		    Int_t        _lCharge[7],   
+		    Double_t        _relIso[7],
+		    Double_t        _ipPV[7],   
+		    Double_t        _ipZPV[7],   
+		    Double_t        _3dIP[7],   
+		    Double_t        _3dIPsig[7], 
+		      
+		    Bool_t           _lIsPrompt[7],
+		    double index[3],
+		    double number_tight[1],
+		    double number_prompt[1],
+		    int skip_event[1],
 			      
-			      int effsam,
-			      TGraphAsymmErrors *fakeRate_mu[3],
-			      TGraphAsymmErrors *fakeRate_e[3],
-			      double faxtore[1],
-			      Double_t        _gen_lPt[7], 
-			     Double_t        _gen_lEta[7],
-			     Bool_t       _gen_lIsPrompt[20],
-			     Int_t            _gen_lFlavor[20]
+		    int effsam,
+		  
+		    double faxtore[1],
+		  
+		     Bool_t          _lpassConversionVeto[20],   
+			     Double_t        _muNumberInnerHits[20],  
+		    Double_t        _eleNumberInnerHitsMissing[20],
+		     Double_t        _sumChargedHadronPt03[20]
+
+			    
 			     
 
 
@@ -158,6 +157,9 @@ void Selection::selezione(   Int_t _gen_nL,
       unsigned*         ind = new unsigned[_nL];	//new indices of good leptons
       unsigned          lCount = 0;	//Count number of FO leptons that are not taus
       unsigned*         _isFO= new unsigned[_nL];
+
+      unsigned          lCount1 = 0;	//Count number of FO leptons that are not taus
+      unsigned*         _isFO1= new unsigned[_nL];
             
       Bool_t            _passedMVA90[_nL];
       double*           conePt = new double[_nL];
@@ -172,61 +174,51 @@ void Selection::selezione(   Int_t _gen_nL,
       unsigned           promptC = 0;
             
       double            low_mass_pt_base[1];
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< VECTORS AND VARIABLES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      for(unsigned l = 0; l < _nL; ++l){
-	if (_lFlavor[l] == 0 && _lPt[l] < 5 ) skip_event[0] = -90;
-	if (_lFlavor[l] == 1 && _lPt[l] < 5 ) skip_event[0] = -90;
 
-      }
+
+     
+      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< VECTORS AND VARIABLES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+     
+       skip_event[0] = -90;
       //FO
       for(unsigned l = 0; l < _nL; ++l){
 	_isFO[l] = false;
-	if (_lFlavor[l] == 0 && _lPt[l] < 5 ) continue;
-	if (_lFlavor[l] == 1 && _lPt[l] < 5 ) continue;
-	//	_isFO[l] = true;
-
-	//if(TMath::Abs(_ipPV[l]) > 0.05 || TMath::Abs(_ipZPV[l]) > 0.1 || _3dIPsig [l] > 4) continue;
-	int eta = -1;
-	eta = find_eta(TMath::Abs(_lEta[l]));
-	//FO
-		if (_lFlavor[l] == 1 && _lPOGLoose[l] && _relIso[l] < isolation_loose ) _isFO[l] = true;
-		if (_lFlavor[l] == 0 && _relIso[l] < isolation_loose ){
-		 if ((eta == 0 && _lElectronMva[l]>newMVALooseFR[0])||(eta == 1 && _lElectronMva[l]>newMVALooseFR[1])||(eta == 2 && _lElectronMva[l]>newMVALooseFR[2]))_isFO[l] = true;
-			}	
-
-
-
-	
+	_isFO1[l] = false;
+	//if (_lFlavor[l] == 0 && _lPt[l] < 5 ) continue;
+	//if (_lFlavor[l] == 1 && _lPt[l] < 3.5 ) continue;
+	if (_lFlavor[l]== 1 && _lPOGLoose[l] )       _isFO1[l] = true; // tracker or global muon --> loose definition from POG
+	if (_lFlavor[l]== 0 && _lpassConversionVeto[l] && _eleNumberInnerHitsMissing[l]<=1 && _lPOGLoose[l])    _isFO1[l] = true; //no conversion and number missing hits
+	if (_lFlavor[l]== 1 && _lPOGLoose[l]  && _sumChargedHadronPt03[l] < 10 )       _isFO[l] = true; // tracker or global muon --> loose definition from POG
+	if (_lFlavor[l]== 0 && _lpassConversionVeto[l] && _eleNumberInnerHitsMissing[l]<=1  && _sumChargedHadronPt03[l] < 10 && _lPOGLoose[l])    _isFO[l] = true; //no conversion and number missing hits
+	if(_isFO1[l] && _lFlavor[l] != 2){
+	  ++lCount1;
+	}
 	if(_isFO[l] && _lFlavor[l] != 2){
 	  ind[lCount] = l;
 	  ++lCount;
 	}
-      }
-      
-      if(lCount < number_veto_leptons) skip_event[0] = -80;
+      } 
+      if(lCount1 < number_veto_leptons) continue;
+      skip_event[0] = -80;
+      //if(lCount1 < number_veto_leptons) skip_event[0] = -80;
       //if (lCount != number_veto_leptons ) skip_event[0] = -1;
+      if(lCount < number_veto_leptons) continue;
+      skip_event[0] = -75;
+
 
   
-     if(lCount < number_veto_leptons) continue;
       // if (lCount != number_veto_leptons ) continue;
 
       
       for(unsigned l = 0; l < lCount; ++l){
-	conePt[ind[l]]=0;
-	_passedMVA90[ind[l]]=false;
-
-	conePt[ind[l]] =_lPt[ind[l]];
-	//_lPt[ind[l]] = _lPt[ind[l]]* maximum (0, _isolation[ind[l]] - isolation_tight);
-	int eta = -1;
-	eta = find_eta(TMath::Abs(_lEta[l]));
-	if (_lFlavor[ind[l]] == 0 ){
-	  _passedMVA90[ind[l]] = _lElectronMva[ind[l]] >  std::min( MVA_cuts_pt15[eta], std::max(MVA_cuts_pt25[eta] , MVA_cuts_pt15[eta] + (MVA_cuts_pt25[eta] - MVA_cuts_pt15[eta])*0.1 *( _lPt[ind[l]]-15) ) );
-	}
+	conePt[ind[l]] =0.;
+	conePt[ind[l]] = _lPt[ind[l]];
       }
-            
-     
-      //Order FO leptons by Pt
+
+    
+      
       for(unsigned k =0; k < lCount; ++k){
+	//unsigned maxI = 999;
 	double maxConePt = 0;
 	for(unsigned l = 0; l < lCount; ++l){
 	  if(usedLep.find(ind[l]) == usedLep.end()){
@@ -240,51 +232,28 @@ void Selection::selezione(   Int_t _gen_nL,
       }
       for(unsigned i = 0; i < lCount; ++i){
 	ind[i] = ordind[i];
-
       }
-           
-            
-      //Check number of tight leptons
-      /*for(unsigned l = 0; l < lCount; ++l){
-	_isT[ind[l]] = false;
-	//if (_lFlavor[ind[l]]== 1 && _relIso[ind[l]] <isolation_tight)       _isT[ind[l]] = true;
-	//if (_lFlavor[ind[l]]== 0 && _relIso[ind[l]] < isolation_tight && _passedMVA90[ind[l]])    _isT[ind[l]] = true;
-	if (_lFlavor[ind[l]]== 1 && _relIso[ind[l]] <   isolation_loose)       _isT[ind[l]] = true;
-	if (_lFlavor[ind[l]]== 0 && _relIso[ind[l]] <   isolation_loose)    _isT[ind[l]] = true;
-	//if (_lHNTight[ind[l]]) _isT[ind[l]] = true;
 
-	}*/
+      int pt_treshold = 100;
+      for(unsigned l = 0; l < lCount; ++l){
+	if((_lFlavor[ind[l]] == 0 && conePt[ind[l]] < 5)  ) pt_treshold = -1;
+	if((_lFlavor[ind[l]] == 1 && conePt[ind[l]] < 3.5)  ) pt_treshold = -1;
+      }
+      if(pt_treshold == -1)       continue;
+      skip_event[0] = -70;
+  
+            
+      
 
       _isT[ind[0]]=true;
       _isT[ind[1]]=true;
       _isT[ind[2]]=true;
       
 
+      if (_lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_ipPV[ind[0]]) > 0.05 || TMath::Abs(_ipZPV[ind[0]]) > 0.1 || fabs(_3dIPsig [ind[0]]) > 4  ) continue;
+      skip_event[0] = -65; 
 
-
-      //cout<<_lPt[ind[0]]<<"  "<<_lPt[ind[1]]<<"  "<<_lPt[ind[2]]<<endl;
-
-      /* for(unsigned l = 0; l < lCount; ++l){
-	if(_isT[ind[0]]) ++tightC;
-	if(_isT[ind[1]]) ++tightC;
-	if(_isT[ind[2]]) ++tightC;
-	else break;
-	}*/
-      
-      //if(lCount < number_veto_leptons) skip_event[0] = -1;
-      // if(lCount < number_veto_leptons) continue;
-
-      //if (lCount != number_veto_leptons ) skip_event[0] = -1; 
-      // if (lCount != number_veto_leptons ) continue;
-
-
-      // bool tightFail = (tightC < 3);                
-      //if (!tightFail) number_tight[0]=3;
-
-
-      
-      if (_lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_ipPV[ind[0]]) > 0.05 || TMath::Abs(_ipZPV[ind[0]]) > 0.1 || fabs(_3dIPsig [ind[0]]) > 4  ) skip_event[0] = -70; 
-      //  if (_lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_ipPV[ind[0]]) > 0.05 || TMath::Abs(_ipZPV[ind[0]]) > 0.1 || fabs(_3dIPsig [ind[0]]) > 4  ) continue;
+          
       
 
 
@@ -293,13 +262,13 @@ void Selection::selezione(   Int_t _gen_nL,
 
       */
 
-      
-         if ( (TMath::Abs(_ipPV[ind[1]]) < 0.05 && TMath::Abs(_ipZPV[ind[1]]) < 0.1 && _3dIPsig[ind[1]] < 4)  )  skip_event[0] = -60; 
-	 //	 if ( (TMath::Abs(_ipPV[ind[1]]) < 0.05 && TMath::Abs(_ipZPV[ind[1]]) < 0.1 && _3dIPsig[ind[1]] < 4)  )  continue;
+      if ( (TMath::Abs(_ipPV[ind[1]]) < 0.05 && TMath::Abs(_ipZPV[ind[1]]) < 0.1 && _3dIPsig[ind[1]] < 4)  )  continue;
+      skip_event[0] = -60; 
+      if ( (TMath::Abs(_ipPV[ind[2]]) < 0.05 && TMath::Abs(_ipZPV[ind[2]]) < 0.1 && _3dIPsig[ind[2]] < 4)  )  continue;
+      skip_event[0] = -55; 
 
-	 if ( (TMath::Abs(_ipPV[ind[2]]) < 0.05 && TMath::Abs(_ipZPV[ind[2]]) < 0.1 && _3dIPsig[ind[2]] < 4)  )  skip_event[0] = -55; 
-	 //if ( (TMath::Abs(_ipPV[ind[2]]) < 0.05 && TMath::Abs(_ipZPV[ind[2]]) < 0.1 && _3dIPsig[ind[2]] < 4)  )  continue;
 
+      if( ( !_lPOGLoose[ind[1]] || !_lPOGMedium[ind[1]] || _relIso[ind[1]] > 0.6)  || ( !_lPOGLoose[ind[2]] || !_lPOGMedium[ind[2]] || _relIso[ind[2]] > 0.6)) continue;
 	 skip_event[0] = 20;
 
 

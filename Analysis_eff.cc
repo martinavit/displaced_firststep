@@ -51,7 +51,6 @@ using std::ofstream;
 //include other parts of the code
 #include "tdrstyle.h"
 #include "plotCode_new.h"
-#include "Selection.h"
 
 
 
@@ -97,7 +96,7 @@ void Analysis_eff::printProgress(double progress){
 
 //==================================================================
 void Analysis_eff::analisi(int num_histo_kin
-			  ){
+			   ){
   
   cout<<"in analisi"<<endl;
   cout<<"---------------------------"<<endl;
@@ -107,20 +106,7 @@ void Analysis_eff::analisi(int num_histo_kin
  
 
 
-   
-  TGraphAsymmErrors *fakeRate_mu[3];
-  TGraphAsymmErrors *fakeRate_mu_04_from_qcd[3];
-  TGraphAsymmErrors *fakeRate_e[3];
-
-  TFile hfile2("/Users/Martina/Desktop/CMS/map_FR/fake_rate_mu.root");
-  fakeRate_mu[0] = (TGraphAsymmErrors*)hfile2.Get("fakeRate_mu_eta1");
-  fakeRate_mu[1] = (TGraphAsymmErrors*)hfile2.Get("fakeRate_mu_eta2");
-  fakeRate_mu[2] = (TGraphAsymmErrors*)hfile2.Get("fakeRate_mu_eta3");
- 
-  TFile hfile1("/Users/Martina/Desktop/CMS/map_FR/fake_rate_e.root");
-  fakeRate_e[0] = (TGraphAsymmErrors*)hfile1.Get("fakeRate_e_eta1");
-  fakeRate_e[1] = (TGraphAsymmErrors*)hfile1.Get("fakeRate_e_eta2");
-  fakeRate_e[2] = (TGraphAsymmErrors*)hfile1.Get("fakeRate_e_eta3");
+  
 
 
   const double glugluToZZkFactor = 1;
@@ -132,125 +118,113 @@ void Analysis_eff::analisi(int num_histo_kin
   const double high_coupling = 0.001;
   const double coupling_factor_low= low_coupling / 0.0001;
   const double coupling_factor_low_2= low_coupling_2 / 0.0001;
-
-  const double coupling_factor_high= high_coupling ;
-  /// 0.0001;
-  //low_coupling/ 0.0001
-  //TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",             "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",   
-
-  //, "DoubleEG.root " ,"DoubleMuon.root " , "MuonEG.root " ,
-
-  const int nSamples= 28;
-  const int nSamples_eff = 18;
-  const int nSamples_signal=11;
-    
-  const TString fileList[nSamples] = { "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", 
-
-				       "1gev.root", "2gev.root","3gev.root","4gev.root","5gev.root","5gev_prompt.root","5_5gev.root","6gev.root","7gev.root","8gev.root","9gev.root",				
-
-				       "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",                  "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", "TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",             "TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",             "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",   
-
-				       "ZZTo4L_13TeV_powheg_pythia8.root",
-
-				       "WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",      "WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",   "ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",
  
-				         "WGToLNuG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
-
-				       "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root", "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
-
-				       "WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8.root",   "WWToLNuQQ_13TeV-powheg.root",            "ZZTo2Q2Nu_13TeV_amcatnloFXFX_madspin_pythia8.root"   };
-
-
+  const int nSamples= 50;
+  const int nSamples_eff = 20;
+  const int nSamples_signal=10;
     
-  const TString names[nSamples] = { "total",
 
-				    "trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5","trilMaj5_prompt", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",
+  const TString fileList[nSamples] = {  "ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root",
 
-				    "DY_TTbar",    "DY_TTbar",    "DY_TTbar",    "DY_TTbar",    "DY_TTbar",   
-				   
-				    "ZZ/H",
+					"gev1.root", "gev2.root", "gev3.root", "gev4.root", "gev5.root", "gev5_5.root", "gev6.root", "gev7.root", "gev8.root", "gev9.root",
 
-				    "triboson", "triboson", "triboson", 
-				   
-				    "X+gamma",
+					"DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",
 
-				    "TT/T + X","TT/T + X","TT/T + X",
-				  
-				    "diboson", "diboson", "diboson"
+					"TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root ",
+
+					"ZH_HToZZ_4LFilter_M125_13TeV_powheg2-minlo-HZJ_JHUgenV6_pythia8.root", "VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8.root",
+
+					"WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WZG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root","WWG_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8.root",
+
+					"WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root","ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root", 
+					"TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8.root", "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root "    , "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8___1.root", "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.root", "TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root","tZq_ll_4f_13TeV-amcatnlo-pythia8.root",
+
+					"WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
+
+					"GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8.root", "GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8.root","WWTo2L2Nu_13TeV-powheg.root", "WWTo2L2Nu_DoubleScattering_13TeV-pythia8.root","ZZTo4L_13TeV_powheg_pythia8.root ", "WZTo3LNu_mllmin01_13TeV-powheg-pythia8_ext1.root",
+
+					"ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root" ,"ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" ,"ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root" 
   };
-    
 
+       
+  const TString names[nSamples]   =  {  "total",      
+					"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+					"DY",    "DY",   
+					"ttbar","ttbar","ttbar",
+					"ZZ/H","ZZ/H",
+					"triboson", "triboson", "triboson","triboson", "triboson", "triboson", "triboson", 
+					"X+gamma","X+gamma",      
+					"TT/T + X","TT/T + X","TT/T + X", "TT/T + X","TT/T + X","TT/T + X","TT/T + X",
+					"WJets",
+					"diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson", "diboson",
+					"single Top", "single Top","single Top", "single Top","single Top"};
+  const TString eff_names[nSamples_eff +1 ] = { "total",      
+						"trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5", "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",    
+						"DY",  
+						"ttbar",
+						"ZZ/H",
+						"triboson", 
+						"X+gamma",    
+						"TT/T + X",
+						"WJets",
+						"diboson",
+						"single Top", "no prompt"};
 
-
-
-
-  const TString eff_names[nSamples_eff +1 ] = {"total",
-
-					       "trilMaj1", "trilMaj2", "trilMaj3","trilMaj4","trilMaj5","trilMaj5_prompt",  "trilMaj5_5", "trilMaj6","trilMaj7", "trilMaj8","trilMaj9",
-
-					       "DY_TTbar",     
-				   
-					       "ZZ/H",
-
-					       "triboson", 
-				   
-					       "X+gamma",
-
-					       "TT/T + X",
-				  
-					       "diboson", "no-prompt"};
-
-  //18610
-  // 18610, 1921.8*3, 87.315, 182.175, 182.75,
-  const double xSections[nSamples]= { 0,
-				     0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.5238 * coupling_factor_low, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
-
-
-				      18610, 1921.8*3, 87.315, 182.175, 182.75,
-				     
-
-				      1.256*ZZSF,
-
-				      0.2086, 0.1651,  0.01398,
-
-				      489*XgammaSF,
-
-				      0.2043, 0.2529, 0.0493, 
-
-				      58.59*WZSF,49.997, 4.0 };
-
-
-
-
-  const TString names_files[nSamples-1] = { 	  "codes_eff/txt_file/trilMaj1.txt", "codes_eff/txt_file/trilMaj2.txt", "codes_eff/txt_file/trilMaj3.txt","codes_eff/txt_file/trilMaj4.txt","codes_eff/txt_file/trilMaj5.txt","codes_eff/txt_file/trilMaj5_prompt.txt",  "codes_eff/txt_file/trilMaj5_5.txt", "codes_eff/txt_file/trilMaj6.txt","codes_eff/txt_file/trilMaj7.txt", "codes_eff/txt_file/trilMaj8.txt","codes_eff/txt_file/trilMaj9.txt",
+const TString names_files[nSamples-1] = { 	  "codes_eff/txt_file/trilMaj1.txt", "codes_eff/txt_file/trilMaj2.txt", "codes_eff/txt_file/trilMaj3.txt","codes_eff/txt_file/trilMaj4.txt","codes_eff/txt_file/trilMaj5.txt", "codes_eff/txt_file/trilMaj5_5.txt", "codes_eff/txt_file/trilMaj6.txt","codes_eff/txt_file/trilMaj7.txt", "codes_eff/txt_file/trilMaj8.txt","codes_eff/txt_file/trilMaj9.txt",
     
 						  "codes_eff/txt_file/DY_TTbar1.txt", "codes_eff/txt_file/DY_TTbar2.txt", "codes_eff/txt_file/DY_TTbar3.txt", "codes_eff/txt_file/DY_TTbar4.txt", "codes_eff/txt_file/DY_TTbar5.txt",
     
+						  "codes_eff/txt_file/ZZ_Hreal1.txt","codes_eff/txt_file/ZZ_Hreal2.txt",
+    
+						  "codes_eff/txt_file/triboson1.txt","codes_eff/txt_file/triboson2.txt","codes_eff/txt_file/triboson3.txt","codes_eff/txt_file/triboson4.txt","codes_eff/txt_file/triboson5.txt","codes_eff/txt_file/triboson6.txt",
+    
+						  "codes_eff/txt_file/X_gamma.txt","codes_eff/txt_file/X_gamma1.txt",
+    
+						  "codes_eff/txt_file/T_X1.txt", "codes_eff/txt_file/T_X2.txt", "codes_eff/txt_file/T_X3.txt","codes_eff/txt_file/T_X4.txt", "codes_eff/txt_file/T_X5.txt", "codes_eff/txt_file/T_X6.txt","codes_eff/txt_file/T_X7.txt",
 						  "codes_eff/txt_file/ZZ_H.txt",
     
-						  "codes_eff/txt_file/triboson1.txt","codes_eff/txt_file/triboson2.txt","codes_eff/txt_file/triboson3.txt",
+						  "codes_eff/txt_file/diboson1.txt","codes_eff/txt_file/diboson2.txt","codes_eff/txt_file/diboson3.txt","codes_eff/txt_file/diboson4.txt","codes_eff/txt_file/diboson5.txt","codes_eff/txt_file/diboson6.txt","codes_eff/txt_file/diboson7.txt","codes_eff/txt_file/diboson8.txt","codes_eff/txt_file/diboson9.txt", "codes_eff/txt_file/diboson10.txt",
+
+						  "codes_eff/txt_file/single_Top1.txt", "codes_eff/txt_file/single_Top2.txt","codes_eff/txt_file/single_Top3.txt", "codes_eff/txt_file/single_Top4.txt","codes_eff/txt_file/single_Top5.txt"
+
+};
+
+
+
+
+
+
+
+
+
+  const double xSections[nSamples]= {0,        
+				     0.5201 * coupling_factor_low,0.5273 * coupling_factor_low, 0.5217 * coupling_factor_low,0.5216 * coupling_factor_low,0.05190 * coupling_factor_low_2, 0.05220* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05226* coupling_factor_low_2, 0.05193* coupling_factor_low_2, 0.05173* coupling_factor_low_2,
+        
+				     18610, 1921.8*3,
+				     87.315, 182.175, 182.75,
+
+				     0.752,0.001034,
+
+				     0.2086, 0.1651,  0.01398,0.05565,0.04123 , 0.2147 , 1.711,
+
+				     405.271,123.9,
     
-						  "codes_eff/txt_file/X_gamma.txt",
+				     2.967, 0.01731, 3.697, 0.2043, 0.2529,0.4719,0.0758,
     
-						  "codes_eff/txt_file/T_X1.txt", "codes_eff/txt_file/T_X2.txt", "codes_eff/txt_file/T_X3.txt",
+				     61526.7,
+
+				     0.00319,0.00319,0.00319,0.00159,0.00159,0.00159,12.178, 0.1729, 1.256, 58.59*0.652,
+
+				     3.36 , 26.38 ,  44.33 , 35.85, 35.85   };
     
-						  "codes_eff/txt_file/diboson1.txt","codes_eff/txt_file/diboson2.txt","codes_eff/txt_file/diboson3.txt"};
-
-
-
-
-
-
-
-				     
   double luminosity = 35.867;
-
+    
   TFile *hfile[nSamples];
   TTree *inputTree[nSamples];
   //TApplication* rootapp = new TApplication("example",&argc, argv);
-
-
- 
+    
+    
+    
   // Declaration of leaf types
   ULong64_t       _runNb;
   ULong64_t       _lumiBlock;
@@ -260,33 +234,45 @@ void Analysis_eff::analisi(int num_histo_kin
   Double_t        _lheHTIncoming;
   Double_t        _ctauHN;
   UChar_t         _nLheWeights;
-  _nLheWeights= 200;
+  _nLheWeights = 110;
   Double_t        _lheWeight[110];   //[_nLheWeights]
   Float_t         _nTrueInt;
-  Int_t           _ttgEventType;
-  Int_t           _zgEventType;
+  UChar_t         _ttgEventType;
+  UChar_t         _zgEventType;
   Double_t        _gen_met;
   Double_t        _gen_metPhi;
   UChar_t         _gen_nPh;
-  _gen_nPh= 20;
-  Double_t        _gen_phPt[10];   //[_gen_nPh]
-  Double_t        _gen_phEta[10];   //[_gen_nPh]
-  Double_t        _gen_phPhi[10];   //[_gen_nPh]
-  Double_t        _gen_phE[10];   //[_gen_nPh]
-  Int_t           _gen_phMomPdg[10];   //[_gen_nPh]
-  Bool_t          _gen_phIsPrompt[10];   //[_gen_nPh]
-  Double_t        _gen_phMinDeltaR[10];   //[_gen_nPh]
-  Bool_t          _gen_phPassParentage[10];   //[_gen_nPh]
+  _gen_nPh = 7;
+  Double_t        _gen_phPt[7];   //[_gen_nPh]
+  Double_t        _gen_phEta[7];   //[_gen_nPh]
+  Double_t        _gen_phPhi[7];   //[_gen_nPh]
+  Double_t        _gen_phE[7];   //[_gen_nPh]
+  Int_t           _gen_phMomPdg[7];   //[_gen_nPh]
+  Bool_t          _gen_phIsPrompt[7];   //[_gen_nPh]
+  Double_t        _gen_phMinDeltaR[7];   //[_gen_nPh]
+  Bool_t          _gen_phPassParentage[7];   //[_gen_nPh]
   UChar_t         _gen_nL;
-  _gen_nL= 20;
-  Double_t        _gen_lPt[20];   //[_gen_nL]
-  Double_t        _gen_lEta[20];   //[_gen_nL]
-  Double_t        _gen_lPhi[20];   //[_gen_nL]
-  Double_t        _gen_lE[20];   //[_gen_nL]
-  Int_t           _gen_lFlavor[20];   //[_gen_nL]
-  Int_t           _gen_lCharge[20];   //[_gen_nL]
-  Int_t           _gen_lMomPdg[20];   //[_gen_nL]
-  Bool_t          _gen_lIsPrompt[20];   //[_gen_nL]
+  _gen_nL = 12;
+  Double_t        _gen_lPt[12];   //[_gen_nL]
+  Double_t        _gen_lEta[12];   //[_gen_nL]
+  Double_t        _gen_lPhi[12];   //[_gen_nL]
+  Double_t        _gen_lE[12];   //[_gen_nL]
+  //UInt_t          _gen_lFlavor[12];   //[_gen_nL]
+  Int_t           _gen_lCharge[12];   //[_gen_nL]
+  Int_t           _gen_lMomPdg[12];   //[_gen_nL]
+  Bool_t          _gen_lIsPrompt[12];   //[_gen_nL]
+  Bool_t          _passHN_1l;
+  Bool_t          _HLT_Ele27_WPTight_Gsf;
+  Int_t           _HLT_Ele27_WPTight_Gsf_prescale;
+  Bool_t          _HLT_IsoMu24;
+  Int_t           _HLT_IsoMu24_prescale;
+  Bool_t          _HLT_IsoTkMu24;
+  Int_t           _HLT_IsoTkMu24_prescale;
+  Bool_t          _passHN_eee;
+  Bool_t          _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;
+  Int_t           _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;
+  Bool_t          _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
+  Int_t           _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
   Bool_t          _passHN_eem;
   Bool_t          _HLT_Mu8_DiEle12_CaloIdL_TrackIdL;
   Int_t           _HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale;
@@ -298,18 +284,6 @@ void Analysis_eff::analisi(int num_histo_kin
   Int_t           _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
   Bool_t          _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL;
   Int_t           _HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale;
-  Bool_t          _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
-  Int_t           _HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;
-  Bool_t          _passHN_1l;
-  Bool_t          _HLT_Ele27_WPTight_Gsf;
-  Int_t           _HLT_Ele27_WPTight_Gsf_prescale;
-  Bool_t          _HLT_IsoMu24;
-  Int_t           _HLT_IsoMu24_prescale;
-  Bool_t          _HLT_IsoTkMu24;
-  Int_t           _HLT_IsoTkMu24_prescale;
-  Bool_t          _passHN_eee;
-  Bool_t          _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;
-  Int_t           _HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;
   Bool_t          _passHN_emm;
   Bool_t          _HLT_DiMu9_Ele9_CaloIdL_TrackIdL;
   Int_t           _HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale;
@@ -326,27 +300,41 @@ void Analysis_eff::analisi(int num_histo_kin
   Bool_t          _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL;
   Int_t           _HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;
   Bool_t          _passHN_mmm;
+  Bool_t          _HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx;
+  Int_t           _HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale;
   Bool_t          _HLT_TripleMu_12_10_5;
   Int_t           _HLT_TripleMu_12_10_5_prescale;
   Bool_t          _passMET;
-  Bool_t          _HLT_PFMET120_PFMHT120_IDTight;
-  Int_t           _HLT_PFMET120_PFMHT120_IDTight_prescale;
-  Bool_t          _HLT_PFMET110_PFMHT110_IDTight;
-  Int_t           _HLT_PFMET110_PFMHT110_IDTight_prescale;
-  Bool_t          _HLT_PFMET170_BeamHaloCleaned;
-  Int_t           _HLT_PFMET170_BeamHaloCleaned_prescale;
-  Bool_t          _HLT_PFMET170_HBHECleaned;
-  Int_t           _HLT_PFMET170_HBHECleaned_prescale;
-  Bool_t          _HLT_PFMET170_HBHE_BeamHaloCleaned;
-  Int_t           _HLT_PFMET170_HBHE_BeamHaloCleaned_prescale;
-  Bool_t          _HLT_PFMET170_NotCleaned;
-  Int_t           _HLT_PFMET170_NotCleaned_prescale;
-  Bool_t          _HLT_MET200;
-  Int_t           _HLT_MET200_prescale;
-  Bool_t          _HLT_MET250;
-  Int_t           _HLT_MET250_prescale;
   Bool_t          _HLT_MET300;
   Int_t           _HLT_MET300_prescale;
+  Bool_t          _HLT_HT350_MET100;
+  Int_t           _HLT_HT350_MET100_prescale;
+  Bool_t          _HLT_AllMET300;
+  Int_t           _HLT_AllMET300_prescale;
+  Bool_t          _HLT_AllMET170;
+  Int_t           _HLT_AllMET170_prescale;
+  Bool_t          _HLT_jet;
+  Int_t           _HLT_jet_prescale;
+  Bool_t          _HLT_dijet;
+  Int_t           _HLT_dijet_prescale;
+  Bool_t          _HLT_MET170_BeamHaloCleaned;
+  Int_t           _HLT_MET170_BeamHaloCleaned_prescale;
+  Bool_t          _HLT_MET170_NotCleaned;
+  Int_t           _HLT_MET170_NotCleaned_prescale;
+  Bool_t          _HLT_HT800;
+  Int_t           _HLT_HT800_prescale;
+  Bool_t          _HLT_HT900;
+  Int_t           _HLT_HT900_prescale;
+  Bool_t          _HLT_dijet55met110;
+  Int_t           _HLT_dijet55met110_prescale;
+  Bool_t          _HLT_dijet70met120;
+  Int_t           _HLT_dijet70met120_prescale;
+  Bool_t          _HLT_HT600;
+  Int_t           _HLT_HT600_prescale;
+  Bool_t          _HLT_HT475;
+  Int_t           _HLT_HT475_prescale;
+  Bool_t          _HLT_HT350;
+  Int_t           _HLT_HT350_prescale;
   Bool_t          _passMETFilters;
   Bool_t          _Flag_HBHENoiseFilter;
   Bool_t          _Flag_HBHENoiseIsoFilter;
@@ -388,79 +376,115 @@ void Analysis_eff::analisi(int num_histo_kin
   Bool_t          _HLT_Mu30_TkMu11;
   Int_t           _HLT_Mu30_TkMu11_prescale;
   UChar_t         _nL;
-  _nL= 20;
+  _nL = 20;
   UChar_t         _nMu;
+  _nMu = 20;
   UChar_t         _nEle;
+  _nEle = 20;
   UChar_t         _nLight;
-_nLight= 20;
+  _nLight = 20;
   UChar_t         _nTau;
-  Double_t        _lPt[11];   //[_nL]
-  Double_t        _lEta[11];   //[_nL]
-  Double_t        _lEtaSC[7];   //[_nLight]
-  Double_t        _lPhi[11];   //[_nL]
-  Double_t        _lE[11];   //[_nL]
-  Int_t           _lFlavor[11];   //[_nL]
-  Int_t           _lCharge[11];   //[_nL]
-  Double_t        _dxy[11];   //[_nL]
-  Double_t        _dz[11];   //[_nL]
-  Double_t        _3dIP[11];   //[_nL]
-  Double_t        _3dIPSig[11];   //[_nL]
-  Float_t         _lElectronMva[7];   //[_nLight]
-  Bool_t          _lHNLoose[11];   //[_nL]
-  Bool_t          _lHNFO[11];   //[_nL]
-  Bool_t          _lHNTight[11];   //[_nL]
-  Bool_t          _lPOGVeto[11];   //[_nL]
-  Bool_t          _lPOGLoose[11];   //[_nL]
-  Bool_t          _lPOGMedium[11];   //[_nL]
-  Bool_t          _lPOGTight[11];   //[_nL]
-  Bool_t          _lIsPrompt[11];   //[_nL]
-  Int_t           _lMatchPdgId[11];   //[_nL]
-  Double_t        _relIso[7];   //[_nLight]
-  Double_t        _miniIso[7];   //[_nLight]
-  Double_t        _ptRel[7];   //[_nLight]
-  Double_t        _ptRatio[7];   //[_nLight]
+  UChar_t         _nVFit;
+  _nVFit  = 25;
+  UChar_t         _nGoodLeading;
+  Double_t        _lIndex[20];   //[_nL]
+  Double_t        _vertices[25][12];
+  Double_t        _lPt[20];   //[_nL]
+  Double_t        _lEta[20];   //[_nL]
+  Double_t        _lEtaSC[20];   //[_nLight]
+  Double_t        _lPhi[20];   //[_nL]
+  Double_t        _lE[20];   //[_nL]
+  UInt_t          _lFlavor[20];   //[_nL]
+  Int_t           _lCharge[20];   //[_nL]
+  Double_t        _dxy[20];   //[_nL]
+  Double_t        _dz[20];   //[_nL]
+  Double_t        _3dIP[20];   //[_nL]
+  Double_t        _3dIPSig[20];   //[_nL]
+  Double_t        _2dIP[20];   //[_nL]
+  Double_t        _2dIPSig[20];   //[_nL]
+  Float_t         _lElectronMva[20];   //[_nLight]
+  Bool_t          _lElectronPassEmu[20];   //[_nLight]
+  Bool_t          _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[20];   //[_nL]
+  Bool_t          _lPOGVeto[20];   //[_nL]
+  Bool_t          _lPOGLoose[20];   //[_nL]
+  Bool_t          _lPOGMedium[20];   //[_nL]
+  Bool_t          _lPOGTight[20];   //[_nL]
+  Bool_t          _lpassConversionVeto[20];   //[_nL]
+  Double_t        _muNumberInnerHits[20];   //[_nL]
+  Double_t        _eleNumberInnerHitsMissing[20];   //[_nL]
+  Double_t        _relIso[20];   //[_nLight]
+  Double_t        _puCorr[20];   //[_nL]
+  Double_t        _absIso03[20];   //[_nL]
+  Double_t        _absIso04[20];   //[_nL]
+  Double_t        _sumNeutralHadronEt04[20];   //[_nL]
+  Double_t        _sumChargedHadronPt04[20];   //[_nL]
+  Double_t        _sumPhotonEt04[20];   //[_nL]
+  Double_t        _sumNeutralHadronEt03[20];   //[_nL]
+  Double_t        _sumChargedHadronPt03[20];   //[_nL]
+  Double_t        _sumPhotonEt03[20];   //[_nL]
+  Double_t        _trackIso[20];   //[_nL]
+  Double_t        _ecalIso[20];   //[_nL]
+  Double_t        _hcalIso[20];   //[_nL]
+  Double_t        _deltaBIso[20];   //[_nL]
+  Double_t        _ecalPFClusterIso[20];   //[_nL]
+  Double_t        _hcalPFClusterIso[20];   //[_nL]
+  Double_t        _ptRel[20];   //[_nLight]
+  Double_t        _ptRatio[20];   //[_nLight]
+  Double_t        _closestJetCsv[20];   //[_nLight]
+  UInt_t          _selectedTrackMult[20];   //[_nLight]
+  Double_t        _muonSegComp[10];   //[_nMu]
+  Bool_t          _tauMuonVeto[20];   //[_nL]
+  Bool_t          _tauEleVeto[20];   //[_nL]
+  Bool_t          _decayModeFindingNew[20];   //[_nL]
+  Bool_t          _tauVLooseMvaNew[20];   //[_nL]
+  Bool_t          _tauLooseMvaNew[20];   //[_nL]
+  Bool_t          _tauMediumMvaNew[20];   //[_nL]
+  Bool_t          _tauTightMvaNew[20];   //[_nL]
+  Bool_t          _tauVTightMvaNew[20];   //[_nL]
+  Bool_t          _tauVTightMvaOld[20];   //[_nL]
+  Bool_t          _lIsPrompt[20];   //[_nL]
+  Int_t           _lMatchPdgId[20];   //[_nL]
   UChar_t         _nPh;
-  _nPh= 20;
-  Double_t        _phPt[5];   //[_nPh]
-  Double_t        _phEta[5];   //[_nPh]
-  Double_t        _phEtaSC[5];   //[_nPh]
-  Double_t        _phPhi[5];   //[_nPh]
-  Double_t        _phE[5];   //[_nPh]
-  Bool_t          _phCutBasedLoose[5];   //[_nPh]
-  Bool_t          _phCutBasedMedium[5];   //[_nPh]
-  Bool_t          _phCutBasedTight[5];   //[_nPh]
-  Double_t        _phMva[5];   //[_nPh]
-  Double_t        _phRandomConeChargedIsolation[5];   //[_nPh]
-  Double_t        _phChargedIsolation[5];   //[_nPh]
-  Double_t        _phNeutralHadronIsolation[5];   //[_nPh]
-  Double_t        _phPhotonIsolation[5];   //[_nPh]
-  Double_t        _phSigmaIetaIeta[5];   //[_nPh]
-  Double_t        _phSigmaIetaIphi[5];   //[_nPh]
-  Double_t        _phHadronicOverEm[5];   //[_nPh]
-  Bool_t          _phPassElectronVeto[5];   //[_nPh]
-  Bool_t          _phHasPixelSeed[5];   //[_nPh]
-  Bool_t          _phIsPrompt[5];   //[_nPh]
-  Int_t           _phMatchMCPhotonAN15165[5];   //[_nPh]
-  Int_t           _phMatchMCLeptonAN15165[5];   //[_nPh]
-  Int_t           _phMatchPdgId[5];   //[_nPh]
+  _nPh = 20;
+  Double_t        _phPt[10];   //[_nPh]
+  Double_t        _phEta[10];   //[_nPh]
+  Double_t        _phEtaSC[10];   //[_nPh]
+  Double_t        _phPhi[10];   //[_nPh]
+  Double_t        _phE[10];   //[_nPh]
+  Bool_t          _phCutBasedLoose[10];   //[_nPh]
+  Bool_t          _phCutBasedMedium[10];   //[_nPh]
+  Bool_t          _phCutBasedTight[10];   //[_nPh]
+  Double_t        _phMva[10];   //[_nPh]
+  Double_t        _phRandomConeChargedIsolation[10];   //[_nPh]
+  Double_t        _phChargedIsolation[10];   //[_nPh]
+  Double_t        _phNeutralHadronIsolation[10];   //[_nPh]
+  Double_t        _phPhotonIsolation[10];   //[_nPh]
+  Double_t        _phSigmaIetaIeta[10];   //[_nPh]
+  Double_t        _phSigmaIetaIphi[10];   //[_nPh]
+  Double_t        _phHadronicOverEm[10];   //[_nPh]
+  Bool_t          _phPassElectronVeto[10];   //[_nPh]
+  Bool_t          _phHasPixelSeed[10];   //[_nPh]
+  Bool_t          _phIsPrompt[10];   //[_nPh]
+  Int_t           _phMatchMCPhotonAN15165[10];   //[_nPh]
+  Int_t           _phMatchMCLeptonAN15165[10];   //[_nPh]
+  Int_t           _phMatchPdgId[10];   //[_nPh]
   UChar_t         _nJets;
-  _nJets= 20;
-  Double_t        _jetPt[8];   //[_nJets]
-  Double_t        _jetPt_JECUp[8];   //[_nJets]
-  Double_t        _jetPt_JECDown[8];   //[_nJets]
-  Double_t        _jetPt_JERUp[8];   //[_nJets]
-  Double_t        _jetPt_JERDown[8];   //[_nJets]
-  Double_t        _jetEta[8];   //[_nJets]
-  Double_t        _jetPhi[8];   //[_nJets]
-  Double_t        _jetE[8];   //[_nJets]
-  Double_t        _jetCsvV2[8];   //[_nJets]
-  Double_t        _jetDeepCsv_udsg[8];   //[_nJets]
-  Double_t        _jetDeepCsv_b[8];   //[_nJets]
-  Double_t        _jetDeepCsv_c[8];   //[_nJets]
-  Double_t        _jetDeepCsv_bb[8];   //[_nJets]
-  Double_t        _jetDeepCsv_cc[8];   //[_nJets]
-  Double_t        _jetHadronFlavour[8];   //[_nJets]
-  Int_t           _jetId[8];   //[_nJets]
+  _nJets = 20;
+  Double_t        _jetPt[20];   //[_nJets]
+  Double_t        _jetPt_JECUp[20];   //[_nJets]
+  Double_t        _jetPt_JECDown[20];   //[_nJets]
+  Double_t        _jetPt_JERUp[20];   //[_nJets]
+  Double_t        _jetPt_JERDown[20];   //[_nJets]
+  Double_t        _jetEta[20];   //[_nJets]
+  Double_t        _jetPhi[20];   //[_nJets]
+  Double_t        _jetE[20];   //[_nJets]
+  Double_t        _jetCsvV2[20];   //[_nJets]
+  Double_t        _jetDeepCsv_udsg[20];   //[_nJets]
+  Double_t        _jetDeepCsv_b[20];   //[_nJets]
+  Double_t        _jetDeepCsv_c[20];   //[_nJets]
+  Double_t        _jetDeepCsv_bb[20];   //[_nJets]
+  UInt_t          _jetHadronFlavor[20];   //[_nJets]
+  UInt_t          _jetId[20];   //[_nJets]
   Double_t        _met;
   Double_t        _metJECDown;
   Double_t        _metJECUp;
@@ -471,7 +495,7 @@ _nLight= 20;
   Double_t        _metPhiJECUp;
   Double_t        _metPhiUnclDown;
   Double_t        _metPhiUnclUp;
-
+    
   // List of branches
   TBranch        *b__runNb;   //!
   TBranch        *b__lumiBlock;   //!
@@ -501,12 +525,23 @@ _nLight= 20;
   TBranch        *b__gen_lEta;   //!
   TBranch        *b__gen_lPhi;   //!
   TBranch        *b__gen_lE;   //!
-  TBranch        *b__gen_lFlavor;   //!
+  //TBranch        *b__gen_lFlavor;   //!
   TBranch        *b__gen_lCharge;   //!
   TBranch        *b__gen_lMomPdg;   //!
   TBranch        *b__gen_lIsPrompt;   //!
-  TBranch        *b__passHN_eem;   //!
   TBranch        *b__passHN_1l;   //!
+  TBranch        *b__HLT_Ele27_WPTight_Gsf;   //!
+  TBranch        *b__HLT_Ele27_WPTight_Gsf_prescale;   //!
+  TBranch        *b__HLT_IsoMu24;   //!
+  TBranch        *b__HLT_IsoMu24_prescale;   //!
+  TBranch        *b__HLT_IsoTkMu24;   //!
+  TBranch        *b__HLT_IsoTkMu24_prescale;   //!
+  TBranch        *b__passHN_eee;   //!
+  TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;   //!
+  TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;   //!
+  TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
+  TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
+  TBranch        *b__passHN_eem;   //!
   TBranch        *b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL;   //!
   TBranch        *b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale;   //!
   TBranch        *b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;   //!
@@ -517,17 +552,6 @@ _nLight= 20;
   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL;   //!
   TBranch        *b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale;   //!
-  TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-  TBranch        *b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale;   //!
-  TBranch        *b__HLT_Ele27_WPTight_Gsf;   //!
-  TBranch        *b__HLT_Ele27_WPTight_Gsf_prescale;   //!
-  TBranch        *b__HLT_IsoMu24;   //!
-  TBranch        *b__HLT_IsoMu24_prescale;   //!
-  TBranch        *b__HLT_IsoTkMu24;   //!
-  TBranch        *b__HLT_IsoTkMu24_prescale;   //!
-  TBranch        *b__passHN_eee;   //!
-  TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;   //!
-  TBranch        *b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale;   //!
   TBranch        *b__passHN_emm;   //!
   TBranch        *b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL;   //!
   TBranch        *b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale;   //!
@@ -544,27 +568,41 @@ _nLight= 20;
   TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL;   //!
   TBranch        *b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale;   //!
   TBranch        *b__passHN_mmm;   //!
+  TBranch        *b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx;   //!
+  TBranch        *b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale;   //!
   TBranch        *b__HLT_TripleMu_12_10_5;   //!
   TBranch        *b__HLT_TripleMu_12_10_5_prescale;   //!
   TBranch        *b__passMET;   //!
-  TBranch        *b__HLT_PFMET120_PFMHT120_IDTight;   //!
-  TBranch        *b__HLT_PFMET120_PFMHT120_IDTight_prescale;   //!
-  TBranch        *b__HLT_PFMET110_PFMHT110_IDTight;   //!
-  TBranch        *b__HLT_PFMET110_PFMHT110_IDTight_prescale;   //!
-  TBranch        *b__HLT_PFMET170_BeamHaloCleaned;   //!
-  TBranch        *b__HLT_PFMET170_BeamHaloCleaned_prescale;   //!
-  TBranch        *b__HLT_PFMET170_HBHECleaned;   //!
-  TBranch        *b__HLT_PFMET170_HBHECleaned_prescale;   //!
-  TBranch        *b__HLT_PFMET170_HBHE_BeamHaloCleaned;   //!
-  TBranch        *b__HLT_PFMET170_HBHE_BeamHaloCleaned_prescale;   //!
-  TBranch        *b__HLT_PFMET170_NotCleaned;   //!
-  TBranch        *b__HLT_PFMET170_NotCleaned_prescale;   //!
-  TBranch        *b__HLT_MET200;   //!
-  TBranch        *b__HLT_MET200_prescale;   //!
-  TBranch        *b__HLT_MET250;   //!
-  TBranch        *b__HLT_MET250_prescale;   //!
   TBranch        *b__HLT_MET300;   //!
   TBranch        *b__HLT_MET300_prescale;   //!
+  TBranch        *b__HLT_HT350_MET100;   //!
+  TBranch        *b__HLT_HT350_MET100_prescale;   //!
+  TBranch        *b__HLT_AllMET300;   //!
+  TBranch        *b__HLT_AllMET300_prescale;   //!
+  TBranch        *b__HLT_AllMET170;   //!
+  TBranch        *b__HLT_AllMET170_prescale;   //!
+  TBranch        *b__HLT_jet;   //!
+  TBranch        *b__HLT_jet_prescale;   //!
+  TBranch        *b__HLT_dijet;   //!
+  TBranch        *b__HLT_dijet_prescale;   //!
+  TBranch        *b__HLT_MET170_BeamHaloCleaned;   //!
+  TBranch        *b__HLT_MET170_BeamHaloCleaned_prescale;   //!
+  TBranch        *b__HLT_MET170_NotCleaned;   //!
+  TBranch        *b__HLT_MET170_NotCleaned_prescale;   //!
+  TBranch        *b__HLT_HT800;   //!
+  TBranch        *b__HLT_HT800_prescale;   //!
+  TBranch        *b__HLT_HT900;   //!
+  TBranch        *b__HLT_HT900_prescale;   //!
+  TBranch        *b__HLT_dijet55met110;   //!
+  TBranch        *b__HLT_dijet55met110_prescale;   //!
+  TBranch        *b__HLT_dijet70met120;   //!
+  TBranch        *b__HLT_dijet70met120_prescale;   //!
+  TBranch        *b__HLT_HT600;   //!
+  TBranch        *b__HLT_HT600_prescale;   //!
+  TBranch        *b__HLT_HT475;   //!
+  TBranch        *b__HLT_HT475_prescale;   //!
+  TBranch        *b__HLT_HT350;   //!
+  TBranch        *b__HLT_HT350_prescale;   //!
   TBranch        *b__passMETFilters;   //!
   TBranch        *b__Flag_HBHENoiseFilter;   //!
   TBranch        *b__Flag_HBHENoiseIsoFilter;   //!
@@ -610,6 +648,10 @@ _nLight= 20;
   TBranch        *b__nEle;   //!
   TBranch        *b__nLight;   //!
   TBranch        *b__nTau;   //!
+  TBranch        *b__nVFit;   //!
+  TBranch        *b__nGoodLeading;   //!
+  TBranch        *b__lIndex;   //!
+  TBranch        *b__vertices;   //!
   TBranch        *b__lPt;   //!
   TBranch        *b__lEta;   //!
   TBranch        *b__lEtaSC;   //!
@@ -621,20 +663,50 @@ _nLight= 20;
   TBranch        *b__dz;   //!
   TBranch        *b__3dIP;   //!
   TBranch        *b__3dIPSig;   //!
+  TBranch        *b__2dIP;   //!
+  TBranch        *b__2dIPSig;   //!
   TBranch        *b__lElectronMva;   //!
-  TBranch        *b__lHNLoose;   //!
-  TBranch        *b__lHNFO;   //!
-  TBranch        *b__lHNTight;   //!
+  TBranch        *b__lElectronPassEmu;   //!
+  TBranch        *b__lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto;   //!
   TBranch        *b__lPOGVeto;   //!
   TBranch        *b__lPOGLoose;   //!
   TBranch        *b__lPOGMedium;   //!
   TBranch        *b__lPOGTight;   //!
-  TBranch        *b__lIsPrompt;   //!
-  TBranch        *b__lMatchPdgId;   //!
+  TBranch        *b__lpassConversionVeto;   //!
+  TBranch        *b__muNumberInnerHits;   //!
+  TBranch        *b__eleNumberInnerHitsMissing;   //!
   TBranch        *b__relIso;   //!
-  TBranch        *b__miniIso;   //!
+  TBranch        *b__puCorr;   //!
+  TBranch        *b__absIso03;   //!
+  TBranch        *b__absIso04;   //!
+  TBranch        *b__sumNeutralHadronEt04;   //!
+  TBranch        *b__sumChargedHadronPt04;   //!
+  TBranch        *b__sumPhotonEt04;   //!
+  TBranch        *b__sumNeutralHadronEt03;   //!
+  TBranch        *b__sumChargedHadronPt03;   //!
+  TBranch        *b__sumPhotonEt03;   //!
+  TBranch        *b__trackIso;   //!
+  TBranch        *b__ecalIso;   //!
+  TBranch        *b__hcalIso;   //!
+  TBranch        *b__deltaBIso;   //!
+  TBranch        *b__ecalPFClusterIso;   //!
+  TBranch        *b__hcalPFClusterIso;   //!
   TBranch        *b__ptRel;   //!
   TBranch        *b__ptRatio;   //!
+  TBranch        *b__closestJetCsv;   //!
+  TBranch        *b__selectedTrackMult;   //!
+  TBranch        *b__muonSegComp;   //!
+  TBranch        *b__tauMuonVeto;   //!
+  TBranch        *b__tauEleVeto;   //!
+  TBranch        *b__decayModeFindingNew;   //!
+  TBranch        *b__tauVLooseMvaNew;   //!
+  TBranch        *b__tauLooseMvaNew;   //!
+  TBranch        *b__tauMediumMvaNew;   //!
+  TBranch        *b__tauTightMvaNew;   //!
+  TBranch        *b__tauVTightMvaNew;   //!
+  TBranch        *b__tauVTightMvaOld;   //!
+  TBranch        *b__lIsPrompt;   //!
+  TBranch        *b__lMatchPdgId;   //!
   TBranch        *b__nPh;   //!
   TBranch        *b__phPt;   //!
   TBranch        *b__phEta;   //!
@@ -672,8 +744,7 @@ _nLight= 20;
   TBranch        *b__jetDeepCsv_b;   //!
   TBranch        *b__jetDeepCsv_c;   //!
   TBranch        *b__jetDeepCsv_bb;   //!
-  TBranch        *b__jetDeepCsv_cc;   //!
-  TBranch        *b__jetHadronFlavour;   //!
+  TBranch        *b__jetHadronFlavor;   //!
   TBranch        *b__jetId;   //!
   TBranch        *b__met;   //!
   TBranch        *b__metJECDown;   //!
@@ -686,15 +757,15 @@ _nLight= 20;
   TBranch        *b__metPhiUnclDown;   //!
   TBranch        *b__metPhiUnclUp;   //!
     
-
+    
   double hcounter[nSamples];
     
   for(int sam = 0; sam < nSamples; ++sam){
-   
+        
     cout<<"================================= 1"<<endl;
     cout<<"--------> "<< "name " << names[sam] << endl;
     cout<<"--------> "<< "fileList[sam] " << fileList[sam] << endl;
-    hfile[sam] = new TFile("/Users/Martina/Desktop/file/new_sample/"+fileList[sam],"read");
+    hfile[sam] = new TFile("/Users/Martina/Desktop/file/new_displaced/"+fileList[sam],"read");
     hfile[sam]->cd("blackJackAndHookers");
     inputTree[sam] = static_cast<TTree*>(hfile[sam]->Get("blackJackAndHookers/blackJackAndHookersTree"));
     inputTree[sam]->SetBranchAddress("_runNb", &_runNb, &b__runNb);
@@ -725,12 +796,23 @@ _nLight= 20;
     inputTree[sam]->SetBranchAddress("_gen_lEta", _gen_lEta, &b__gen_lEta);
     inputTree[sam]->SetBranchAddress("_gen_lPhi", _gen_lPhi, &b__gen_lPhi);
     inputTree[sam]->SetBranchAddress("_gen_lE", _gen_lE, &b__gen_lE);
-    inputTree[sam]->SetBranchAddress("_gen_lFlavor", _gen_lFlavor, &b__gen_lFlavor);
+    //inputTree[sam]->SetBranchAddress("_gen_lFlavor", _gen_lFlavor, &b__gen_lFlavor);
     inputTree[sam]->SetBranchAddress("_gen_lCharge", _gen_lCharge, &b__gen_lCharge);
     inputTree[sam]->SetBranchAddress("_gen_lMomPdg", _gen_lMomPdg, &b__gen_lMomPdg);
     inputTree[sam]->SetBranchAddress("_gen_lIsPrompt", _gen_lIsPrompt, &b__gen_lIsPrompt);
-    inputTree[sam]->SetBranchAddress("_passHN_eem", &_passHN_eem, &b__passHN_eem);
     inputTree[sam]->SetBranchAddress("_passHN_1l", &_passHN_1l, &b__passHN_1l);
+    inputTree[sam]->SetBranchAddress("_HLT_Ele27_WPTight_Gsf", &_HLT_Ele27_WPTight_Gsf, &b__HLT_Ele27_WPTight_Gsf);
+    inputTree[sam]->SetBranchAddress("_HLT_Ele27_WPTight_Gsf_prescale", &_HLT_Ele27_WPTight_Gsf_prescale, &b__HLT_Ele27_WPTight_Gsf_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_IsoMu24", &_HLT_IsoMu24, &b__HLT_IsoMu24);
+    inputTree[sam]->SetBranchAddress("_HLT_IsoMu24_prescale", &_HLT_IsoMu24_prescale, &b__HLT_IsoMu24_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_IsoTkMu24", &_HLT_IsoTkMu24, &b__HLT_IsoTkMu24);
+    inputTree[sam]->SetBranchAddress("_HLT_IsoTkMu24_prescale", &_HLT_IsoTkMu24_prescale, &b__HLT_IsoTkMu24_prescale);
+    inputTree[sam]->SetBranchAddress("_passHN_eee", &_passHN_eee, &b__passHN_eee);
+    inputTree[sam]->SetBranchAddress("_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", &_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL, &b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL);
+    inputTree[sam]->SetBranchAddress("_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale", &_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale, &b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", &_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, &b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ);
+    inputTree[sam]->SetBranchAddress("_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale", &_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale, &b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale);
+    inputTree[sam]->SetBranchAddress("_passHN_eem", &_passHN_eem, &b__passHN_eem);
     inputTree[sam]->SetBranchAddress("_HLT_Mu8_DiEle12_CaloIdL_TrackIdL", &_HLT_Mu8_DiEle12_CaloIdL_TrackIdL, &b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL);
     inputTree[sam]->SetBranchAddress("_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale", &_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale, &b__HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale);
     inputTree[sam]->SetBranchAddress("_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", &_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, &b__HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ);
@@ -741,18 +823,6 @@ _nLight= 20;
     inputTree[sam]->SetBranchAddress("_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale", &_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale, &b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale);
     inputTree[sam]->SetBranchAddress("_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", &_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL, &b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL);
     inputTree[sam]->SetBranchAddress("_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale", &_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale, &b__HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", &_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, &b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ);
-    inputTree[sam]->SetBranchAddress("_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale", &_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale, &b__HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale);
-    //    inputTree[sam]->SetBranchAddress("_passHN_1l", &_passHN_1l, &b__passHN_1l);
-    inputTree[sam]->SetBranchAddress("_HLT_Ele27_WPTight_Gsf", &_HLT_Ele27_WPTight_Gsf, &b__HLT_Ele27_WPTight_Gsf);
-    inputTree[sam]->SetBranchAddress("_HLT_Ele27_WPTight_Gsf_prescale", &_HLT_Ele27_WPTight_Gsf_prescale, &b__HLT_Ele27_WPTight_Gsf_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_IsoMu24", &_HLT_IsoMu24, &b__HLT_IsoMu24);
-    inputTree[sam]->SetBranchAddress("_HLT_IsoMu24_prescale", &_HLT_IsoMu24_prescale, &b__HLT_IsoMu24_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_IsoTkMu24", &_HLT_IsoTkMu24, &b__HLT_IsoTkMu24);
-    inputTree[sam]->SetBranchAddress("_HLT_IsoTkMu24_prescale", &_HLT_IsoTkMu24_prescale, &b__HLT_IsoTkMu24_prescale);
-    inputTree[sam]->SetBranchAddress("_passHN_eee", &_passHN_eee, &b__passHN_eee);
-    inputTree[sam]->SetBranchAddress("_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", &_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL, &b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL);
-    inputTree[sam]->SetBranchAddress("_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale", &_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale, &b__HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale);
     inputTree[sam]->SetBranchAddress("_passHN_emm", &_passHN_emm, &b__passHN_emm);
     inputTree[sam]->SetBranchAddress("_HLT_DiMu9_Ele9_CaloIdL_TrackIdL", &_HLT_DiMu9_Ele9_CaloIdL_TrackIdL, &b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL);
     inputTree[sam]->SetBranchAddress("_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale", &_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale, &b__HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale);
@@ -769,27 +839,41 @@ _nLight= 20;
     inputTree[sam]->SetBranchAddress("_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL", &_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL, &b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL);
     inputTree[sam]->SetBranchAddress("_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale", &_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale, &b__HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale);
     inputTree[sam]->SetBranchAddress("_passHN_mmm", &_passHN_mmm, &b__passHN_mmm);
+    inputTree[sam]->SetBranchAddress("_HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx", &_HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx, &b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx);
+    inputTree[sam]->SetBranchAddress("_HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale", &_HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale, &b__HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_prescale);
     inputTree[sam]->SetBranchAddress("_HLT_TripleMu_12_10_5", &_HLT_TripleMu_12_10_5, &b__HLT_TripleMu_12_10_5);
     inputTree[sam]->SetBranchAddress("_HLT_TripleMu_12_10_5_prescale", &_HLT_TripleMu_12_10_5_prescale, &b__HLT_TripleMu_12_10_5_prescale);
     inputTree[sam]->SetBranchAddress("_passMET", &_passMET, &b__passMET);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET120_PFMHT120_IDTight", &_HLT_PFMET120_PFMHT120_IDTight, &b__HLT_PFMET120_PFMHT120_IDTight);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET120_PFMHT120_IDTight_prescale", &_HLT_PFMET120_PFMHT120_IDTight_prescale, &b__HLT_PFMET120_PFMHT120_IDTight_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET110_PFMHT110_IDTight", &_HLT_PFMET110_PFMHT110_IDTight, &b__HLT_PFMET110_PFMHT110_IDTight);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET110_PFMHT110_IDTight_prescale", &_HLT_PFMET110_PFMHT110_IDTight_prescale, &b__HLT_PFMET110_PFMHT110_IDTight_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_BeamHaloCleaned", &_HLT_PFMET170_BeamHaloCleaned, &b__HLT_PFMET170_BeamHaloCleaned);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_BeamHaloCleaned_prescale", &_HLT_PFMET170_BeamHaloCleaned_prescale, &b__HLT_PFMET170_BeamHaloCleaned_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_HBHECleaned", &_HLT_PFMET170_HBHECleaned, &b__HLT_PFMET170_HBHECleaned);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_HBHECleaned_prescale", &_HLT_PFMET170_HBHECleaned_prescale, &b__HLT_PFMET170_HBHECleaned_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_HBHE_BeamHaloCleaned", &_HLT_PFMET170_HBHE_BeamHaloCleaned, &b__HLT_PFMET170_HBHE_BeamHaloCleaned);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale", &_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale, &b__HLT_PFMET170_HBHE_BeamHaloCleaned_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_NotCleaned", &_HLT_PFMET170_NotCleaned, &b__HLT_PFMET170_NotCleaned);
-    inputTree[sam]->SetBranchAddress("_HLT_PFMET170_NotCleaned_prescale", &_HLT_PFMET170_NotCleaned_prescale, &b__HLT_PFMET170_NotCleaned_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_MET200", &_HLT_MET200, &b__HLT_MET200);
-    inputTree[sam]->SetBranchAddress("_HLT_MET200_prescale", &_HLT_MET200_prescale, &b__HLT_MET200_prescale);
-    inputTree[sam]->SetBranchAddress("_HLT_MET250", &_HLT_MET250, &b__HLT_MET250);
-    inputTree[sam]->SetBranchAddress("_HLT_MET250_prescale", &_HLT_MET250_prescale, &b__HLT_MET250_prescale);
     inputTree[sam]->SetBranchAddress("_HLT_MET300", &_HLT_MET300, &b__HLT_MET300);
     inputTree[sam]->SetBranchAddress("_HLT_MET300_prescale", &_HLT_MET300_prescale, &b__HLT_MET300_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_HT350_MET100", &_HLT_HT350_MET100, &b__HLT_HT350_MET100);
+    inputTree[sam]->SetBranchAddress("_HLT_HT350_MET100_prescale", &_HLT_HT350_MET100_prescale, &b__HLT_HT350_MET100_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_AllMET300", &_HLT_AllMET300, &b__HLT_AllMET300);
+    inputTree[sam]->SetBranchAddress("_HLT_AllMET300_prescale", &_HLT_AllMET300_prescale, &b__HLT_AllMET300_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_AllMET170", &_HLT_AllMET170, &b__HLT_AllMET170);
+    inputTree[sam]->SetBranchAddress("_HLT_AllMET170_prescale", &_HLT_AllMET170_prescale, &b__HLT_AllMET170_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_jet", &_HLT_jet, &b__HLT_jet);
+    inputTree[sam]->SetBranchAddress("_HLT_jet_prescale", &_HLT_jet_prescale, &b__HLT_jet_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_dijet", &_HLT_dijet, &b__HLT_dijet);
+    inputTree[sam]->SetBranchAddress("_HLT_dijet_prescale", &_HLT_dijet_prescale, &b__HLT_dijet_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_MET170_BeamHaloCleaned", &_HLT_MET170_BeamHaloCleaned, &b__HLT_MET170_BeamHaloCleaned);
+    inputTree[sam]->SetBranchAddress("_HLT_MET170_BeamHaloCleaned_prescale", &_HLT_MET170_BeamHaloCleaned_prescale, &b__HLT_MET170_BeamHaloCleaned_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_MET170_NotCleaned", &_HLT_MET170_NotCleaned, &b__HLT_MET170_NotCleaned);
+    inputTree[sam]->SetBranchAddress("_HLT_MET170_NotCleaned_prescale", &_HLT_MET170_NotCleaned_prescale, &b__HLT_MET170_NotCleaned_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_HT800", &_HLT_HT800, &b__HLT_HT800);
+    inputTree[sam]->SetBranchAddress("_HLT_HT800_prescale", &_HLT_HT800_prescale, &b__HLT_HT800_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_HT900", &_HLT_HT900, &b__HLT_HT900);
+    inputTree[sam]->SetBranchAddress("_HLT_HT900_prescale", &_HLT_HT900_prescale, &b__HLT_HT900_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_dijet55met110", &_HLT_dijet55met110, &b__HLT_dijet55met110);
+    inputTree[sam]->SetBranchAddress("_HLT_dijet55met110_prescale", &_HLT_dijet55met110_prescale, &b__HLT_dijet55met110_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_dijet70met120", &_HLT_dijet70met120, &b__HLT_dijet70met120);
+    inputTree[sam]->SetBranchAddress("_HLT_dijet70met120_prescale", &_HLT_dijet70met120_prescale, &b__HLT_dijet70met120_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_HT600", &_HLT_HT600, &b__HLT_HT600);
+    inputTree[sam]->SetBranchAddress("_HLT_HT600_prescale", &_HLT_HT600_prescale, &b__HLT_HT600_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_HT475", &_HLT_HT475, &b__HLT_HT475);
+    inputTree[sam]->SetBranchAddress("_HLT_HT475_prescale", &_HLT_HT475_prescale, &b__HLT_HT475_prescale);
+    inputTree[sam]->SetBranchAddress("_HLT_HT350", &_HLT_HT350, &b__HLT_HT350);
+    inputTree[sam]->SetBranchAddress("_HLT_HT350_prescale", &_HLT_HT350_prescale, &b__HLT_HT350_prescale);
     inputTree[sam]->SetBranchAddress("_passMETFilters", &_passMETFilters, &b__passMETFilters);
     inputTree[sam]->SetBranchAddress("_Flag_HBHENoiseFilter", &_Flag_HBHENoiseFilter, &b__Flag_HBHENoiseFilter);
     inputTree[sam]->SetBranchAddress("_Flag_HBHENoiseIsoFilter", &_Flag_HBHENoiseIsoFilter, &b__Flag_HBHENoiseIsoFilter);
@@ -835,6 +919,10 @@ _nLight= 20;
     inputTree[sam]->SetBranchAddress("_nEle", &_nEle, &b__nEle);
     inputTree[sam]->SetBranchAddress("_nLight", &_nLight, &b__nLight);
     inputTree[sam]->SetBranchAddress("_nTau", &_nTau, &b__nTau);
+    inputTree[sam]->SetBranchAddress("_nVFit", &_nVFit, &b__nVFit);
+    inputTree[sam]->SetBranchAddress("_nGoodLeading", &_nGoodLeading, &b__nGoodLeading);
+    inputTree[sam]->SetBranchAddress("_lIndex", _lIndex, &b__lIndex);
+    inputTree[sam]->SetBranchAddress("_vertices", _vertices, &b__vertices);
     inputTree[sam]->SetBranchAddress("_lPt", _lPt, &b__lPt);
     inputTree[sam]->SetBranchAddress("_lEta", _lEta, &b__lEta);
     inputTree[sam]->SetBranchAddress("_lEtaSC", _lEtaSC, &b__lEtaSC);
@@ -846,20 +934,50 @@ _nLight= 20;
     inputTree[sam]->SetBranchAddress("_dz", _dz, &b__dz);
     inputTree[sam]->SetBranchAddress("_3dIP", _3dIP, &b__3dIP);
     inputTree[sam]->SetBranchAddress("_3dIPSig", _3dIPSig, &b__3dIPSig);
+    inputTree[sam]->SetBranchAddress("_2dIP", _2dIP, &b__2dIP);
+    inputTree[sam]->SetBranchAddress("_2dIPSig", _2dIPSig, &b__2dIPSig);
     inputTree[sam]->SetBranchAddress("_lElectronMva", _lElectronMva, &b__lElectronMva);
-    inputTree[sam]->SetBranchAddress("_lHNLoose", _lHNLoose, &b__lHNLoose);
-    inputTree[sam]->SetBranchAddress("_lHNFO", _lHNFO, &b__lHNFO);
-    inputTree[sam]->SetBranchAddress("_lHNTight", _lHNTight, &b__lHNTight);
+    inputTree[sam]->SetBranchAddress("_lElectronPassEmu", _lElectronPassEmu, &b__lElectronPassEmu);
+    inputTree[sam]->SetBranchAddress("_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto", _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, &b__lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto);
     inputTree[sam]->SetBranchAddress("_lPOGVeto", _lPOGVeto, &b__lPOGVeto);
     inputTree[sam]->SetBranchAddress("_lPOGLoose", _lPOGLoose, &b__lPOGLoose);
     inputTree[sam]->SetBranchAddress("_lPOGMedium", _lPOGMedium, &b__lPOGMedium);
     inputTree[sam]->SetBranchAddress("_lPOGTight", _lPOGTight, &b__lPOGTight);
-    inputTree[sam]->SetBranchAddress("_lIsPrompt", _lIsPrompt, &b__lIsPrompt);
-    inputTree[sam]->SetBranchAddress("_lMatchPdgId", _lMatchPdgId, &b__lMatchPdgId);
+    inputTree[sam]->SetBranchAddress("_lpassConversionVeto", _lpassConversionVeto, &b__lpassConversionVeto);
+    inputTree[sam]->SetBranchAddress("_muNumberInnerHits", _muNumberInnerHits, &b__muNumberInnerHits);
+    inputTree[sam]->SetBranchAddress("_eleNumberInnerHitsMissing", _eleNumberInnerHitsMissing, &b__eleNumberInnerHitsMissing);
     inputTree[sam]->SetBranchAddress("_relIso", _relIso, &b__relIso);
-    inputTree[sam]->SetBranchAddress("_miniIso", _miniIso, &b__miniIso);
+    inputTree[sam]->SetBranchAddress("_puCorr", _puCorr, &b__puCorr);
+    inputTree[sam]->SetBranchAddress("_absIso03", _absIso03, &b__absIso03);
+    inputTree[sam]->SetBranchAddress("_absIso04", _absIso04, &b__absIso04);
+    inputTree[sam]->SetBranchAddress("_sumNeutralHadronEt04", _sumNeutralHadronEt04, &b__sumNeutralHadronEt04);
+    inputTree[sam]->SetBranchAddress("_sumChargedHadronPt04", _sumChargedHadronPt04, &b__sumChargedHadronPt04);
+    inputTree[sam]->SetBranchAddress("_sumPhotonEt04", _sumPhotonEt04, &b__sumPhotonEt04);
+    inputTree[sam]->SetBranchAddress("_sumNeutralHadronEt03", _sumNeutralHadronEt03, &b__sumNeutralHadronEt03);
+    inputTree[sam]->SetBranchAddress("_sumChargedHadronPt03", _sumChargedHadronPt03, &b__sumChargedHadronPt03);
+    inputTree[sam]->SetBranchAddress("_sumPhotonEt03", _sumPhotonEt03, &b__sumPhotonEt03);
+    inputTree[sam]->SetBranchAddress("_trackIso", _trackIso, &b__trackIso);
+    inputTree[sam]->SetBranchAddress("_ecalIso", _ecalIso, &b__ecalIso);
+    inputTree[sam]->SetBranchAddress("_hcalIso", _hcalIso, &b__hcalIso);
+    inputTree[sam]->SetBranchAddress("_deltaBIso", _deltaBIso, &b__deltaBIso);
+    inputTree[sam]->SetBranchAddress("_ecalPFClusterIso", _ecalPFClusterIso, &b__ecalPFClusterIso);
+    inputTree[sam]->SetBranchAddress("_hcalPFClusterIso", _hcalPFClusterIso, &b__hcalPFClusterIso);
     inputTree[sam]->SetBranchAddress("_ptRel", _ptRel, &b__ptRel);
     inputTree[sam]->SetBranchAddress("_ptRatio", _ptRatio, &b__ptRatio);
+    inputTree[sam]->SetBranchAddress("_closestJetCsv", _closestJetCsv, &b__closestJetCsv);
+    inputTree[sam]->SetBranchAddress("_selectedTrackMult", _selectedTrackMult, &b__selectedTrackMult);
+    inputTree[sam]->SetBranchAddress("_muonSegComp", _muonSegComp, &b__muonSegComp);
+    inputTree[sam]->SetBranchAddress("_tauMuonVeto", _tauMuonVeto, &b__tauMuonVeto);
+    inputTree[sam]->SetBranchAddress("_tauEleVeto", _tauEleVeto, &b__tauEleVeto);
+    inputTree[sam]->SetBranchAddress("_decayModeFindingNew", _decayModeFindingNew, &b__decayModeFindingNew);
+    inputTree[sam]->SetBranchAddress("_tauVLooseMvaNew", _tauVLooseMvaNew, &b__tauVLooseMvaNew);
+    inputTree[sam]->SetBranchAddress("_tauLooseMvaNew", _tauLooseMvaNew, &b__tauLooseMvaNew);
+    inputTree[sam]->SetBranchAddress("_tauMediumMvaNew", _tauMediumMvaNew, &b__tauMediumMvaNew);
+    inputTree[sam]->SetBranchAddress("_tauTightMvaNew", _tauTightMvaNew, &b__tauTightMvaNew);
+    inputTree[sam]->SetBranchAddress("_tauVTightMvaNew", _tauVTightMvaNew, &b__tauVTightMvaNew);
+    inputTree[sam]->SetBranchAddress("_tauVTightMvaOld", _tauVTightMvaOld, &b__tauVTightMvaOld);
+    inputTree[sam]->SetBranchAddress("_lIsPrompt", _lIsPrompt, &b__lIsPrompt);
+    inputTree[sam]->SetBranchAddress("_lMatchPdgId", _lMatchPdgId, &b__lMatchPdgId);
     inputTree[sam]->SetBranchAddress("_nPh", &_nPh, &b__nPh);
     inputTree[sam]->SetBranchAddress("_phPt", _phPt, &b__phPt);
     inputTree[sam]->SetBranchAddress("_phEta", _phEta, &b__phEta);
@@ -897,8 +1015,7 @@ _nLight= 20;
     inputTree[sam]->SetBranchAddress("_jetDeepCsv_b", _jetDeepCsv_b, &b__jetDeepCsv_b);
     inputTree[sam]->SetBranchAddress("_jetDeepCsv_c", _jetDeepCsv_c, &b__jetDeepCsv_c);
     inputTree[sam]->SetBranchAddress("_jetDeepCsv_bb", _jetDeepCsv_bb, &b__jetDeepCsv_bb);
-    inputTree[sam]->SetBranchAddress("_jetDeepCsv_cc", _jetDeepCsv_cc, &b__jetDeepCsv_cc);
-    inputTree[sam]->SetBranchAddress("_jetHadronFlavour", _jetHadronFlavour, &b__jetHadronFlavour);
+    //inputTree[sam]->SetBranchAddress("_jetHadronFlavor", _jetHadronFlavor, &b__jetHadronFlavor);
     inputTree[sam]->SetBranchAddress("_jetId", _jetId, &b__jetId);
     inputTree[sam]->SetBranchAddress("_met", &_met, &b__met);
     inputTree[sam]->SetBranchAddress("_metJECDown", &_metJECDown, &b__metJECDown);
@@ -916,80 +1033,110 @@ _nLight= 20;
   }//end for on tree
     
   //******************* HISTO **********************
-  const int nCat=2;
-  const int nDist = 29;  //Number of distributions to plot
+  const int nCat=6;
+  const int nDist = 96;  //Number of distributions to plot
   TH1D* Histos[nDist][nCat][nSamples_eff +1];
-  const TString catNames[nCat] ={"ossf", "no_ossf"};
-  const TString Histnames_ossf[nDist] = {"DeltaPhi_pair","DeltaPhi_lt","DeltaPhi_st", "LeptonPt_le","LeptonPt_subl", "LeptonPt_tr","Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls","Mlll","Mll","Mll_pair OSSF", "MET", "MT", "NJets", "NbJets","HT", "DeltaR_pair","DeltaR_lt","DeltaR_st","RelIso_l", "RelIso_t", "dxy_l", "dxy_t","dz_l", "dz_t","3dIP_l", "3dIP_t"};
-    
-  //const TString Histnames_n_ossf[nDist] = { "LeptonPt_le","LeptonPt_subl" "LeptonPt_tr","Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls","Mlll","Mll","Mll_pair NOSSF", "MET", "MT", "NJets", "NbJets","HT", "DeltaR","DeltaR_pair","DeltaR_lt","DeltaR_st","RelIso_l", "RelIso_t", "dxy_l", "dxy_t","dz_l", "dz_t","3dIP_l", "3dIP_t"};
-    
-  const TString Xaxes[nDist] = {"#Delta #Phi (OSSF pair)", "#Delta #Phi (leading,trailing)", "#Delta #Phi (sub-leading, trailing)","P_{T}(leading l) (GeV)","P_{T}(sub-leading l) (GeV)", "P_{T}(trailing l) (GeV)", "SumP_{T}(3leptons) (GeV)","SumP_{T}(leading+trailing) (GeV)","SumP_{T}(sub-leading+trailing) (GeV)","SumP_{T}(leading+sub-leading) (GeV)",
-				"M_{lll} (GeV)","M_{ll} (sub-leading+soft) (GeV)", "M_{ll} OSSF pair (GeV)", "MET (GeV)", "M_{T} (GeV)", "number of jets", "number of b-jets","HT (GeV)" , "#Delta R (OSSF pair)", "#Delta R (leading,trailing)", "#Delta R (sub-leading, trailing)", "relIso(leading)", "relIso(trailing)", "|d_{xy}(leading)| (cm)", "|d_{xy}(trailing)| (cm)", "|d_{z}(leading)| (cm)", "|d_{z}(trailing)| (cm)",  "|3DIP(leading)| (cm)","|3DIP(trailing)| (cm)"};
-    
-  const TString Units[nDist] = {"","","","GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV","GeV","GeV","GeV","GeV","GeV", "", "", "GeV",  "", "", "",  "cm", "cm","cm", "cm", "cm", "cm","cm","cm"};
-    
-  const double HistMin[nDist] = {-0.5,-0.5,-0.5, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    
-  const double HistMax[nDist] = {4,4,4,200, 200, 200, 200, 200,  200,  200,  200,  200,  200, 200, 100, 10,10, 100, 4,4,4,0.99,0.99,5,5, 6, 6, 4, 4};
-  const int nBins[nDist] = {20,20,20,50, 50, 50, 50, 50, 50,50,50,50,50,50,20,10,10,20,25,25,25,70,70,10,10,10,10,10,10};
+  const TString catNames[nCat] ={"all","ossf", "no_ossf", "3tracks", "2tracks", "1track"};
+  const TString Histnames_ossf[nDist] = {"LeptonPt_le","LeptonPt_subl", "LeptonPt_tr", "Sum3Pt","Sum2Pt_lt","Sum2Pt_st","Sum2Pt_ls",
+					 "Mlll", "Mll_st", "Mll_pair", "MT_pair", "MT_3body", "MT_t", "MET", "MET_phi", "NJets", "NbJets","HT",
+					 "dxy_l","dz_l","3dIP_l","2dIP_l", "3dIPSig_l", "2dIPSig_l",
+					 "dxy_s","dz_s","3dIP_s","2dIP_s", "3dIPSig_s", "2dIPSig_s",
+					 "dxy_t","dz_t","3dIP_t","2dIP_t", "3dIPSig_t", "2dIPSig_t",
+					 "relIso03_l","absIso03_l","relIso04_l","absIso04_l","trackIso_l", "deltaBIso_l", "sumChargedHadronPt03_l",
+					 "relIso03_s","absIso03_s","relIso04_s","absIso04_s","trackIso_s", "deltaBIso_s", "sumChargedHadronPt03_s",
+					 "relIso03_t","absIso03_t","relIso04_t","absIso04_t","trackIso_t", "deltaBIso_t", "sumChargedHadronPt03_t",
+					 "DeltaR_pair","DeltaR_lt","DeltaR_st", "DeltaPhi_pair","DeltaPhi_lt","DeltaPhi_st",
+					 "vertex_X" , "vertex_Y" , "vertex_Z" , "vertex_R" , "vertex_chi2" , "vertex_normalized_chi2" ,
+					 "vertex_X_ls", "vertex_Y_ls", "vertex_Z_ls", "vertex_R_ls","vertex_Rsign_ls","vertex_R2D_ls","vertex_R2Dsign_ls", "vertex_chi2_ls", "vertex_normalized_chi2_ls",
+					 "vertex_X_lt", "vertex_Y_lt", "vertex_Z_lt", "vertex_R_lt","vertex_Rsign_lt","vertex_R2D_lt","vertex_R2Dsign_lt", "vertex_chi2_lt", "vertex_normalized_chi2_lt",
+					 "vertex_X_st", "vertex_Y_st", "vertex_Z_st", "vertex_R_st","vertex_Rsign_st","vertex_R2D_st","vertex_R2Dsign_st", "vertex_chi2_st", "vertex_normalized_chi2_st"};
 
-  double data_sum1=0;
-  double data_sum2=0;
-  double mc_sum1=0;
-  double mc_sum2=0;
 
+  const TString Xaxes[nDist] = {"P_{T} (leading l)","P_{T} (sub-leading l)", "P_{T} (trailing l)", "SumP_{T}(3leptons)","SumP_{T}(leading+trailing)","SumP_{T}(sub-leading+trailing)","SumP_{T}(leading+sub-leading)",
+				"M_{lll}","M_{ll} (sub-leading+soft)", "M_{ll} (M_{Z} pair)", "M_{T} (no M_{Z} pair)","M_{T} (trailing)","M_{T} (3l+MET)","MET", "MET_phi", "number of jets", "number of b-jets","HT",
+				"|d_{xy}| (leading)","|d_{z}| (leading)","|3D IP| (leading)","|2D IP| (leading)", "|3D IPSig| (leading)", "|2D IPSig| (leading)",
+				"|d_{xy}| (sub-leading)","|d_{z}| (sub-leading)","|3D IP| (sub-leading)","|2D IP| (sub-leading)", "|3D IPSig| (sub-leading)", "|2D IPSig| (sub-leading)",
+				"|d_{xy}| (trailing)","|d_{z}| (trailing)","|3D IP| (trailing)","|2D IP| (trailing)", "|3D IPSig| (trailing)", "|2D IPSig| (trailing)",
+				"relative Iso_{03} (leading)","absolute Iso_{03} (leading)", "relative Iso_{04} (leading)","absolute Iso_{04} (leading)","trackIso (leading)", "delta #beta Iso_{03} (leading)", "sumChargedHadronPt03 (leading)",
+				"relative Iso_{03} (sub-leading)","absolute Iso_{03} (sub-leading)","relative Iso_{04} (sub-leading)","absolute Iso_{04} (sub-leading)","trackIso (sub-leading)", "delta #beta Iso_{03} (sub-leading)", "sumChargedHadronPt03 (sub-leading)",
+				"relative Iso_{03} (trailing)","absolute Iso_{03} (trailing)","relative Iso_{04} (trailing)","absolute Iso_{04} (trailing)","trackIso (trailing)", "delta #beta Iso_{03} (trailing)", "sumChargedHadronPt03 (trailing)",
+				"#Delta R (M_{Z} pair)","#Delta R (leading-trailing)","#Delta R (sub leading-trailing)", "#Delta #phi (M_{Z} pair)","#Delta #phi (leading-trailing)","#Delta #phi (sub leading-trailing)",
+				"vertex_X" , "vertex_Y" , "vertex_Z" , "vertex_R" , "vertex_#chi ^{2}" , "vertex_normalized_#chi ^{2}" ,
+				"vertex_X (leading-sub leading)", "vertex_Y (leading-sub leading)", "vertex_Z (leading-sub leading)", "vertex_R (leading-sub leading)","vertex_R significance (leading-sub leading)", "vertex_R2D (leading-sub leading)","vertex_R2D significance (leading-sub leading)", "vertex_#chi ^{2} (leading-sub leading)", "vertex_normalized_#chi ^{2} (leading-sub leading)",
+				"vertex_X (leading-trailing)", "vertex_Y (leading-trailing)", "vertex_Z (leading-trailing)", "vertex_R (leading-trailing)","vertex_R significance (leading-trailing)", "vertex_R2D (leading-trailing)","vertex_R2D significance (leading-trailing)", "vertex_#chi ^{2} (leading-trailing)", "vertex_normalized_#chi ^{2} (leading-trailing)",
+				"vertex_X (sub leading-trailing)", "vertex_Y (sub leading-trailing)", "vertex_Z (sub leading-trailing)", "vertex_R (sub leading-trailing)","vertex_R significance (sub leading-trailing)", "vertex_R2D (sub leading-trailing)","vertex_R2D significance (sub leading-trailing)", "vertex_#chi ^{2} (sub leading-trailing)", "vertex_normalized_#chi ^{2} (sub leading-trailing)"};
+
+
+  const TString Units[nDist] = {"GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV", 
+				"GeV", "GeV", "GeV", "GeV", "GeV","GeV","GeV","GeV", "","","GeV",
+				"cm","cm","cm","cm","","",
+				"cm","cm","cm","cm","","",
+				"cm","cm","cm","cm","","",
+				"", "GeV", "", "GeV", "GeV","", "GeV",
+				"", "GeV", "", "GeV", "GeV","", "GeV",
+				"", "GeV", "", "GeV", "GeV","", "GeV",
+				"","","","","","",
+				"cm","cm","cm", "cm", "","",
+				"cm","cm","cm", "cm","","cm","", "","",
+				"cm","cm","cm", "cm","","cm","", "","",
+				"cm","cm","cm", "cm","","cm","", "",""};
+  const double HistMin[nDist] = { 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,-3.5, 0, 0,
+				  0, 0, 0, 0, 0, 0,
+				  0, 0, 0, 0, 0, 0,
+				  0, 0, 0, 0, 0, 0,
+				  0, 0, 0, 0, 0, 0,0,
+				  0, 0, 0, 0, 0, 0,0,
+				  0, 0, 0, 0, 0, 0,0,
+				  -0.5,-0.5,-0.5,-0.5,-0.5,-0.5,
+				  -2000, -2000, -5000, 0, 0,0,
+				  -100, -100, -200, 0,0,0,0, 0,0,
+				  -100, -100, -200, 0,0,0,0, 0,0,
+				  -100, -100, -200, 0,0,0,0, 0,0};
+  const double HistMax[nDist] = { 200, 100, 100, 100, 100, 100, 100,
+				  100, 100, 100, 100, 100,  100, 200,3.5, 10,10, 100,
+				  0.5, 1, 20, 2, 100, 100,
+				  0.5, 1, 20, 2, 100, 100,
+				  0.5, 1, 20, 2, 100, 100,
+				  1, 20, 1, 30, 40, 20,20,
+				  1, 20, 1, 30, 40, 20,20,
+				  1, 20, 1, 30, 40, 20,20,
+				  4,4,4,4,4,4,
+				  2000, 2000, 5000, 2000, 100,10,
+				  100, 100, 200, 110,1000,110,1000, 200,50,
+				  100, 100, 200, 110,1000,110,1000, 200,50,
+				  100, 100, 200, 110,1000,110,1000, 200,50}; 
+  const int nBins[nDist] =      { 25, 25, 25, 25, 25, 25, 25,
+				  25, 25, 25, 25, 25,  25, 50,20, 10,10, 100,
+				  50, 75, 50, 100, 100, 80,
+				  50, 75, 50, 100, 100, 80,
+				  50, 75, 50, 100, 100, 80,
+				  50, 100, 50, 100, 100, 50,100,
+				  50, 100, 50, 100, 100, 50,100,
+				  50, 100, 50, 100, 100, 50,100,
+				  20,20,20,20,20,20,
+				  4000, 4000, 8000, 4000, 100,100,
+				  200, 200, 400, 200,200,200,200, 100,100,
+				  200, 200, 400, 200,200,200,200, 100,100,
+				  200, 200, 400, 200,200,200,200, 100,100};    
+  cout<<"------ 1"<<endl;
+  for(int i = 0; i < nDist; ++i){
+    float BinWidth = (HistMax[i] - HistMin[i])/nBins[i];
+    std::ostringstream strs; strs << BinWidth; std::string Yaxis = strs.str();
+    for(int effsam = 0; effsam < nSamples_eff + 1; ++effsam){
+      for(int cat = 0; cat < nCat; ++cat){               
+	Histos[i][cat][effsam] = new TH1D(eff_names[effsam] + catNames[cat] + Histnames_ossf[i] , eff_names[effsam] + catNames[cat] + Histnames_ossf[i] + ";" + Xaxes[i] + "; events /" + Yaxis + Units[i], nBins[i], HistMin[i], HistMax[i]);
+	Histos[i][cat][effsam]->Sumw2();
+      }
+    }
+  }
+  //Calculate the center of the maximum bin of each histogram
+  double maxBinC[nDist];
+  for(int i = 0; i < nDist; ++i){
+    maxBinC[i] = Histos[i][0][0]->GetBinCenter(Histos[i][0][0]->GetNbinsX());
+  }
+    
  
-  double tot_1gev=0;
-  double tot_2gev=0;
-  double fo_1gev=0;
-  double fo_2gev=0;
-  double tight_1gev=0;
-  double tight_2gev=0;
-  double tot_mu_1gev=0;
-  double tot_mu_2gev=0;
-  double fo_mu_1gev=0;
-  double fo_mu_2gev=0;
-  double tight_mu_1gev=0;
-  double tight_mu_2gev=0;
-  double tot_e_1gev=0;
-  double tot_e_2gev=0;
-  double fo_e_1gev=0;
-  double fo_e_2gev=0;
-  double tight_e_1gev=0;
-  double tight_e_2gev=0;
-  double fo_3_1gev=0;
-  double fo_3_2gev=0;
-  double fo_3_mu_1gev=0;
-  double fo_3_mu_2gev=0;
-  double fo_3_e_1gev=0;
-  double fo_3_e_2gev=0;
-
-
-  double tot_1gev_prompt=0;
-  double tot_2gev_prompt=0;
-  double fo_1gev_prompt=0;
-  double fo_2gev_prompt=0;
-  double tight_1gev_prompt=0;
-  double tight_2gev_prompt=0;
-  double tot_mu_1gev_prompt=0;
-  double tot_mu_2gev_prompt=0;
-  double fo_mu_1gev_prompt=0;
-  double fo_mu_2gev_prompt=0;
-  double tight_mu_1gev_prompt=0;
-  double tight_mu_2gev_prompt=0;
-  double tot_e_1gev_prompt=0;
-  double tot_e_2gev_prompt=0;
-  double fo_e_1gev_prompt=0;
-  double fo_e_2gev_prompt=0;
-  double tight_e_1gev_prompt=0;
-  double tight_e_2gev_prompt=0;
-  double fo_3_1gev_prompt=0;
-  double fo_3_2gev_prompt=0;
-  double fo_3_mu_1gev_prompt=0;
-  double fo_3_mu_2gev_prompt=0;
-  double fo_3_e_1gev_prompt=0;
-  double fo_3_e_2gev_prompt=0;
+ 
 
 
   double denominatore_ossf=0;
@@ -999,31 +1146,8 @@ _nLight= 20;
   double numerator_n_ossf[bin_num];
 
 
-  cout<<"------ 1"<<endl;
-  for(int i = 0; i < nDist; ++i){
-    // cout<<"-------> numero isto: "<<i<<endl;
-    float BinWidth = (HistMax[i] - HistMin[i])/nBins[i];
-    std::ostringstream strs; strs << BinWidth; std::string Yaxis = strs.str();
-    for(int effsam = 0; effsam < nSamples_eff + 1; ++effsam){
-      //cout<<"------------> numero sample: "<<effsam<<endl;
-      for(int cat = 0; cat < nCat; ++cat){
-	//cout<<"--------------------------> numero cat: "<<cat<<endl;
-
-
-	Histos[i][cat][effsam] = new TH1D(eff_names[effsam] + catNames[cat] + Histnames_ossf[i] , eff_names[effsam] + catNames[cat] + Histnames_ossf[i] + ";" + Xaxes[i] + "; events /" + Yaxis + Units[i], nBins[i], HistMin[i], HistMax[i]);
-	Histos[i][cat][effsam]->Sumw2();
-	
-	//cout<<i<<" - "<< Histnames_ossf[i] <<")   "<<effsam<<"  -  "<<eff_names[effsam]<<"]   "<<cat<<"  -  "<<catNames[cat]<<"} "<<" --->  "<<Xaxes[i]<<"  "<<Units[i]<<"   "<<HistMin[i]<<"   "<<HistMax[i]<<"   "<<nBins[i]<<endl;
-      }
-    }
-  }
-  //Calculate the center of the maximum bin of each histogram
-  double maxBinC[nDist];
-  for(int i = 0; i < nDist; ++i){
-    maxBinC[i] = Histos[i][0][0]->GetBinCenter(Histos[i][0][0]->GetNbinsX());
-  }
-
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARAMETERS AND CUTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ 
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARAMETERS AND CUTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   const int number_veto_leptons=3;
   const double b_jets_wp= 0.5426;
   const double b_jets_pt= 25;
@@ -1050,123 +1174,285 @@ _nLight= 20;
     }
     //if (effsam == 0) continue;
     std::cout<<"Entries in "<< fileList[sam] <<" "<<nEntries<<std::endl;
-    cout << effsam << "   "<<sam<<endl;	
+    cout << effsam << "   "<<sam<<endl;
     //if (sam < 26) continue;
 
     //if (effsam !=1) continue;
-	  
-        double progress = 0; 	//For printing progress bar
+ 
+
+    double counters_cut[20] ;
+    double counters_cut_ossf[20] ;
+    double counters_cut_no_ossf[20] ;
 
 
+    // if (sam <= 12 ){
+
+    for (int i =0; i< 20; i++){
+      counters_cut[i] =0.;
+      counters_cut_ossf[i] =0.;
+      counters_cut_no_ossf[i] =0.;
+    }
+    // }
+    double progress = 0; //For printing progress bar
+        
+        
     //--------------> LOOOP ON THE TREE"S ENTRIES
     for (Long64_t it = 0; it < nEntries; ++it){
-      inputTree[sam]->GetEntry(it);    
-      // if (it%10000 == 0) cout<<'.'<<flush;
-
-       if(it%100 == 0 && it != 0){
+      inputTree[sam]->GetEntry(it);
+      //if (it%10000 == 0) cout<<'.'<<flush;
+            
+      if(it%100 == 0 && it != 0){
 	progress += (double) (100./nEntries);
 	printProgress(progress);
       } else if(it == nEntries -1){
 	progress = 1.;
 	printProgress(progress);
       }
-
-
-
+            
+            
       double scal = 0;
-      scal = scale[sam]*_weight; 
-      /*if(effsam == 0) scal = 0;
-      else{
-	scal = scale[sam]*_weight; 
-	}   */
-      //scal=1;
-      //if (effsam !=1) continue;
-      //number of leptons in tree
-      tot_1gev= tot_1gev + 1*scal;
-
-      // if (effsam < 15) continue;
+      scal = scale[sam]*_weight;
+     
+            
       if (effsam == 0) continue;
-
-      if(_nL < number_veto_leptons) continue;
+      if (effsam == 20) continue;     
+            
+            
+            
+      // if(_nL < number_veto_leptons) continue;
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> VECTORS AND VARIABLES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       int               nBjets = 0;
       unsigned*         ind = new unsigned[_nL];	//new indices of good leptons
-      unsigned          tightC = 0;//Count number of T leptons
-      unsigned          promptC = 0;
-      double            low_mass_pt_base[1];
-      double*           conePt = new double[_nL];
-      double            faxtore_FR=0;
-
-
+      //double*           conePt = new double[_nL];
+      double            faxtore_FR=0;            
       double            prov_index[3]={-1,-1,-1};
       double            prov_number_tight[1]= {-1};
       double            prov_number_prompt[1]= {-1};
       double            prov_fattore[1]= {-1};
       int               skip_event[1]= {-1};
-      double            faxtore[1]= {-100};
-
+      double            faxtore[1]= {-100};            
       TLorentzVector    lepton_reco[3];
       int               flavors_3l[3];
       int               charge_3l[3];
-      TLorentzVector    sum_3l_rec;	//M_3l 
+      TLorentzVector    sum_3l_rec;	//M_3l
       TLorentzVector    pair [3];
       int               kind[1] ={-1}; // 0 no-ossf
-      TLorentzVector    sum_2l_rec_pair; 	//M_2l best Z candidate
+      TLorentzVector    sum_2l_rec_pair; //M_2l best Z candidate
       int               event_clas[1]={-1}; // 1* = eee   2* = emm   3* = eem  4* = mmm
       int               check_mt= -1;
       Double_t          delta_R_max=-1;
       Double_t          delta_R_min=-1;
-      Double_t          _mll_min=50000;  
+      Double_t          _mll_min=50000;
       TLorentzVector    lepton_transv;
       TLorentzVector    METvec;
-      double            m_T=0; 
+      double            m_T=0;
       double            MET=0;
-      double            MET_PHI=0;
-
+      double            MET_PHI=0;           
       int               nominal=-1;
-      int               jec_check=-1; 
+      int               jec_check=-1;
       int               unclustered_met=-1;
       int               up=-1;
       int               down=-1;
       double            new_met[1]= {0};
       double            new_met_phi[1]= {0};
-      int               new_number_bjets[1]= {0};
-
+      int               new_number_bjets[1]= {0};            
       int               new_pt_checks= -1;
       bool              trigger_fired = false;
       bool              low_pt_event=false;
-      bool              high_pt_event = false;
-
+      bool              high_pt_event = false;            
       unsigned*         _SR_low= new unsigned[8];
       double             search_region_fill[1]={-1};
       bool              data_control_region=false;
 
-       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-      //------------------------------------------------------------ selection class 
-      faxtore_FR=1;
-      TString prova = "/Users/Martina/Desktop/file/willem/"+fileList[sam];
-      Selection right_lepton(prova);
-      right_lepton.selezione(_gen_nL,_nL,  _lPt  , _lEta  , _lE  ,  _lPOGMedium  ,  _lPOGLoose ,_lFlavor  , _lCharge  , _relIso  , _dxy  , _dz  , _3dIP  , _3dIPSig  ,  _lHNLoose  ,  _lHNFO  ,  _lHNTight  , _lElectronMva     , _lIsPrompt,  prov_index,prov_number_tight,prov_number_prompt,skip_event, effsam, *&fakeRate_mu, *&fakeRate_e, faxtore, _gen_lPt  , _gen_lEta, _gen_lIsPrompt , _gen_lFlavor);
-      tightC = 0;
-      if (skip_event[0] == -1) continue;
-      // if (effsam== 1 ||effsam== 2 ||effsam== 3 ||effsam== 4 ||effsam== 5 ) cout<< "signal1"<<endl;
 
-      ind[0] = prov_index[0];
-      ind[1] = prov_index[1];
-      ind[2] = prov_index[2];
-      tightC= prov_number_tight[0];
-      promptC = prov_number_prompt[0]; 
-      faxtore_FR= faxtore[0];
-      bool tightFail = (tightC < 3);
-      if (tightFail) continue;
-      if ((effsam == 1 ||effsam == 2 ||effsam == 3 ||effsam == 4 ||effsam == 5 ||effsam == 6 ||effsam == 7 ||effsam == 8 ||effsam == 9 ||effsam == 10 ||effsam == 11 ) && prov_number_prompt[0] != 3) continue;
+      unsigned          lCount = 0;	//Count number of FO leptons that are not taus
+      unsigned*         _isFO= new unsigned[_nL];
 
-      //--------------------------------------------------------------------------------	
-      fo_3_1gev= fo_3_1gev + 1*scal;   
+      unsigned          lCount1 = 0;	//Count number of FO leptons that are not taus
+      unsigned*         _isFO1= new unsigned[_nL];
+      Bool_t            _passedMVA90[_nL];   
+      
+     
+      unsigned           promptC = 0;
+      double             low_mass_pt_base[1];
+      
+      unsigned*          _isWithTrack= new unsigned[_nL];
+      unsigned           wTrack=0;
+
+      double            iV_ls=0;
+      double            iV_lt=0;
+      double            iV_st=0;
+
+      double            _vertex_X[3];
+      double            _vertex_Y[3];
+      double            _vertex_Z[3];
+      double            _vertex_R2D[3];
+      double            _vertex_sR2D[3];
+      double            _vertex_R[3];
+      double            _vertex_sR[3];
+      double            _vertex_chi2[3];
+      double            _vertex_normchi2[3];
+      
+
+      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<            
+      //------------------------------------------------------------ selection class
+       
+      counters_cut[0]++;
+       
+      /*for(unsigned l = 0; l < _nL; ++l){
+	if (l < _nMu ) _lFlavor[l] = 1;
+	else if (l >= _nMu  && l < (_nMu + _nEle)) _lFlavor[l] = 0;
+	else _lFlavor[l] = 2;
+	}*/
+
+      //FO
+       
+      for(unsigned l = 0; l < _nL; ++l){
+	_isFO[l] = false;
+	if (_lFlavor[l] == 0 && _lPt[l] < 5 ) continue;
+	if (_lFlavor[l] == 1 && _lPt[l] < 3.5 ) continue;
+	if (_sumChargedHadronPt03[l] < 10)	_isFO[l] = true;
+	if(_isFO[l] && _lFlavor[l] != 2){
+	  ind[lCount] = l;
+	  ++lCount;
+	}
+      } 
+      double*  conePt = new double[_nL];
+      for(unsigned l = 0; l < lCount; ++l){
+	conePt[ind[l]] =0.;
+	//_lFlavor[ind[l]] = -1;
+	conePt[ind[l]] = _lPt[ind[l]];
+	//if (ind[l] < _nMu ) _lFlavor[ind[l]] = 1;
+	//	else if (ind[l] >= _nMu  && ind[l] < (_nMu + _nEle)) _lFlavor[ind[l]] = 0;
+	//else _lFlavor[ind[l]] = 2;
+
+      }
+
+      if(lCount < 3) continue;
+      //Order FO leptons by Pt
+      unsigned* ordind = new unsigned[lCount];
+      std::set<unsigned> usedLep;
+      
+      for(unsigned k =0; k < lCount; ++k){
+	//unsigned maxI = 999;
+	double maxConePt = 0;
+	for(unsigned l = 0; l < lCount; ++l){
+	  if(usedLep.find(ind[l]) == usedLep.end()){
+	    if(conePt[ind[l]] > maxConePt){
+	      maxConePt = conePt[ind[l]];
+	      ordind[k] = ind[l];
+	    }
+	  }
+	}
+	usedLep.insert(ordind[k]);
+      }
+      for(unsigned i = 0; i < lCount; ++i){
+	ind[i] = ordind[i];
+      }
+      
+     
+      
+      //Check number of tight leptons
+      unsigned tightC = 0;
+      unsigned* _isT= new unsigned[_nL];
+      for(unsigned l = 0; l < lCount; ++l){
+	_isWithTrack[ind[l]] = false;
+	if (!_isFO[ind[l]]) continue;
+
+       	if (_lFlavor[ind[l]]== 1 && _lPOGLoose[ind[l]] && _lPOGMedium[ind[l]] && _relIso[ind[l]] < 0.6)       _isWithTrack[ind[l]] = true; // tracker or global muon --> loose definition from POG
+       	if (_lFlavor[ind[l]]== 0 && _lpassConversionVeto[ind[l]] && _eleNumberInnerHitsMissing[ind[l]]<=1 && _lPOGMedium[ind[l]] && _relIso[ind[l]] < 0.6)    _isWithTrack[ind[l]] = true; //no conversion and number missing hits
+	_isT[ind[l]] = false;
+       	if (_lFlavor[ind[l]]== 1 && _lPOGLoose[ind[l]] ){
+	  if ( _lPOGMedium[ind[l]] )       _isT[ind[l]] = true; 
+	}
+       	if (_lFlavor[ind[l]]== 0 && _lpassConversionVeto[ind[l]] && _eleNumberInnerHitsMissing[ind[l]]<=1 && _lPOGMedium[ind[l]])    _isT[ind[l]] = true; 
+      }    
+
+      
+      
+      for(unsigned l = 0; l < lCount; ++l){
+	if(_isT[ind[l]] && l < 3 ) ++tightC;
+	else break;
+      }
+      
+      for(unsigned l = 0; l < lCount; ++l){
+	if(_isWithTrack[ind[l]] && l < 3) ++wTrack;
+	else break;
+      }
+      
+      
+      //calculate the index for the vertex
+      iV_ls= _lIndex[ind[0]] * 100 +  _lIndex[ind[1]];
+      iV_st= _lIndex[ind[1]] * 100 +  _lIndex[ind[2]];
+      iV_lt= _lIndex[ind[0]] * 100 +  _lIndex[ind[2]];
+
+      //[0] == ls
+      //[1] == st
+      //[2] == lt
+      for(unsigned v = 0; v < _nVFit; ++v){
+	if (_vertices[v][0] == iV_ls) {
+	  _vertex_X[0]        = _vertices[v][1];
+	  _vertex_Y[0]        = _vertices[v][2];
+	  _vertex_Z[0]        = _vertices[v][3];
+	  _vertex_R2D[0]      = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2]);
+	  _vertex_sR2D[0]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2])  + derivate2_with_sigmaR2D(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2])   + 2*_vertices[v][7]*_vertices[v][7] *derivateR2D(_vertices[v][1],_vertices[v][1], _vertices[v][2])*derivateR2D(_vertices[v][2],_vertices[v][1], _vertices[v][2]) );
+	  _vertex_R[0]        = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2] + _vertices[v][3]*_vertices[v][3]);
+	  _vertex_sR[0]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     derivate2_with_sigmaR(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     derivate2_with_sigmaR(_vertices[v][3], _vertices[v][6],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][7]*_vertices[v][7]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][9]*_vertices[v][9]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][8]*_vertices[v][8]*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3])  );
+	  _vertex_chi2[0]     = _vertices[v][11];
+	  _vertex_normchi2[0] = _vertices[v][11]/_vertices[v][10];
+	}
+	if (_vertices[v][0] == iV_st) {
+	  _vertex_X[1]        = _vertices[v][1];
+	  _vertex_Y[1]        = _vertices[v][2];
+	  _vertex_Z[1]        = _vertices[v][3];
+	  _vertex_R2D[1]      = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2]);
+	  _vertex_sR2D[1]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2])  + derivate2_with_sigmaR2D(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2])   + 2*_vertices[v][7]*_vertices[v][7] *derivateR2D(_vertices[v][1],_vertices[v][1], _vertices[v][2])*derivateR2D(_vertices[v][2],_vertices[v][1], _vertices[v][2]) );
+	  _vertex_R[1]        = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2] + _vertices[v][3]*_vertices[v][3]);
+	  _vertex_sR[1]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     derivate2_with_sigmaR(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     derivate2_with_sigmaR(_vertices[v][3], _vertices[v][6],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][7]*_vertices[v][7]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][9]*_vertices[v][9]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][8]*_vertices[v][8]*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3])  );
+	  _vertex_chi2[1]     = _vertices[v][11];
+	  _vertex_normchi2[1] = _vertices[v][11]/_vertices[v][10];
+	}
+	if (_vertices[v][0] == iV_lt) {
+	  _vertex_X[2]        = _vertices[v][1];
+	  _vertex_Y[2]        = _vertices[v][2];
+	  _vertex_Z[2]        = _vertices[v][3];
+	  _vertex_R2D[2]      = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2]);
+	  _vertex_sR2D[2]     = TMath::Sqrt(derivate2_with_sigmaR2D(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2])  + derivate2_with_sigmaR2D(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2])   + 2*_vertices[v][7]*_vertices[v][7] *derivateR2D(_vertices[v][1],_vertices[v][1], _vertices[v][2])*derivateR2D(_vertices[v][2],_vertices[v][1], _vertices[v][2]) );
+	  _vertex_R[2]        = TMath::Sqrt(_vertices[v][1]*_vertices[v][1]+ _vertices[v][2]*_vertices[v][2] + _vertices[v][3]*_vertices[v][3]);
+	  _vertex_sR[2]= TMath::Sqrt(derivate2_with_sigmaR(_vertices[v][1], _vertices[v][4],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     derivate2_with_sigmaR(_vertices[v][2], _vertices[v][5],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     derivate2_with_sigmaR(_vertices[v][3], _vertices[v][6],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][7]*_vertices[v][7]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][9]*_vertices[v][9]*derivateR(_vertices[v][1],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3]) +
+				     2*_vertices[v][8]*_vertices[v][8]*derivateR(_vertices[v][2],_vertices[v][1], _vertices[v][2], _vertices[v][3])*derivateR(_vertices[v][3],_vertices[v][1], _vertices[v][2], _vertices[v][3])  );
+	  _vertex_chi2[2]     = _vertices[v][11];
+	  _vertex_normchi2[2] = _vertices[v][11]/_vertices[v][10];
+
+	  //	cout<<_vertices[v][0]<< "  x,y,z: "<< _vertex_X[2]<< ", "<<_vertex_Y[2]<< ", "<<_vertex_Z[2]<< "   sx,sy,sz: "<<_vertices[v][4]<<" , "<<_vertices[v][5]<<" , "<<_vertices[v][6]<<"   ssx,ssy,ssz: "<<_vertices[v][7]<<" , "<<_vertices[v][8]<<" , "<<_vertices[v][9]<<"      R: "<<_vertex_R[2]<< "±"<<_vertex_sR[2]<<"  2R: "<<_vertex_R2D[2]<< "±"<<_vertex_sR2D[2]<<endl;
+
+
+
+	}	           
+      }// end loop vertices
+
+
+       //--------------------------------------------------------------------------------   
+      if (!_lPOGMedium[ind[0]]  || _lPt[ind[0]] < 20 || _relIso[ind[0]] > 0.1 || TMath::Abs(_dxy[ind[0]]) > 0.05 || TMath::Abs(_dz[ind[0]]) > 0.1 || fabs(_3dIPSig [ind[0]]) > 4  ) continue;
+
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANALYSIS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       for (int i =0; i < 3; i ++){
-	lepton_reco[i].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]); 
+	lepton_reco[i].SetPtEtaPhiE( _lPt[ind[i]],  _lEta[ind[i]], _lPhi[ind[i]], _lE[ind[i]]);
 	flavors_3l[i]=_lFlavor[ind[i]];
 	charge_3l[i]=_lCharge[ind[i]];
 	conePt[i] =  _lPt[ind[i]];
@@ -1174,131 +1460,40 @@ _nLight= 20;
       //M_3l
       sum_3l_rec.SetPtEtaPhiE(0,0,0,0);
       sum_3l_rec= (lepton_reco[0]+ lepton_reco[1]+lepton_reco[2] );
-      
-      //================== event classification ========================  
+            
+      //================== event classification ========================
       // ---------------- > OSSF or NO_OSSF
       ossf_no_ossf( kind, pair,lepton_reco[0], lepton_reco[1], lepton_reco[2], flavors_3l, charge_3l);
-      if (kind[0]  == -1) continue;  
+      if (kind[0]  == -1) continue;
+      // counters_cut[6] = counters_cut[6] + 1*scal;
+
       //M_2l best Z candidate
       sum_2l_rec_pair.SetPtEtaPhiE(0,0,0,0);
-      sum_2l_rec_pair= (pair[0]+pair[1] );	
+      sum_2l_rec_pair= (pair[0]+pair[1] );
       bool ossf_event= false;
       if (kind[0] == 1) ossf_event = true;
-      //if (kind[0] == 0) continue;  		
+
+     
+
+      //if (kind[0] == 0) continue;
       // ---------------- > CHANNELS
       class_os( event_clas,  flavors_3l, charge_3l);
-      if (event_clas[0] == -1) continue;  
-      ////// ===============>  LOW mass selection:   
+      if (event_clas[0] == -1) continue;
+      ////// ===============>  LOW mass selection:
       //if(lepton_reco[0].Pt() > 55) continue;
       // ---------------- > cut on M_3L > M_W
-      //if (sum_3l_rec.M() > mlll_cuts) continue;
-      //=============================================================  
-
-      //================== Binning variables ========================  
-      // ---------------- > Delta R
-      delta_R_max = lepton_reco[0].DeltaR(lepton_reco[1]);
-      if (lepton_reco[0].DeltaR(lepton_reco[2]) > delta_R_max) delta_R_max = lepton_reco[0].DeltaR(lepton_reco[2]);
-      if (lepton_reco[1].DeltaR(lepton_reco[2]) > delta_R_max) delta_R_max = lepton_reco[1].DeltaR(lepton_reco[2]);
-      delta_R_min = lepton_reco[0].DeltaR(lepton_reco[1]);
-      if (lepton_reco[0].DeltaR(lepton_reco[2]) < delta_R_min) delta_R_min = lepton_reco[0].DeltaR(lepton_reco[2]);
-      if (lepton_reco[1].DeltaR(lepton_reco[2]) < delta_R_min) delta_R_min = lepton_reco[1].DeltaR(lepton_reco[2]);
-      // ---------------- > M_min OS
-      check_mt=-1;
-      if ((_lCharge[ind[0]] != _lCharge[ind[1]] )) {
-	_mll_min = (lepton_reco[0]+lepton_reco[1]).M();
-	check_mt= 2;
-      }
-      if ((_lCharge[ind[0]] != _lCharge[ind[2]] ) && (lepton_reco[0]+lepton_reco[2]).M() < _mll_min){
-	_mll_min = (lepton_reco[0]+lepton_reco[2]).M();
-	check_mt= 1;
-      }
-      if ((_lCharge[ind[1]] != _lCharge[ind[2]] ) && (lepton_reco[1]+lepton_reco[2]).M() < _mll_min) {
-	_mll_min = (lepton_reco[1]+lepton_reco[2]).M();
-	check_mt= 0;
-      }   
-      // ---------------- > to built later M_T_third
-      if (check_mt == 0 ) lepton_transv.SetPtEtaPhiE(lepton_reco[0].Pt(),0, lepton_reco[0].Phi(), lepton_reco[0].Pt());
-      if (check_mt == 1 ) lepton_transv.SetPtEtaPhiE(lepton_reco[1].Pt(),0, lepton_reco[1].Phi(), lepton_reco[1].Pt());
-      if (check_mt == 2 ) lepton_transv.SetPtEtaPhiE(lepton_reco[2].Pt(),0, lepton_reco[2].Phi(), lepton_reco[2].Pt());	
-      //=============================================================  
-
-      //=============== PT cocktail  and PT categories ==============
-      new_pt_checks= 0;
-      if (event_clas[0]== 30){
-	new_pt_checks= 1;
-        if((_lFlavor[ind[2]]== 0 && lepton_reco[2].Pt() < 15) && lepton_reco[0].Pt() < 23)  new_pt_checks= 0;
-	if((_lFlavor[ind[2]]== 1 && lepton_reco[2].Pt()< 8) && (lepton_reco[0].Pt() < 25   || lepton_reco[1].Pt() < 15))  new_pt_checks= 0;
-	if((_lFlavor[ind[2]]== 1 && lepton_reco[2].Pt() > 8) && (lepton_reco[0].Pt() < 23   &&  lepton_reco[1].Pt() < 15))  new_pt_checks= 0;
-      }
-      if (event_clas[0]== 20){
-	new_pt_checks= 1;
-	if((_lFlavor[ind[2]]== 1 && lepton_reco[2].Pt()< 9) && lepton_reco[0].Pt() < 23)  new_pt_checks= 0;
-      }   
-      //if (new_pt_checks == 0) continue;
-      // ---------------- > 2 PT categories 
-      low_pt_event= false;
-      if (lepton_reco[0].Pt()<= 30) low_pt_event= true;
-      if (lepton_reco[0].Pt()> 30 && lepton_reco[0].Pt() < 55)  high_pt_event = true;
-      //=============================================================  
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      //if ( (TMath::Abs(_dxy[ind[1]]) < 0.05 && TMath::Abs(_dz[ind[1]]) < 0.1 && _3dIPSig[ind[1]] < 4)  )  continue;
    
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      TRIGGER     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      // 1* = eee
-      // 2* = emm
-      // 3* = eem
-      // 4* = mmm
-      trigger_fired = false;
-      if ((event_clas[0]== 1 ||  event_clas[0]== 10)   &&  (_passHN_1l   || _passHN_eee)) trigger_fired = true;
-      if ((event_clas[0]== 2 ||  event_clas[0]== 20)   &&  (_passHN_1l   || _passHN_emm)) trigger_fired = true;
-      if ((event_clas[0]== 3 ||  event_clas[0]== 30)   &&  (_passHN_1l   || _passHN_eem)) trigger_fired = true;
-      if ((event_clas[0]== 4 ||  event_clas[0]== 40)   &&  (_passHN_1l   || _passHN_mmm)) trigger_fired = true;     
-      //if ( !trigger_fired ) continue;
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      //if ( (TMath::Abs(_dxy[ind[2]]) < 0.05 && TMath::Abs(_dz[ind[2]]) < 0.1 && _3dIPSig[ind[2]] < 4)  )  continue;
 
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>      MET and MT     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      nominal=1;
-      jec_check=0;
-      unclustered_met=0;
-      up=0;
-      down=0;
-      // ---------------- > MET and B JETS according with SR-unc
-      //  met_mt_bjets(nominal,  jec_check,  unclustered_met,  up,  down,   _metJECUp,       _met_phiJECUp,       _metOtherUp,       _met_phiOtherUp,       _metJECDown,       _met_phiJECDown,       _metOtherDown,       _met_phiOtherDown,   _jetPt,   _jetPtUp,   _jetPtDown, _met,  _met_phi, _nJets,  _csv, new_met, new_met_phi,  new_number_bjets);
-      MET = new_met[0];
-      MET_PHI = new_met_phi[0];
-      nBjets = new_number_bjets[0];
-      // ------------------- cuts according to new met and bjets veto
-      //if( tightFail) continue;
-      if (nBjets != 0) continue;
-      METvec.SetPtEtaPhiE(MET, 0, MET_PHI,MET);        
-      m_T= (lepton_transv + METvec).Mag();
-      //if (MET > met_cuts) continue;
-      tight_1gev= tight_1gev + 1*scal;    
-      // ---------------------------------------------------------------------------------------------------------------- 
-      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      
 
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    SR DEFINITION     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  
-      for (int i =0; i < 8; i ++){
-	_SR_low[i]= false;
-      }
-      //LOW_SR    
-      if (low_pt_event){
-	if (_mll_min <= 10 )_SR_low[0] = true;
-	if (_mll_min > 10  && _mll_min <= 20 )_SR_low[1] = true;
-	if (_mll_min > 20  && _mll_min <= 30 )_SR_low[2] = true;
-	if (_mll_min >30 )_SR_low[3] = true;
-      }
-      if (high_pt_event){
-	if (_mll_min <= 10 )_SR_low[4] = true;
-	if (_mll_min > 10  && _mll_min <= 20 )_SR_low[5] = true;
-	if (_mll_min > 20  && _mll_min <= 30 )_SR_low[6] = true;
-	if (_mll_min >30 )_SR_low[7] = true;
-      }	    
-      
-      if (_SR_low[0] || _SR_low[4]) search_region_fill[0] = 1;
-      if (_SR_low[1] || _SR_low[5]) search_region_fill[0] = 2;
-      if (_SR_low[2] || _SR_low[6]) search_region_fill[0] = 3;
-      if (_SR_low[3] || _SR_low[7]) search_region_fill[0] = 4;
+      if (sum_3l_rec.M() > mlll_cuts) continue;
+
+      if (_met > 100) continue;
+
+
+      //  if( ( !_lPOGLoose[ind[1]] || !_lPOGMedium[ind[1]] || _relIso[ind[1]] > 0.6)  || ( !_lPOGLoose[ind[2]] || !_lPOGMedium[ind[2]] || _relIso[ind[2]] > 0.6)) continue;           
+
 
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       //   if (effsam== 1 ||effsam== 2 ||effsam== 3 ||effsam== 4 ||effsam== 5 ) cout<< "signal"<<endl;
@@ -1317,22 +1512,22 @@ _nLight= 20;
 
      
 
-    //      double values_sr[nDist_sr] = {search_region_fill[0], search_region_fill[0]};
+      //      double values_sr[nDist_sr] = {search_region_fill[0], search_region_fill[0]};
       //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       //******************** PT STUDIES *****************************************************
       double numero_bin_pt= 100;
 
       if (!ossf_event) {
-	 denominatore_n_ossf= denominatore_n_ossf +1*scal;
-	  for (int i = 0; i< bin_num; i++){
+	denominatore_n_ossf= denominatore_n_ossf +1*scal;
+	for (int i = 0; i< bin_num; i++){
 
-	    double j = i;
-	    //   cout<<i<<")  "<<j/200<< "   "<<j/100<< "  "<< _dxy[ind[2]]<< endl;
-	    //|| _dz[ind[2]] > j/100
-	    //_dxy[ind[2]] < j/200
-	    // TMath::Abs(_dxy[ind[2]]) > j/200 && TMath::Abs(_dxy[ind[1]]) > j/200
+	  double j = i;
+	  //   cout<<i<<")  "<<j/200<< "   "<<j/100<< "  "<< _dxy[ind[2]]<< endl;
+	  //|| _dz[ind[2]] > j/100
+	  //_dxy[ind[2]] < j/200
+	  // TMath::Abs(_dxy[ind[2]]) > j/200 && TMath::Abs(_dxy[ind[1]]) > j/200
 
-	    if ((TMath::Abs(_dxy[ind[1]]) > j/200 || TMath::Abs(_dz[ind[1]]) > j/200  || _3dIPSig[ind[1]] > j/2.5)  && (TMath::Abs(_dxy[ind[2]]) > j/200 || TMath::Abs(_dz[ind[2]]) > j/200  || _3dIPSig[ind[2]] > j/2.5) ) numerator_n_ossf[i] = numerator_n_ossf[i] +1*scal;
+	  if ((TMath::Abs(_dxy[ind[1]]) > j/200 || TMath::Abs(_dz[ind[1]]) > j/200  || _3dIPSig[ind[1]] > j/2.5)  && (TMath::Abs(_dxy[ind[2]]) > j/200 || TMath::Abs(_dz[ind[2]]) > j/200  || _3dIPSig[ind[2]] > j/2.5) ) numerator_n_ossf[i] = numerator_n_ossf[i] +1*scal;
 	  }
       }    
       if (ossf_event) {
@@ -1352,10 +1547,10 @@ _nLight= 20;
 	  std::ofstream zg_ptcut_max( names_files[i-1]);
 	  for (int j =0; j < bin_num ; j++) {
 
-	  
+ 
 	    zg_ptcut_max<<j<<" "<< numerator_ossf[j]<<" "<<numerator_n_ossf[j]<<" "<<" "<<denominatore_ossf<<" "<<denominatore_n_ossf<<endl;
 	  }
-	  
+ 
 	}
 
       }
@@ -1398,6 +1593,35 @@ double Analysis_eff::maximum(double a, double b){
   if (massimo < b) massimo = b; 
   return massimo+1; 
 }
+
+
+
+//___________________________________________________________________
+double Analysis_eff::derivateR(double a, double x, double y, double z){
+    double result =0;
+    result = a /((x*x + y*y + z*z)*(x*x + y*y + z*z));
+    return result;
+}
+//___________________________________________________________________
+double Analysis_eff::derivate2_with_sigmaR(double a, double sa, double x, double y, double z){
+    double result =0;
+    result = (a*a)*(sa*sa) /(x*x + y*y + z*z);
+    return result;
+}
+//___________________________________________________________________
+double Analysis_eff::derivateR2D(double a, double x, double y){
+    double result =0;
+    result = a /((x*x + y*y )*(x*x + y*y ));
+    return result;
+}
+//___________________________________________________________________
+double Analysis_eff::derivate2_with_sigmaR2D(double a, double sa, double x, double y){
+    double result =0;
+    result = (a*a)*(sa*sa) /(x*x + y*y );
+    return result;
+}
+
+
 
 //___________________________________________________________________
 
@@ -1446,11 +1670,11 @@ return weight;
 
 //==================================================================
 double Analysis_eff::FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
-                              TGraphAsymmErrors *fakeRate_e[3],
-                              double eta,
-                              double flavors,
-                              double lptcone
-                              ){
+			       TGraphAsymmErrors *fakeRate_e[3],
+			       double eta,
+			       double flavors,
+			       double lptcone
+			       ){
     
     
   eta = fabs(eta);

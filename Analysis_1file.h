@@ -1,5 +1,5 @@
-#ifndef ANALYSIS_EFF_H
-#define ANALYSIS_EFF_H
+#ifndef ANALYSIS_1FILE_H
+#define ANALYSIS_1FILE_H
 #include "TObject.h"
 
 #include <iostream>
@@ -35,14 +35,14 @@
 
 
 
-class Analysis_eff : public TObject {
+class Analysis_1file : public TObject {
     
  public:
     
     
-  Analysis_eff();
-  Analysis_eff(string FileNameTree_in);
-  virtual ~Analysis_eff();
+  Analysis_1file();
+  Analysis_1file(string FileNameTree_in);
+  virtual ~Analysis_1file();
     
   void analisi(    int num_histo_kin	   
 		   );
@@ -73,7 +73,7 @@ void printProgress(double progress) ;
     
     
     
-  ClassDef(Analysis_eff,1) 
+  ClassDef(Analysis_1file,1) 
     };
 
 #endif

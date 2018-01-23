@@ -41,10 +41,10 @@ class Analysis_mc : public TObject {
     
     
   Analysis_mc();
-  Analysis_mc(string FileNameTree_in);
+  Analysis_mc(int selezione, string FileNameTree_in);
   virtual ~Analysis_mc();
     
-  void analisi(    int num_histo_kin	   
+  void analisi( int selezione,   int num_histo_kin	   
 		   );
   double derivateR(double a, double x, double y, double z);
   double derivate2_with_sigmaR(double a, double sa, double x, double y, double z);
@@ -52,7 +52,8 @@ class Analysis_mc : public TObject {
   double derivate2_with_sigmaR2D(double a, double sa, double x, double y);
 
   double maximum(double a, double b);
-    void from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point);
+  void from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point);
+  void find_leptons(int selezione, unsigned displacedC, TLorentzVector lepton_tobeselected[10], int index_displaced[10], int index_s[2]);
 
 
   double FR_factor(TGraphAsymmErrors *fakeRate_mu[3],

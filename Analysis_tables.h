@@ -1,5 +1,5 @@
-#ifndef ANALYSIS_EFF_H
-#define ANALYSIS_EFF_H
+#ifndef ANALYSIS_TABLES_H
+#define ANALYSIS_TABLES_H
 #include "TObject.h"
 
 #include <iostream>
@@ -35,31 +35,27 @@
 
 
 
-class Analysis_eff : public TObject {
+class Analysis_tables : public TObject {
     
  public:
     
     
-  Analysis_eff();
-  Analysis_eff(string FileNameTree_in);
-  virtual ~Analysis_eff();
+  Analysis_tables();
+  Analysis_tables(string FileNameTree_in);
+  virtual ~Analysis_tables();
     
   void analisi(    int num_histo_kin	   
 		   );
-  double derivateR(double a, double x, double y, double z);
-  double derivate2_with_sigmaR(double a, double sa, double x, double y, double z);
-  double derivateR2D(double a, double x, double y);
-  double derivate2_with_sigmaR2D(double a, double sa, double x, double y);
-
+    
   double maximum(double a, double b);
-    void from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point);
+  void from_TGraph_to_TH1D (TGraphAsymmErrors *graph, TH1D *histo, int number_point);
 
 
   double FR_factor(TGraphAsymmErrors *fakeRate_mu[3],
-			      TGraphAsymmErrors *fakeRate_e[3],
-			      double eta,
-			      double flavors,
-			      double lptcone
+		   TGraphAsymmErrors *fakeRate_e[3],
+		   double eta,
+		   double flavors,
+		   double lptcone
 		   );
 
   void class_os(int event_clas[1], int  flavors_3l[3], int  charge_3l[3]);
@@ -68,12 +64,13 @@ class Analysis_eff : public TObject {
   void fr_selection (int number, TLorentzVector lepton_fake_order[3],TLorentzVector leep1, TLorentzVector leep2,TLorentzVector leep3, int index_leptons[3],  int flavor_leptons[3], int origin_leptons[3],int index_3l[3],  int flavor_3l[3], int origin_3l[3]);
 
 
-void printProgress(double progress) ;
+  void printProgress(double progress) ;
+
  private:
     
     
     
-  ClassDef(Analysis_eff,1) 
+  ClassDef(Analysis_tables,1)
     };
 
 #endif
